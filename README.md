@@ -22,7 +22,7 @@ Issues should be completed in this dependency-based sequence:
 ### Phase 1: Foundation (Required First)
 1. [#1](../../issues/1) Define Unity version support & package metadata ✅ **COMPLETED**
 2. [#6](../../issues/6) UPM package skeleton structure ✅ **COMPLETED**
-3. [#7](../../issues/7) Public interfaces & core services
+3. [#7](../../issues/7) Public interfaces & core services 🚧 **IN PROGRESS**
 4. [#3](../../issues/3) CI matrix across Unity versions & platforms
 
 ### Phase 2: Core Logging Implementation
@@ -117,7 +117,19 @@ When starting work on any GitHub issue:
 
 1. **Create feature branch**: `git checkout -b feature/gh-##-description` (where ## is the issue number)
 2. **Update README immediately**: Mark the issue as "In Progress" in the priority order list above
-3. **Commit and push**: `git add README.md && git commit -m "Mark issue ### as in progress" && git push -u origin feature/gh-##-description`
+3. **Commit and push README only**: `git add README.md && git commit -m "Mark issue ### as in progress" && git push -u origin feature/gh-##-description`
+
+### Git Workflow & Code Review
+
+**IMPORTANT**: All implementation work must be reviewed before committing:
+
+1. **Complete the implementation** of all tasks for the issue
+2. **Present your work** to the user for review (show file structure, key changes, approach)
+3. **Wait for user approval** before making any commits
+4. **Only after approval**: Stage, commit, and push changes
+5. **Never commit implementation code** without explicit user approval
+
+The only exception is the initial README update marking an issue as "In Progress" - this can be committed immediately.
 
 ### Development Requirements
 
