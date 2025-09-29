@@ -117,7 +117,19 @@ When starting work on any GitHub issue:
 
 1. **Create feature branch**: `git checkout -b feature/gh-##-description` (where ## is the issue number)
 2. **Update README immediately**: Mark the issue as "In Progress" in the priority order list above
-3. **Commit and push**: `git add README.md && git commit -m "Mark issue ### as in progress" && git push -u origin feature/gh-##-description`
+3. **Commit and push README only**: `git add README.md && git commit -m "Mark issue ### as in progress" && git push -u origin feature/gh-##-description`
+
+### Git Workflow & Code Review
+
+**IMPORTANT**: All implementation work must be reviewed before committing:
+
+1. **Complete the implementation** of all tasks for the issue
+2. **Present your work** to the user for review (show file structure, key changes, approach)
+3. **Wait for user approval** before making any commits
+4. **Only after approval**: Stage, commit, and push changes
+5. **Never commit implementation code** without explicit user approval
+
+The only exception is the initial README update marking an issue as "In Progress" - this can be committed immediately.
 
 ### Development Requirements
 
