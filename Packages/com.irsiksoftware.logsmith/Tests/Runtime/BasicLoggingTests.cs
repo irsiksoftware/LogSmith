@@ -3,6 +3,7 @@ using IrsikSoftware.LogSmith;
 using IrsikSoftware.LogSmith.Core;
 using System.IO;
 using System;
+using System.Linq;
 
 namespace IrsikSoftware.LogSmith.Tests.Runtime
 {
@@ -165,9 +166,9 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
 
             // Assert
             Assert.AreEqual(3, categories.Count);
-            Assert.IsTrue(categories.Contains("Category1"));
-            Assert.IsTrue(categories.Contains("Category2"));
-            Assert.IsTrue(categories.Contains("Category3"));
+            CollectionAssert.Contains(categories, "Category1");
+            CollectionAssert.Contains(categories, "Category2");
+            CollectionAssert.Contains(categories, "Category3");
         }
 
         [Test]
