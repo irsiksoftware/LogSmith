@@ -1,0 +1,35 @@
+{
+  "name": "com.irsiksoftware.logsmith",
+  "displayName": "LogSmith",
+  "version": "0.1.0",
+  "unity": "2022.3",
+  "description": "A production-grade Unity logging package leveraging Unity's native logging system with advanced features for professional game development.",
+  "keywords": [
+    "logging",
+    "unity",
+    "debug",
+    "diagnostics",
+    "production"
+  ],
+  "author": {
+    "name": "Irsik Software",
+    "url": "https://github.com/DakotaIrsik"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DakotaIrsik/LogSmith.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.logging": "1.0.0",
+    "com.unity.burst": "1.8.0",
+    "com.unity.collections": "2.1.0"
+  },
+  "samples": [
+    {
+      "displayName": "Demo",
+      "description": "Basic usage examples and demo scenes",
+      "path": "Samples~/Demo"
+    }
+  ]
+}
