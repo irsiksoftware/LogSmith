@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unity package metadata and dependencies
 - Assembly definition framework
 
-## [0.1.0] - 2024-09-29
+## [0.1.0] - 2025-09-29
 
 ### Added
 - Initial package setup
