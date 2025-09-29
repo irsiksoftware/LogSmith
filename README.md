@@ -111,6 +111,16 @@ This design ensures that if Unity deprecates `com.unity.logging`, only the adapt
 
 This project follows a strict development process:
 
+### Branch Creation & README Updates
+
+When starting work on any GitHub issue:
+
+1. **Create feature branch**: `git checkout -b feature/gh-##-description` (where ## is the issue number)
+2. **Update README immediately**: Mark the issue as "In Progress" in the priority order list above
+3. **Commit and push**: `git add README.md && git commit -m "Mark issue ### as in progress" && git push -u origin feature/gh-##-description`
+
+### Development Requirements
+
 1. All features must be tracked via GitHub issues
 2. 100% test coverage is mandatory
 3. CI must pass on all supported Unity versions
