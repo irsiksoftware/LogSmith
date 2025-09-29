@@ -1,0 +1,21 @@
+{
+    "name": "IrsikSoftware.LogSmith.Editor",
+    "rootNamespace": "IrsikSoftware.LogSmith.Editor",
+    "references": [
+        "IrsikSoftware.LogSmith",
+        "Unity.Logging",
+        "Unity.Burst",
+        "Unity.Collections"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
