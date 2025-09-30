@@ -22,8 +22,9 @@ Issues should be completed in this dependency-based sequence:
 ### Phase 1: Foundation (Required First)
 1. [#1](../../issues/1) Define Unity version support & package metadata ✅ **COMPLETED**
 2. [#6](../../issues/6) UPM package skeleton structure ✅ **COMPLETED**
-3. [#7](../../issues/7) Public interfaces & core services 🚧 **IN PROGRESS**
-4. [#3](../../issues/3) CI matrix across Unity versions & platforms
+3. [#7](../../issues/7) Public interfaces & core services ✅ **COMPLETED**
+4. [#44](../../issues/44) VContainer integration & no-DI fallback 🚧 **IN PROGRESS**
+5. [#3](../../issues/3) CI matrix across Unity versions & platforms
 
 ### Phase 2: Core Logging Implementation
 5. [#9](../../issues/9) Unity logging bootstrapper
@@ -34,8 +35,8 @@ Issues should be completed in this dependency-based sequence:
 
 ### Phase 3: Configuration & DI Integration
 10. [#17](../../issues/17) LoggingSettings ScriptableObject & provider
-11. [#12](../../issues/12) VContainer installer & extensions
-12. [#13](../../issues/13) No-DI fallback path
+11. ~~[#12](../../issues/12) VContainer installer & extensions~~ (superseded by #44)
+12. ~~[#13](../../issues/13) No-DI fallback path~~ (superseded by #44)
 
 ### Phase 4: Platform & Build Support
 13. [#2](../../issues/2) Platform capability flags & conditional compilation
@@ -91,9 +92,142 @@ Issues should be completed in this dependency-based sequence:
 - **Platform Awareness**: WebGL/Switch file sink warnings; graceful feature degradation
 - **Asset Store**: UPM + .unitypackage with demo scenes and comprehensive samples
 
+## Package Structure: Assets vs Packages
+
+**Important for contributors:** This project uses Unity's Package Manager structure:
+
+- **`/Packages/com.irsiksoftware.logsmith/`** - The package source code (distributed to users)
+  - Contains all C# scripts, interfaces, implementations
+  - This is what gets published to the Asset Store or UPM registry
+  - Never put scene-specific or project-specific assets here
+
+- **`/Assets/`** - Your local project workspace (NOT distributed)
+  - Where you create your own settings instances
+  - Where you create test scenes and prefabs
+  - Where you put VContainer settings/prefabs for testing
+  - This folder demonstrates usage but doesn't ship with the package
+
+**For VContainer setup:** When you create LoggingSettings assets or LoggingLifetimeScope prefabs for testing, put them in `/Assets/Settings/` or `/Assets/Prefabs/`. The package only provides the script definitions - users will create their own instances in their projects.
+
 ## Getting Started
 
-*Coming soon - samples and quickstart guides will be available once the foundation is complete.*
+LogSmith supports two initialization modes:
+
+### Option 1: Static API (No DI Required)
+
+The simplest way to use LogSmith - just call the static API:
+
+```csharp
+using IrsikSoftware.LogSmith;
+
+// Use the default logger
+LogSmith.Logger.Info("Hello from LogSmith!");
+LogSmith.Logger.Debug("Debug information");
+LogSmith.Logger.Warn("Warning message");
+LogSmith.Logger.Error("Error occurred");
+
+// Create category-specific loggers
+var logger = LogSmith.CreateLogger("MySystem");
+logger.Info("Initialized MySystem");
+```
+
+### Option 2: VContainer Dependency Injection
+
+For projects using VContainer, LogSmith can be injected:
+
+**Step 1: Create LoggingSettings Asset (in your Assets folder)**
+1. In Unity: Right-click in Project → Create → LogSmith → Logging Settings
+2. Save it in `/Assets/Settings/` (or wherever you keep project settings)
+3. Configure your settings (console output, file logging, etc.)
+
+**Step 2: Create LoggingLifetimeScope GameObject**
+1. Create a new GameObject in your first scene
+2. Add the `LoggingLifetimeScope` component (from IrsikSoftware.LogSmith.DI namespace)
+3. Assign your LoggingSettings asset to the Settings field
+4. The component automatically persists with `DontDestroyOnLoad`
+5. **Optional:** Save as a prefab in `/Assets/Prefabs/` for reuse
+
+**Step 3 (Optional - VContainer 1.17+ Settings Workflow):**
+If you're using VContainer's centralized settings:
+1. Save the LoggingLifetimeScope GameObject as a prefab
+2. Reference it in your VContainer Settings
+3. Otherwise, just keep the GameObject in your first scene
+
+**Step 4: Inject ILog into your classes**
+
+```csharp
+using IrsikSoftware.LogSmith;
+using VContainer;
+using VContainer.Unity;
+
+public class MyGameSystem : IStartable
+{
+    private readonly ILog _log;
+
+    // Constructor injection
+    public MyGameSystem(ILog log)
+    {
+        _log = log;
+    }
+
+    public void Start()
+    {
+        _log.Info("MyGameSystem started");
+
+        // Create category-specific logger
+        var customLogger = _log.WithCategory("CustomCategory");
+        customLogger.Debug("Custom debug message");
+    }
+}
+```
+
+**Step 5: Register your systems with VContainer**
+
+```csharp
+using VContainer;
+using VContainer.Unity;
+using IrsikSoftware.LogSmith.DI;
+
+public class GameLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        // LogSmith is already registered via LoggingLifetimeScope
+        // Just register your own systems
+        builder.RegisterEntryPoint<MyGameSystem>();
+    }
+}
+```
+
+### Advanced: Manual VContainer Registration
+
+You can also manually register LogSmith in your own LifetimeScope:
+
+```csharp
+using IrsikSoftware.LogSmith.DI;
+
+protected override void Configure(IContainerBuilder builder)
+{
+    var settings = LoggingSettings.CreateDefault();
+    builder.AddLogSmithLogging(settings);
+
+    // Register your systems
+    builder.RegisterEntryPoint<MyGameSystem>();
+}
+```
+
+### Checking DI Status
+
+```csharp
+if (LogSmith.IsUsingDependencyInjection)
+{
+    Debug.Log("LogSmith is using VContainer");
+}
+else
+{
+    Debug.Log("LogSmith is using static fallback");
+}
+```
 
 ## Architecture
 

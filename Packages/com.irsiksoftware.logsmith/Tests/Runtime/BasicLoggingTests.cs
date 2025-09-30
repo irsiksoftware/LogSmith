@@ -35,7 +35,13 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             Assert.DoesNotThrow(() => logger.Debug("Debug message"));
             Assert.DoesNotThrow(() => logger.Info("Info message"));
             Assert.DoesNotThrow(() => logger.Warn("Warning message"));
+
+            // Expect error logs so Unity test framework doesn't fail
+            // Unity.Logging adds timestamp and formatting, so we use regex to match the message
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[Default\] Error message.*"));
             Assert.DoesNotThrow(() => logger.Error("Error message"));
+
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[Default\] Critical message.*"));
             Assert.DoesNotThrow(() => logger.Critical("Critical message"));
         }
 
@@ -192,6 +198,9 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                 fileSink.Write(message);
                 fileSink.Flush();
 
+                // Dispose to release file handle before reading
+                fileSink.Dispose();
+
                 // Assert
                 Assert.IsTrue(File.Exists(testFilePath));
                 var content = File.ReadAllText(testFilePath);
@@ -202,7 +211,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             finally
             {
                 // Cleanup
-                fileSink.Dispose();
+                // Already disposed above
                 if (File.Exists(testFilePath))
                 {
                     File.Delete(testFilePath);
