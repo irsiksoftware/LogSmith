@@ -23,30 +23,36 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          lfs: true
 
-      - name: Find Unity Editor Path
-        id: unity-path
+      - name: Find Unity Editor Path (Windows)
+        if: matrix.os == 'Windows'
+        id: unity-path-windows
+        shell: powershell
+        run: |
+          $UNITY_PATH = "C:/Program Files/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity.exe"
+
+          if (-Not (Test-Path $UNITY_PATH)) {
+            Write-Host "::error::Unity executable not found at $UNITY_PATH"
+            exit 1
+          }
+
+          echo "unity_path=$UNITY_PATH" >> $env:GITHUB_OUTPUT
+          Write-Host "Found Unity at: $UNITY_PATH"
+
+      - name: Find Unity Editor Path (Linux)
+        if: matrix.os == 'Linux'
+        id: unity-path-linux
         shell: bash
         run: |
-          if [[ "${{ matrix.os }}" == "Windows" ]]; then
-            UNITY_PATH="C:/Program Files/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity.exe"
-          elif [[ "${{ matrix.os }}" == "macOS" ]]; then
-            UNITY_PATH="/Applications/Unity/Hub/Editor/${{ matrix.unityVersion }}/Unity.app/Contents/MacOS/Unity"
+          if [ -d "$HOME/Unity/Hub/Editor/${{ matrix.unityVersion }}" ]; then
+            UNITY_PATH="$HOME/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity"
+          elif [ -d "/opt/Unity/Hub/Editor/${{ matrix.unityVersion }}" ]; then
+            UNITY_PATH="/opt/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity"
           else
-            # Linux (Steam Deck) - try common paths
-            if [ -d "$HOME/Unity/Hub/Editor/${{ matrix.unityVersion }}" ]; then
-              UNITY_PATH="$HOME/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity"
-            elif [ -d "/opt/Unity/Hub/Editor/${{ matrix.unityVersion }}" ]; then
-              UNITY_PATH="/opt/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity"
-            else
-              echo "::error::Unity installation not found for version ${{ matrix.unityVersion }}"
-              exit 1
-            fi
+            echo "::error::Unity installation not found for version ${{ matrix.unityVersion }}"
+            exit 1
           fi
 
-          # Verify Unity executable exists
           if [ ! -f "$UNITY_PATH" ]; then
             echo "::error::Unity executable not found at $UNITY_PATH"
             exit 1
@@ -55,17 +61,62 @@ jobs:
           echo "unity_path=$UNITY_PATH" >> $GITHUB_OUTPUT
           echo "Found Unity at: $UNITY_PATH"
 
-      - name: Create test directories
+      - name: Find Unity Editor Path (macOS)
+        if: matrix.os == 'macOS'
+        id: unity-path-macos
+        shell: bash
+        run: |
+          UNITY_PATH="/Applications/Unity/Hub/Editor/${{ matrix.unityVersion }}/Unity.app/Contents/MacOS/Unity"
+
+          if [ ! -f "$UNITY_PATH" ]; then
+            echo "::error::Unity executable not found at $UNITY_PATH"
+            exit 1
+          fi
+
+          echo "unity_path=$UNITY_PATH" >> $GITHUB_OUTPUT
+          echo "Found Unity at: $UNITY_PATH"
+
+      - name: Create test directories (Windows)
+        if: matrix.os == 'Windows'
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/TestResults"
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/CodeCoverage"
+
+      - name: Create test directories (Linux/macOS)
+        if: matrix.os != 'Windows'
         shell: bash
         run: |
           mkdir -p "${{ github.workspace }}/TestResults"
           mkdir -p "${{ github.workspace }}/CodeCoverage"
 
-      - name: Run EditMode tests
-        id: editmode-tests
+      - name: Run EditMode tests (Windows)
+        if: matrix.os == 'Windows'
+        id: editmode-tests-windows
+        shell: powershell
+        run: |
+          & "${{ steps.unity-path-windows.outputs.unity_path }}" `
+            -runTests `
+            -batchmode `
+            -nographics `
+            -projectPath "${{ github.workspace }}" `
+            -testPlatform EditMode `
+            -testResults "${{ github.workspace }}/TestResults/EditMode-results.xml" `
+            -logFile "${{ github.workspace }}/TestResults/EditMode-log.txt" `
+            -enableCodeCoverage `
+            -coverageResultsPath "${{ github.workspace }}/CodeCoverage" `
+            -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+
+          echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
+          echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $env:GITHUB_OUTPUT
+
+      - name: Run EditMode tests (Linux/macOS)
+        if: matrix.os != 'Windows'
+        id: editmode-tests-unix
         shell: bash
         run: |
-          "${{ steps.unity-path.outputs.unity_path }}" \
+          UNITY_PATH="${{ steps.unity-path-linux.outputs.unity_path || steps.unity-path-macos.outputs.unity_path }}"
+          "$UNITY_PATH" \
             -runTests \
             -batchmode \
             -nographics \
@@ -80,11 +131,29 @@ jobs:
           echo "results_path=${{ github.workspace }}/TestResults" >> $GITHUB_OUTPUT
           echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $GITHUB_OUTPUT
 
-      - name: Run PlayMode tests
-        id: playmode-tests
+      - name: Run PlayMode tests (Windows)
+        if: matrix.os == 'Windows'
+        id: playmode-tests-windows
+        shell: powershell
+        run: |
+          & "${{ steps.unity-path-windows.outputs.unity_path }}" `
+            -runTests `
+            -batchmode `
+            -nographics `
+            -projectPath "${{ github.workspace }}" `
+            -testPlatform PlayMode `
+            -testResults "${{ github.workspace }}/TestResults/PlayMode-results.xml" `
+            -logFile "${{ github.workspace }}/TestResults/PlayMode-log.txt"
+
+          echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
+
+      - name: Run PlayMode tests (Linux/macOS)
+        if: matrix.os != 'Windows'
+        id: playmode-tests-unix
         shell: bash
         run: |
-          "${{ steps.unity-path.outputs.unity_path }}" \
+          UNITY_PATH="${{ steps.unity-path-linux.outputs.unity_path || steps.unity-path-macos.outputs.unity_path }}"
+          "$UNITY_PATH" \
             -runTests \
             -batchmode \
             -nographics \
@@ -172,8 +241,15 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
 
-      - name: Clean up test artifacts
-        if: always()
+      - name: Clean up test artifacts (Windows)
+        if: always() && matrix.os == 'Windows'
+        shell: powershell
+        run: |
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/TestResults"
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/CodeCoverage"
+
+      - name: Clean up test artifacts (Linux/macOS)
+        if: always() && matrix.os != 'Windows'
         shell: bash
         run: |
           rm -rf "${{ github.workspace }}/TestResults"
