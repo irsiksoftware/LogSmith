@@ -2,7 +2,7 @@ name: CI Matrix - Unity Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feature/gh-3-ci-matrix-unity-versions ]
   pull_request:
     branches: [ main ]
 
