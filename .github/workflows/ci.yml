@@ -24,6 +24,40 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Unity License (Windows)
+        if: matrix.os == 'Windows'
+        shell: powershell
+        run: |
+          $LICENSE_DIR = "$env:LOCALAPPDATA\Unity\licenses"
+          New-Item -ItemType Directory -Force -Path $LICENSE_DIR | Out-Null
+
+          $LICENSE_FILE = "$LICENSE_DIR\UnityEntitlementLicense.xml"
+          [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.UNITY_LICENSE }}")) | Out-File -FilePath $LICENSE_FILE -Encoding UTF8 -NoNewline
+
+          Write-Host "Unity license installed at: $LICENSE_FILE"
+
+      - name: Setup Unity License (Linux)
+        if: matrix.os == 'Linux'
+        shell: bash
+        run: |
+          LICENSE_DIR="$HOME/.local/share/unity3d/Unity"
+          mkdir -p "$LICENSE_DIR"
+
+          echo "${{ secrets.UNITY_LICENSE }}" | base64 -d > "$LICENSE_DIR/UnityEntitlementLicense.xml"
+
+          echo "Unity license installed at: $LICENSE_DIR/UnityEntitlementLicense.xml"
+
+      - name: Setup Unity License (macOS)
+        if: matrix.os == 'macOS'
+        shell: bash
+        run: |
+          LICENSE_DIR="$HOME/Library/Application Support/Unity"
+          mkdir -p "$LICENSE_DIR"
+
+          echo "${{ secrets.UNITY_LICENSE }}" | base64 -d > "$LICENSE_DIR/UnityEntitlementLicense.xml"
+
+          echo "Unity license installed at: $LICENSE_DIR/UnityEntitlementLicense.xml"
+
       - name: Find Unity Editor Path (Windows)
         if: matrix.os == 'Windows'
         id: unity-path-windows
