@@ -1,0 +1,186 @@
+name: CI Matrix (Multi-Version, Multi-OS)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test Unity ${{ matrix.unity-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.runner-label }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux (Steam Deck) - 3 Unity versions
+          - os: Linux
+            runner-label: self-hosted
+            unity-version: 2022.3.50f1
+            unity-path: ~/Unity/Hub/Editor/2022.3.50f1/Editor/Unity
+          - os: Linux
+            runner-label: self-hosted
+            unity-version: 2023.2.20f1
+            unity-path: ~/Unity/Hub/Editor/2023.2.20f1/Editor/Unity
+          - os: Linux
+            runner-label: self-hosted
+            unity-version: 6000.0.26f1
+            unity-path: ~/Unity/Hub/Editor/6000.0.26f1/Editor/Unity
+            enable-coverage: true
+
+          # Windows Desktop - 3 Unity versions (placeholders until runner is set up)
+          - os: Windows
+            runner-label: windows
+            unity-version: 2022.3.50f1
+            unity-path: C:/Program Files/Unity/Hub/Editor/2022.3.50f1/Editor/Unity.exe
+          - os: Windows
+            runner-label: windows
+            unity-version: 2023.2.20f1
+            unity-path: C:/Program Files/Unity/Hub/Editor/2023.2.20f1/Editor/Unity.exe
+          - os: Windows
+            runner-label: windows
+            unity-version: 6000.0.26f1
+            unity-path: C:/Program Files/Unity/Hub/Editor/6000.0.26f1/Editor/Unity.exe
+
+          # macOS (MacBook Pro) - 3 Unity versions (placeholders until runner is set up)
+          - os: macOS
+            runner-label: macos
+            unity-version: 2022.3.50f1
+            unity-path: /Applications/Unity/Hub/Editor/2022.3.50f1/Unity.app/Contents/MacOS/Unity
+          - os: macOS
+            runner-label: macos
+            unity-version: 2023.2.20f1
+            unity-path: /Applications/Unity/Hub/Editor/2023.2.20f1/Unity.app/Contents/MacOS/Unity
+          - os: macOS
+            runner-label: macos
+            unity-version: 6000.0.26f1
+            unity-path: /Applications/Unity/Hub/Editor/6000.0.26f1/Unity.app/Contents/MacOS/Unity
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Unity installation
+        shell: bash
+        run: |
+          if [ ! -f "${{ matrix.unity-path }}" ]; then
+            echo "ERROR: Unity not found at ${{ matrix.unity-path }}"
+            echo "Available Unity installations:"
+            if [ "${{ matrix.os }}" == "Linux" ]; then
+              ls -la ~/Unity/Hub/Editor/ || echo "No Unity installations found"
+            elif [ "${{ matrix.os }}" == "Windows" ]; then
+              ls "C:/Program Files/Unity/Hub/Editor/" || echo "No Unity installations found"
+            elif [ "${{ matrix.os }}" == "macOS" ]; then
+              ls -la /Applications/Unity/Hub/Editor/ || echo "No Unity installations found"
+            fi
+            exit 1
+          fi
+          echo "Unity found at: ${{ matrix.unity-path }}"
+          "${{ matrix.unity-path }}" -version || true
+
+      - name: Run EditMode tests
+        shell: bash
+        run: |
+          "${{ matrix.unity-path }}" \
+            -batchmode \
+            -nographics \
+            -projectPath "${{ github.workspace }}" \
+            -runTests \
+            -testPlatform EditMode \
+            -testResults "${{ github.workspace }}/TestResults-EditMode.xml" \
+            -logFile "${{ github.workspace }}/unity-editmode.log" \
+            -quit
+
+          echo "EditMode tests completed. Exit code: $?"
+
+      - name: Run PlayMode tests
+        shell: bash
+        run: |
+          "${{ matrix.unity-path }}" \
+            -batchmode \
+            -nographics \
+            -projectPath "${{ github.workspace }}" \
+            -runTests \
+            -testPlatform PlayMode \
+            -testResults "${{ github.workspace }}/TestResults-PlayMode.xml" \
+            -logFile "${{ github.workspace }}/unity-playmode.log" \
+            -quit
+
+          echo "PlayMode tests completed. Exit code: $?"
+
+      - name: Generate code coverage
+        if: matrix.enable-coverage == true
+        shell: bash
+        run: |
+          "${{ matrix.unity-path }}" \
+            -batchmode \
+            -nographics \
+            -projectPath "${{ github.workspace }}" \
+            -runTests \
+            -testPlatform EditMode \
+            -enableCodeCoverage \
+            -coverageResultsPath "${{ github.workspace }}/CodeCoverage" \
+            -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport" \
+            -logFile "${{ github.workspace }}/unity-coverage.log" \
+            -quit
+
+          echo "Coverage generation completed. Exit code: $?"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}-${{ matrix.unity-version }}
+          path: |
+            TestResults-*.xml
+            unity-*.log
+          retention-days: 30
+
+      - name: Upload coverage report
+        if: matrix.enable-coverage == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ matrix.os }}-${{ matrix.unity-version }}
+          path: CodeCoverage/
+          retention-days: 30
+
+      - name: Check coverage threshold
+        if: matrix.enable-coverage == true
+        shell: bash
+        run: |
+          # Parse coverage from Unity's Summary.xml
+          SUMMARY_FILE="${{ github.workspace }}/CodeCoverage/Summary.xml"
+
+          if [ ! -f "$SUMMARY_FILE" ]; then
+            echo "ERROR: Coverage summary not found at $SUMMARY_FILE"
+            exit 1
+          fi
+
+          # Extract line coverage percentage (Unity uses <Linecoverage> tag)
+          COVERAGE=$(grep -oP '<Linecoverage>\K[0-9.]+' "$SUMMARY_FILE" | head -1)
+
+          if [ -z "$COVERAGE" ]; then
+            echo "ERROR: Could not parse coverage from Summary.xml"
+            cat "$SUMMARY_FILE"
+            exit 1
+          fi
+
+          echo "Current coverage: ${COVERAGE}%"
+
+          # Enforce 100% coverage requirement
+          if (( $(echo "$COVERAGE < 100" | bc -l) )); then
+            echo "ERROR: Coverage ${COVERAGE}% is below required 100%"
+            exit 1
+          fi
+
+          echo "✓ Coverage meets 100% requirement"
+
+      - name: Clean up Unity temporary files
+        if: always()
+        shell: bash
+        run: |
+          rm -f unity-*.log
+          rm -f TestResults-*.xml
