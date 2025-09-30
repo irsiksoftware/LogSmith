@@ -24,7 +24,7 @@ Issues should be completed in this dependency-based sequence:
 2. [#6](../../issues/6) UPM package skeleton structure ✅ **COMPLETED**
 3. [#7](../../issues/7) Public interfaces & core services ✅ **COMPLETED**
 4. [#44](../../issues/44) VContainer integration & no-DI fallback ✅ **COMPLETED**
-5. [#3](../../issues/3) CI matrix across Unity versions & platforms
+5. [#3](../../issues/3) CI matrix across Unity versions & platforms ⏸️ **DEFERRED - DO NOT ATTEMPT CLAUDE**
 
 ### Phase 2: Core Logging Implementation
 5. [#9](../../issues/9) Unity logging bootstrapper

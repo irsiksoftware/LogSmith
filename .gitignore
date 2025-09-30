@@ -77,3 +77,7 @@ mono_crash.*
 
 # Claude Code directory
 .claude/
+
+# CI/Test artifacts
+/TestResults/
+/CodeCoverage/
