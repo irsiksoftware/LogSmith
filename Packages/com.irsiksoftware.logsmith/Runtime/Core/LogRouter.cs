@@ -13,6 +13,7 @@ namespace IrsikSoftware.LogSmith.Core
         private readonly Dictionary<string, LogLevel> _categoryFilters = new Dictionary<string, LogLevel>();
         private readonly object _lock = new object();
         private LogLevel _globalMinimumLevel = LogLevel.Trace;
+        private ICategoryRegistry _categoryRegistry;
 
         public void RegisterSink(ILogSink sink)
         {
@@ -113,8 +114,25 @@ namespace IrsikSoftware.LogSmith.Core
             }
         }
 
+        /// <summary>
+        /// Sets the category registry to use for checking category enabled state.
+        /// </summary>
+        public void SetCategoryRegistry(ICategoryRegistry categoryRegistry)
+        {
+            lock (_lock)
+            {
+                _categoryRegistry = categoryRegistry;
+            }
+        }
+
         private bool ShouldRoute(LogMessage message)
         {
+            // Check if category is enabled (if registry is available)
+            if (_categoryRegistry != null && !_categoryRegistry.IsEnabled(message.Category))
+            {
+                return false;
+            }
+
             // Check category-specific filter first
             if (_categoryFilters.TryGetValue(message.Category, out var categoryMinLevel))
             {

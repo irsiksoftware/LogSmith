@@ -56,6 +56,12 @@ namespace IrsikSoftware.LogSmith.DI
                 var router = container.Resolve<ILogRouter>();
                 var categoryRegistry = container.Resolve<ICategoryRegistry>();
 
+                // Wire up category registry to router for enabled state checking
+                if (router is LogRouter logRouter)
+                {
+                    logRouter.SetCategoryRegistry(categoryRegistry);
+                }
+
                 // Set minimum log level
                 categoryRegistry.SetMinimumLevel("Default", config.minimumLogLevel);
 

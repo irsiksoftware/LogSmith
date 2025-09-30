@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace IrsikSoftware.LogSmith.Core
 {
     /// <summary>
-    /// Minimal category registry managing log categories and their minimum levels.
+    /// Manages log categories and their metadata (minimum levels, colors, enabled state).
     /// </summary>
     public class CategoryRegistry : ICategoryRegistry
     {
-        private readonly Dictionary<string, LogLevel> _categories = new Dictionary<string, LogLevel>();
+        private readonly Dictionary<string, CategoryMetadata> _categories = new Dictionary<string, CategoryMetadata>();
         private readonly object _lock = new object();
         private readonly LogLevel _defaultMinimumLevel = LogLevel.Info;
+        private readonly Color _defaultColor = Color.white;
 
         public void RegisterCategory(string category, LogLevel minimumLevel)
         {
@@ -18,7 +20,18 @@ namespace IrsikSoftware.LogSmith.Core
 
             lock (_lock)
             {
-                _categories[category] = minimumLevel;
+                _categories[category] = new CategoryMetadata(minimumLevel, _defaultColor, true);
+            }
+        }
+
+        public void RegisterCategory(string category, CategoryMetadata metadata)
+        {
+            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+
+            lock (_lock)
+            {
+                _categories[category] = metadata;
             }
         }
 
@@ -39,10 +52,10 @@ namespace IrsikSoftware.LogSmith.Core
 
             lock (_lock)
             {
-                if (_categories.TryGetValue(oldName, out var level))
+                if (_categories.TryGetValue(oldName, out var metadata))
                 {
                     _categories.Remove(oldName);
-                    _categories[newName] = level;
+                    _categories[newName] = metadata;
                 }
             }
         }
@@ -53,13 +66,13 @@ namespace IrsikSoftware.LogSmith.Core
 
             lock (_lock)
             {
-                if (_categories.ContainsKey(category))
+                if (_categories.TryGetValue(category, out var metadata))
                 {
-                    _categories[category] = level;
+                    metadata.MinimumLevel = level;
                 }
                 else
                 {
-                    _categories.Add(category, level);
+                    _categories[category] = new CategoryMetadata(level, _defaultColor, true);
                 }
             }
         }
@@ -70,7 +83,79 @@ namespace IrsikSoftware.LogSmith.Core
 
             lock (_lock)
             {
-                return _categories.TryGetValue(category, out var level) ? level : _defaultMinimumLevel;
+                return _categories.TryGetValue(category, out var metadata)
+                    ? metadata.MinimumLevel
+                    : _defaultMinimumLevel;
+            }
+        }
+
+        public void SetColor(string category, Color color)
+        {
+            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+
+            lock (_lock)
+            {
+                if (_categories.TryGetValue(category, out var metadata))
+                {
+                    metadata.Color = color;
+                }
+                else
+                {
+                    _categories[category] = new CategoryMetadata(_defaultMinimumLevel, color, true);
+                }
+            }
+        }
+
+        public Color GetColor(string category)
+        {
+            if (string.IsNullOrEmpty(category)) return _defaultColor;
+
+            lock (_lock)
+            {
+                return _categories.TryGetValue(category, out var metadata)
+                    ? metadata.Color
+                    : _defaultColor;
+            }
+        }
+
+        public void SetEnabled(string category, bool enabled)
+        {
+            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+
+            lock (_lock)
+            {
+                if (_categories.TryGetValue(category, out var metadata))
+                {
+                    metadata.Enabled = enabled;
+                }
+                else
+                {
+                    _categories[category] = new CategoryMetadata(_defaultMinimumLevel, _defaultColor, enabled);
+                }
+            }
+        }
+
+        public bool IsEnabled(string category)
+        {
+            if (string.IsNullOrEmpty(category)) return true;
+
+            lock (_lock)
+            {
+                return _categories.TryGetValue(category, out var metadata)
+                    ? metadata.Enabled
+                    : true;
+            }
+        }
+
+        public CategoryMetadata GetMetadata(string category)
+        {
+            if (string.IsNullOrEmpty(category)) return null;
+
+            lock (_lock)
+            {
+                return _categories.TryGetValue(category, out var metadata)
+                    ? metadata
+                    : null;
             }
         }
 
