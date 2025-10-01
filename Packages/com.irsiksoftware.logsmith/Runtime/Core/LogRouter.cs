@@ -11,8 +11,14 @@ namespace IrsikSoftware.LogSmith.Core
         private readonly List<ILogSink> _sinks = new List<ILogSink>();
         private readonly List<Action<LogMessage>> _subscribers = new List<Action<LogMessage>>();
         private readonly Dictionary<string, LogLevel> _categoryFilters = new Dictionary<string, LogLevel>();
+        private readonly ICategoryRegistry _categoryRegistry;
         private readonly object _lock = new object();
         private LogLevel _globalMinimumLevel = LogLevel.Trace;
+
+        public LogRouter(ICategoryRegistry categoryRegistry = null)
+        {
+            _categoryRegistry = categoryRegistry;
+        }
 
         public void RegisterSink(ILogSink sink)
         {
@@ -115,13 +121,26 @@ namespace IrsikSoftware.LogSmith.Core
 
         private bool ShouldRoute(LogMessage message)
         {
-            // Check category-specific filter first
+            // First check if category is enabled in the registry
+            if (_categoryRegistry != null && !_categoryRegistry.IsEnabled(message.Category))
+            {
+                return false;
+            }
+
+            // Check category-specific filter first (takes precedence over registry)
             if (_categoryFilters.TryGetValue(message.Category, out var categoryMinLevel))
             {
                 return message.Level >= categoryMinLevel;
             }
 
-            // Fall back to global minimum level
+            // Fall back to category registry minimum level if available
+            if (_categoryRegistry != null && _categoryRegistry.HasCategory(message.Category))
+            {
+                var registryMinLevel = _categoryRegistry.GetMinimumLevel(message.Category);
+                return message.Level >= registryMinLevel;
+            }
+
+            // Finally fall back to global minimum level
             return message.Level >= _globalMinimumLevel;
         }
 
