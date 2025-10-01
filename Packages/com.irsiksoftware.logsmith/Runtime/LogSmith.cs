@@ -81,8 +81,11 @@ namespace IrsikSoftware.LogSmith
         /// </summary>
         private static void InitializeStatic()
         {
-            // Create router and template engine
-            _router = new LogRouter();
+            // Create category registry
+            var categoryRegistry = new Core.CategoryRegistry();
+
+            // Create router with category registry
+            _router = new LogRouter(categoryRegistry);
             var templateEngine = new Core.MessageTemplateEngine();
 
             // Use default settings
