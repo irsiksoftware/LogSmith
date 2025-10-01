@@ -1,0 +1,25 @@
+{
+    "name": "IrsikSoftware.LogSmith.Tests.Editor",
+    "rootNamespace": "IrsikSoftware.LogSmith.Tests.Editor",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "IrsikSoftware.LogSmith",
+        "IrsikSoftware.LogSmith.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

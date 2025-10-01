@@ -12,7 +12,7 @@ namespace IrsikSoftware.LogSmith.Core
     public class MessageTemplateEngine : IMessageTemplateEngine
     {
         private readonly Dictionary<string, string> _categoryTemplates = new Dictionary<string, string>();
-        private readonly string _defaultTemplate = "[{timestamp:HH:mm:ss}] [{level}] [{category}] {message}";
+        private string _defaultTemplate = "[{timestamp:HH:mm:ss}] [{level}] [{category}] {message}";
         private readonly object _lock = new object();
         private static readonly Regex TokenRegex = new Regex(@"\{([^}]+)\}", RegexOptions.Compiled);
 
@@ -47,6 +47,19 @@ namespace IrsikSoftware.LogSmith.Core
             lock (_lock)
             {
                 return _categoryTemplates.TryGetValue(category, out var template) ? template : _defaultTemplate;
+            }
+        }
+
+        /// <summary>
+        /// Sets the default template used for categories without specific overrides.
+        /// </summary>
+        public void SetDefaultTemplate(string template)
+        {
+            if (string.IsNullOrEmpty(template)) throw new ArgumentNullException(nameof(template));
+
+            lock (_lock)
+            {
+                _defaultTemplate = template;
             }
         }
 
