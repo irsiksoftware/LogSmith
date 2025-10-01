@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace IrsikSoftware.LogSmith
@@ -12,6 +14,9 @@ namespace IrsikSoftware.LogSmith
         [Header("General Settings")]
         [Tooltip("Minimum log level for all categories (unless overridden per-category)")]
         public LogLevel minimumLogLevel = LogLevel.Debug;
+
+        [Tooltip("Per-category minimum level overrides")]
+        public List<CategoryMinLevelOverride> categoryMinLevelOverrides = new List<CategoryMinLevelOverride>();
 
         [Tooltip("Enable console output via ConsoleSink")]
         public bool enableConsoleSink = true;
@@ -76,5 +81,18 @@ namespace IrsikSoftware.LogSmith
     {
         Text,
         Json
+    }
+
+    /// <summary>
+    /// Per-category minimum level override configuration.
+    /// </summary>
+    [Serializable]
+    public class CategoryMinLevelOverride
+    {
+        [Tooltip("Category name to apply the minimum level to")]
+        public string categoryName;
+
+        [Tooltip("Minimum log level for this category")]
+        public LogLevel minimumLevel = LogLevel.Info;
     }
 }

@@ -82,6 +82,9 @@ namespace IrsikSoftware.LogSmith.Core
             // Set global minimum log level
             _router.SetGlobalMinimumLevel(_settings.minimumLogLevel);
 
+            // Apply per-category minimum level overrides
+            ApplyCategoryMinLevelOverrides();
+
             // Enable live reload if configured
             _liveReloadEnabled = _settings.enableLiveReload;
 
@@ -104,6 +107,9 @@ namespace IrsikSoftware.LogSmith.Core
 
             // Update global minimum log level
             _router.SetGlobalMinimumLevel(_settings.minimumLogLevel);
+
+            // Apply per-category minimum level overrides
+            ApplyCategoryMinLevelOverrides();
 
             // Update file sink format if enabled
             if (_fileSink != null)
@@ -130,6 +136,25 @@ namespace IrsikSoftware.LogSmith.Core
 
             _fileSink.CurrentFormat = format;
             Debug.Log($"[LogSmith] File sink format switched to: {format}");
+        }
+
+        /// <summary>
+        /// Applies per-category minimum level overrides from settings to the router.
+        /// </summary>
+        private void ApplyCategoryMinLevelOverrides()
+        {
+            if (_settings.categoryMinLevelOverrides == null || _settings.categoryMinLevelOverrides.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var categoryOverride in _settings.categoryMinLevelOverrides)
+            {
+                if (!string.IsNullOrEmpty(categoryOverride.categoryName))
+                {
+                    _router.SetCategoryFilter(categoryOverride.categoryName, categoryOverride.minimumLevel);
+                }
+            }
         }
 
         /// <summary>
