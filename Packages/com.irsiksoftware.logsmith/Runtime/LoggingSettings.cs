@@ -11,6 +11,11 @@ namespace IrsikSoftware.LogSmith
     [CreateAssetMenu(fileName = "LoggingSettings", menuName = "LogSmith/Logging Settings", order = 1)]
     public class LoggingSettings : ScriptableObject
     {
+        /// <summary>
+        /// Event raised when settings change in editor (OnValidate).
+        /// </summary>
+        public event Action SettingsChanged;
+
         [Header("General Settings")]
         [Tooltip("Minimum log level for all categories (unless overridden per-category)")]
         public LogLevel minimumLogLevel = LogLevel.Debug;
@@ -72,6 +77,27 @@ namespace IrsikSoftware.LogSmith
             settings.enableLiveReload = true;
             return settings;
         }
+
+        /// <summary>
+        /// Manually triggers settings changed event (useful for testing).
+        /// </summary>
+        public void TriggerSettingsChanged()
+        {
+            SettingsChanged?.Invoke();
+        }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Called when values change in the Inspector.
+        /// </summary>
+        private void OnValidate()
+        {
+            if (enableLiveReload)
+            {
+                TriggerSettingsChanged();
+            }
+        }
+#endif
     }
 
     /// <summary>
