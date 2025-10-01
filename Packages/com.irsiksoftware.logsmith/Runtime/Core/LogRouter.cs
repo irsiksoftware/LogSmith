@@ -5,6 +5,7 @@ namespace IrsikSoftware.LogSmith.Core
 {
     /// <summary>
     /// Routes log messages to registered sinks with filtering and event stream support.
+    /// Thread-safe: ILog can be called from any thread. UI subscribers receive events on main thread.
     /// </summary>
     internal class LogRouter : ILogRouter
     {
@@ -67,17 +68,27 @@ namespace IrsikSoftware.LogSmith.Core
                     }
                 }
 
-                // Notify subscribers
-                foreach (var subscriber in _subscribers)
+                // Notify subscribers on main thread via MainThreadDispatcher
+                if (_subscribers.Count > 0)
                 {
-                    try
+                    // Capture subscriber list to avoid holding lock during dispatch
+                    var subscribersCopy = new List<Action<LogMessage>>(_subscribers);
+
+                    // Dispatch to main thread with bounded queue
+                    MainThreadDispatcher.Instance.Enqueue(() =>
                     {
-                        subscriber(message);
-                    }
-                    catch (Exception ex)
-                    {
-                        UnityEngine.Debug.LogError($"[LogSmith] Subscriber failed: {ex.Message}");
-                    }
+                        foreach (var subscriber in subscribersCopy)
+                        {
+                            try
+                            {
+                                subscriber(message);
+                            }
+                            catch (Exception ex)
+                            {
+                                UnityEngine.Debug.LogError($"[LogSmith] Subscriber failed: {ex.Message}");
+                            }
+                        }
+                    });
                 }
             }
         }
