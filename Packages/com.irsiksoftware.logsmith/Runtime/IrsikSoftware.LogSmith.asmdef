@@ -5,10 +5,7 @@
         "Unity.Logging",
         "Unity.Burst",
         "Unity.Collections",
-        "VContainer",
-        "IrsikSoftware.LogSmith.BuiltIn",
-        "IrsikSoftware.LogSmith.URP",
-        "IrsikSoftware.LogSmith.HDRP"
+        "VContainer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
