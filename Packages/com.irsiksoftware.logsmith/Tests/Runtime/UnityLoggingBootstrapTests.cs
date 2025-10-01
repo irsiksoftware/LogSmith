@@ -498,5 +498,120 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             Assert.DoesNotThrow(() => LogSmith.SwitchFormat(MessageFormat.Json));
             Assert.DoesNotThrow(() => LogSmith.SwitchFormat(MessageFormat.Text));
         }
+
+        [Test]
+        public void Bootstrap_AppliesPerCategoryMinLevels_FromSettings()
+        {
+            // Arrange
+            var settings = LoggingSettings.CreateDefault();
+            settings.minimumLogLevel = LogLevel.Trace; // Global minimum is Trace
+            settings.categoryMinLevelOverrides = new System.Collections.Generic.List<CategoryMinLevelOverride>
+            {
+                new CategoryMinLevelOverride { categoryName = "Category1", minimumLevel = LogLevel.Error },
+                new CategoryMinLevelOverride { categoryName = "Category2", minimumLevel = LogLevel.Warn }
+            };
+
+            var router = new LogRouter();
+            int messageCount = 0;
+
+            using (var bootstrap = new UnityLoggingBootstrap(settings, router))
+            using (router.Subscribe(_ => messageCount++))
+            {
+                // Act - Route messages at different levels for different categories
+
+                // Category1 has Error minimum - Info should be blocked
+                router.Route(new LogMessage { Level = LogLevel.Info, Category = "Category1", Message = "Info1", Timestamp = DateTime.UtcNow });
+                // Category1 has Error minimum - Error should pass
+                router.Route(new LogMessage { Level = LogLevel.Error, Category = "Category1", Message = "Error1", Timestamp = DateTime.UtcNow });
+
+                // Category2 has Warn minimum - Debug should be blocked
+                router.Route(new LogMessage { Level = LogLevel.Debug, Category = "Category2", Message = "Debug2", Timestamp = DateTime.UtcNow });
+                // Category2 has Warn minimum - Warn should pass
+                router.Route(new LogMessage { Level = LogLevel.Warn, Category = "Category2", Message = "Warn2", Timestamp = DateTime.UtcNow });
+
+                // Unconfigured category uses global Trace minimum - all should pass
+                router.Route(new LogMessage { Level = LogLevel.Trace, Category = "Category3", Message = "Trace3", Timestamp = DateTime.UtcNow });
+
+                // Assert
+                Assert.AreEqual(3, messageCount, "Should have 3 messages: Error1, Warn2, Trace3");
+            }
+        }
+
+        [Test]
+        public void Bootstrap_ReloadSettings_UpdatesPerCategoryMinLevels()
+        {
+            // Arrange
+            var settings = LoggingSettings.CreateDefault();
+            settings.minimumLogLevel = LogLevel.Trace;
+            settings.enableLiveReload = true;
+            settings.categoryMinLevelOverrides = new System.Collections.Generic.List<CategoryMinLevelOverride>
+            {
+                new CategoryMinLevelOverride { categoryName = "TestCategory", minimumLevel = LogLevel.Debug }
+            };
+
+            var router = new LogRouter();
+
+            using (var bootstrap = new UnityLoggingBootstrap(settings, router))
+            {
+                // Verify initial setting
+                int messageCount1 = 0;
+                using (router.Subscribe(_ => messageCount1++))
+                {
+                    // Trace should be blocked (min is Debug)
+                    router.Route(new LogMessage { Level = LogLevel.Trace, Category = "TestCategory", Message = "Trace1", Timestamp = DateTime.UtcNow });
+                    // Debug should pass
+                    router.Route(new LogMessage { Level = LogLevel.Debug, Category = "TestCategory", Message = "Debug1", Timestamp = DateTime.UtcNow });
+                }
+                Assert.AreEqual(1, messageCount1, "Initially only Debug should pass");
+
+                // Act - Change category minimum to Error and reload
+                settings.categoryMinLevelOverrides[0].minimumLevel = LogLevel.Error;
+                bootstrap.ReloadSettings();
+
+                // Verify updated setting
+                int messageCount2 = 0;
+                using (router.Subscribe(_ => messageCount2++))
+                {
+                    // Debug should now be blocked (min is Error)
+                    router.Route(new LogMessage { Level = LogLevel.Debug, Category = "TestCategory", Message = "Debug2", Timestamp = DateTime.UtcNow });
+                    // Error should pass
+                    router.Route(new LogMessage { Level = LogLevel.Error, Category = "TestCategory", Message = "Error2", Timestamp = DateTime.UtcNow });
+                }
+
+                // Assert
+                Assert.AreEqual(1, messageCount2, "After reload, only Error should pass");
+            }
+        }
+
+        [Test]
+        public void Bootstrap_IgnoresEmptyOrNullCategoryNames_InOverrides()
+        {
+            // Arrange
+            var settings = LoggingSettings.CreateDefault();
+            settings.categoryMinLevelOverrides = new System.Collections.Generic.List<CategoryMinLevelOverride>
+            {
+                new CategoryMinLevelOverride { categoryName = null, minimumLevel = LogLevel.Error },
+                new CategoryMinLevelOverride { categoryName = "", minimumLevel = LogLevel.Error },
+                new CategoryMinLevelOverride { categoryName = "ValidCategory", minimumLevel = LogLevel.Warn }
+            };
+
+            var router = new LogRouter();
+
+            // Act & Assert - Should not throw
+            Assert.DoesNotThrow(() =>
+            {
+                using (var bootstrap = new UnityLoggingBootstrap(settings, router))
+                {
+                    // Verify that ValidCategory filter was applied
+                    int messageCount = 0;
+                    using (router.Subscribe(_ => messageCount++))
+                    {
+                        router.Route(new LogMessage { Level = LogLevel.Debug, Category = "ValidCategory", Message = "Debug", Timestamp = DateTime.UtcNow });
+                        router.Route(new LogMessage { Level = LogLevel.Warn, Category = "ValidCategory", Message = "Warn", Timestamp = DateTime.UtcNow });
+                    }
+                    Assert.AreEqual(1, messageCount, "Only Warn should pass for ValidCategory");
+                }
+            });
+        }
     }
 }
