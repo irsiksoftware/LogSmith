@@ -36,7 +36,10 @@ namespace IrsikSoftware.LogSmith.Core
                 Level = level,
                 Category = _category,
                 Message = message,
-                Timestamp = DateTime.UtcNow
+                Timestamp = DateTime.UtcNow,
+                Frame = UnityEngine.Time.frameCount,
+                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                ThreadName = System.Threading.Thread.CurrentThread.Name ?? string.Empty
             };
 
             _router.Route(logMessage);
