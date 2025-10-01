@@ -81,3 +81,5 @@ mono_crash.*
 # CI/Test artifacts
 /TestResults/
 /CodeCoverage/
+/TestOutputs/
+/TempTestResults/
