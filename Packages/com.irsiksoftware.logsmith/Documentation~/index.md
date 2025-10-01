@@ -15,6 +15,12 @@ Production-grade Unity logging package leveraging Unity's native logging system 
 - **[Templates](Templates.md)** - Customizing message formatting
 - **[Sinks](Sinks.md)** - Output destinations (console, file, custom)
 
+## Render Pipeline Support
+
+- **[Built-in RP Setup](RenderPipeline-BuiltIn.md)** - Zero-config setup for Built-in Render Pipeline
+- **[URP Setup](RenderPipeline-URP.md)** - Renderer Feature setup for Universal RP
+- **[HDRP Setup](RenderPipeline-HDRP.md)** - Custom Pass setup for High Definition RP
+
 ## Advanced Topics
 
 - **[IL2CPP Compatibility](IL2CPP-Compatibility.md)** - AOT/IL2CPP platform support
