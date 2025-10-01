@@ -1,0 +1,155 @@
+name: RP Validation Matrix
+
+on:
+  push:
+    branches: [ main, feature/gh-40-rp-validation ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  rp-validation:
+    if: false  # Temporarily disabled until CI infrastructure is ready
+    name: RP Test ${{ matrix.unityVersion }} - ${{ matrix.pipeline }}
+    runs-on: [self-hosted, Windows]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        unityVersion:
+          - 2022.3.50f1  # 2022.3 LTS
+          - 2023.2.20f1  # 2023 LTS
+          - 6000.0.26f1  # 6000.2 LTS (Unity 6)
+        pipeline:
+          - Built-in
+          - URP
+          - HDRP
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Unity License
+        shell: powershell
+        run: |
+          $LICENSE_DIR = "$env:LOCALAPPDATA\Unity\licenses"
+          New-Item -ItemType Directory -Force -Path $LICENSE_DIR | Out-Null
+
+          $LICENSE_FILE = "$LICENSE_DIR\UnityEntitlementLicense.xml"
+          [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.UNITY_LICENSE }}")) | Out-File -FilePath $LICENSE_FILE -Encoding UTF8 -NoNewline
+
+          Write-Host "Unity license installed at: $LICENSE_FILE"
+
+      - name: Find Unity Editor Path
+        id: unity-path
+        shell: powershell
+        run: |
+          $UNITY_PATH = "C:/Program Files/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity.exe"
+
+          if (-Not (Test-Path $UNITY_PATH)) {
+            Write-Host "::error::Unity executable not found at $UNITY_PATH"
+            exit 1
+          }
+
+          echo "unity_path=$UNITY_PATH" >> $env:GITHUB_OUTPUT
+          Write-Host "Found Unity at: $UNITY_PATH"
+
+      - name: Install Render Pipeline Package
+        if: matrix.pipeline != 'Built-in'
+        shell: powershell
+        run: |
+          $packageName = if ("${{ matrix.pipeline }}" -eq "URP") { "com.unity.render-pipelines.universal" } else { "com.unity.render-pipelines.high-definition" }
+
+          Write-Host "Installing $packageName for ${{ matrix.pipeline }}"
+
+          & "${{ steps.unity-path.outputs.unity_path }}" `
+            -quit `
+            -batchmode `
+            -nographics `
+            -projectPath "${{ github.workspace }}" `
+            -logFile "${{ github.workspace }}/PackageInstall-${{ matrix.pipeline }}-log.txt"
+
+          # Note: Package installation via Unity CLI requires manual manifest.json modification
+          # or using Package Manager API. For now, assume packages are in manifest.json with version ranges.
+
+      - name: Create test directories
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/TestResults"
+
+      - name: Run PlayMode RP Tests
+        id: playmode-tests
+        shell: powershell
+        run: |
+          # Run only RP-related PlayMode tests
+          $testFilter = switch ("${{ matrix.pipeline }}") {
+            "Built-in" { "BuiltInRenderPipelineAdapterTests" }
+            "URP"      { "URPAdapterTests" }
+            "HDRP"     { "HDRPAdapterTests" }
+          }
+
+          & "${{ steps.unity-path.outputs.unity_path }}" `
+            -runTests `
+            -batchmode `
+            -nographics `
+            -projectPath "${{ github.workspace }}" `
+            -testPlatform PlayMode `
+            -testFilter $testFilter `
+            -testResults "${{ github.workspace }}/TestResults/PlayMode-${{ matrix.pipeline }}-results.xml" `
+            -logFile "${{ github.workspace }}/TestResults/PlayMode-${{ matrix.pipeline }}-log.txt"
+
+          echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RP-Test-Results-${{ matrix.unityVersion }}-${{ matrix.pipeline }}
+          path: ${{ github.workspace }}/TestResults/*
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Check test results
+        shell: powershell
+        run: |
+          $resultsFile = "${{ github.workspace }}/TestResults/PlayMode-${{ matrix.pipeline }}-results.xml"
+
+          if (-Not (Test-Path $resultsFile)) {
+            Write-Host "::error::Test results file not found: $resultsFile"
+            exit 1
+          }
+
+          [xml]$results = Get-Content $resultsFile
+          $failures = $results.SelectNodes("//test-case[@result='Failed']").Count
+          $total = $results.SelectNodes("//test-case").Count
+
+          Write-Host "::notice::Tests run: $total, Failures: $failures"
+
+          if ($failures -gt 0) {
+            Write-Host "::error::$failures test(s) failed for ${{ matrix.pipeline }} on ${{ matrix.unityVersion }}"
+            exit 1
+          }
+
+          Write-Host "::notice::✅ All ${{ matrix.pipeline }} tests passed on ${{ matrix.unityVersion }}"
+
+      - name: Clean up test artifacts
+        if: always()
+        shell: powershell
+        run: |
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/TestResults"
+
+  rp-validation-summary:
+    if: false  # Temporarily disabled until CI infrastructure is ready
+    name: RP Validation Summary
+    runs-on: [self-hosted, Windows]
+    needs: rp-validation
+
+    steps:
+      - name: Check if all RP tests passed
+        if: needs.rp-validation.result != 'success'
+        run: |
+          echo "::error::One or more RP validation jobs failed."
+          exit 1
+
+      - name: RP validation passed
+        run: |
+          echo "::notice::✅ All render pipeline validation tests passed across Unity versions!"
