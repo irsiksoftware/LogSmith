@@ -13,6 +13,7 @@ namespace IrsikSoftware.LogSmith.Core
         private readonly LoggingSettings _settings;
         private readonly ILogRouter _router;
         private readonly IMessageTemplateEngine _templateEngine;
+        private readonly IPlatformCapabilities _platformCapabilities;
 
         private ConsoleSink _consoleSink;
         private FileSink _fileSink;
@@ -35,11 +36,14 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="settings">The logging settings to use.</param>
         /// <param name="router">The log router to register sinks with.</param>
         /// <param name="templateEngine">Optional template engine for message formatting.</param>
-        public UnityLoggingBootstrap(LoggingSettings settings, ILogRouter router, IMessageTemplateEngine templateEngine = null)
+        /// <param name="platformCapabilities">Optional platform capabilities service for feature detection.</param>
+        public UnityLoggingBootstrap(LoggingSettings settings, ILogRouter router,
+            IMessageTemplateEngine templateEngine = null, IPlatformCapabilities platformCapabilities = null)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _router = router ?? throw new ArgumentNullException(nameof(router));
             _templateEngine = templateEngine ?? new MessageTemplateEngine();
+            _platformCapabilities = platformCapabilities ?? new PlatformCapabilities();
 
             Initialize();
         }
@@ -55,28 +59,37 @@ namespace IrsikSoftware.LogSmith.Core
             // Configure and register console sink
             if (_settings.enableConsoleSink)
             {
-                _consoleSink = new ConsoleSink();
+                _consoleSink = new ConsoleSink(_templateEngine);
                 _router.RegisterSink(_consoleSink);
             }
 
             // Configure and register file sink with rotation support
             if (_settings.enableFileSink)
             {
-                var fullLogPath = GetFullLogPath(_settings.logFilePath);
-                _fileSink = new FileSink(
-                    fullLogPath,
-                    _templateEngine,
-                    _settings.enableLogRotation,
-                    _settings.maxFileSizeMB,
-                    _settings.retentionCount
-                );
+                // Check if platform supports file I/O
+                if (!_platformCapabilities.HasWritablePersistentDataPath)
+                {
+                    Debug.LogWarning($"[LogSmith] File sink is not supported on {_platformCapabilities.PlatformName}. " +
+                                   "File logging will be disabled. Supported platforms: Windows, macOS, Linux, iOS, Android, PlayStation, Xbox.");
+                }
+                else
+                {
+                    var fullLogPath = GetFullLogPath(_settings.logFilePath);
+                    _fileSink = new FileSink(
+                        fullLogPath,
+                        _templateEngine,
+                        _settings.enableLogRotation,
+                        _settings.maxFileSizeMB,
+                        _settings.retentionCount
+                    );
 
-                // Set initial format mode
-                _fileSink.CurrentFormat = _settings.defaultFormatMode == MessageFormatMode.Text
-                    ? MessageFormat.Text
-                    : MessageFormat.Json;
+                    // Set initial format mode
+                    _fileSink.CurrentFormat = _settings.defaultFormatMode == MessageFormatMode.Text
+                        ? MessageFormat.Text
+                        : MessageFormat.Json;
 
-                _router.RegisterSink(_fileSink);
+                    _router.RegisterSink(_fileSink);
+                }
             }
 
             // Set global minimum log level
@@ -88,7 +101,10 @@ namespace IrsikSoftware.LogSmith.Core
             // Enable live reload if configured
             _liveReloadEnabled = _settings.enableLiveReload;
 
-            Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {_settings.enableFileSink}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
+            var fileStatus = _settings.enableFileSink
+                ? (_fileSink != null ? "Enabled" : $"Disabled (unsupported on {_platformCapabilities.PlatformName})")
+                : "Disabled";
+            Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {fileStatus}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
         }
 
         /// <summary>
