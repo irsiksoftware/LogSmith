@@ -162,17 +162,11 @@ namespace IrsikSoftware.LogSmith.Tests
         }
 
         [Test]
-        public void Format_EmptyTemplate_ReturnsEmptyString()
+        public void SetCategoryTemplate_EmptyString_ThrowsArgumentNullException()
         {
-            // Arrange
-            _engine.SetCategoryTemplate("Test", "");
-            var message = CreateTestMessage();
-
-            // Act
-            var result = _engine.Format(message, MessageFormat.Text);
-
-            // Assert
-            Assert.AreEqual(string.Empty, result);
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() =>
+                _engine.SetCategoryTemplate("Test", ""));
         }
 
         [Test]
