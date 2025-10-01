@@ -301,6 +301,11 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
                 }
             }
 
+            public void Flush()
+            {
+                // No-op for test sink
+            }
+
             public void Dispose()
             {
                 lock (_lock)

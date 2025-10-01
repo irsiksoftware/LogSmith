@@ -34,13 +34,13 @@ namespace IrsikSoftware.LogSmith.Tests.Editor
             {
                 categoryName = "TestCategory",
                 color = Color.red,
-                minimumLevel = LogLevel.Warning,
+                minimumLevel = LogLevel.Warn,
                 enabled = true
             };
 
             Assert.AreEqual("TestCategory", category.categoryName);
             Assert.AreEqual(Color.red, category.color);
-            Assert.AreEqual(LogLevel.Warning, category.minimumLevel);
+            Assert.AreEqual(LogLevel.Warn, category.minimumLevel);
             Assert.IsTrue(category.enabled);
         }
 
