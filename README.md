@@ -11,6 +11,7 @@ LogSmith is a clean-room Unity logging solution built from scratch, leveraging U
 3. **Runtime-Managed Categories** - Add/remove/rename categories from UI with per-category minimum levels
 4. **Message Templating** - Default + per-category template overrides with text and JSON outputs
 5. **100% Test Coverage** - EditMode + PlayMode tests with CI gates across Unity versions
+   - **⚠️ TEMPORARY:** CI automation gates are currently being configured by the director. Until active, **all Claudes must run tests locally** before committing code. This does not block development.
 6. **Asset Store Ready** - UPM + .unitypackage packaging with samples and comprehensive docs
 7. **Wide Compatibility** - Develop on 6000.2 LTS; minimum 2022.3 LTS; platform-aware features
 8. **Future-Proof Architecture** - Clear adapter boundary allows backend swapping if Unity deprecates `com.unity.logging`
@@ -89,6 +90,7 @@ Issues should be completed in this dependency-based sequence:
 - **Runtime Management**: Categories via editor window with per-category controls
 - **Message Templates**: Configurable tokens with JSON output support
 - **Test Coverage**: 100% enforced in CI across EditMode + PlayMode
+  - **⚠️ TEMPORARY:** Until CI automation is active, run tests locally before committing
 - **Platform Awareness**: WebGL/Switch file sink warnings; graceful feature degradation
 - **Asset Store**: UPM + .unitypackage with demo scenes and comprehensive samples
 
@@ -269,7 +271,7 @@ The only exception is the initial README update marking an issue as "In Progress
 
 1. All features must be tracked via GitHub issues
 2. 100% test coverage is mandatory
-3. CI must pass on all supported Unity versions
+3. **⚠️ TEMPORARY:** CI automation is being configured by the director. Until active, **run tests locally** before committing. CI gates do not block development.
 4. Platform compatibility must be validated
 5. Documentation must accompany all public APIs
 
