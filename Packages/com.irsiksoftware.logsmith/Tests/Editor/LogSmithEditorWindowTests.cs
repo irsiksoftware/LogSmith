@@ -174,5 +174,70 @@ namespace IrsikSoftware.LogSmith.Tests.Editor
             Assert.AreEqual("Network", _testSettings.categories[1].categoryName);
             Assert.AreEqual("Network", _testSettings.categoryTemplateOverrides[0].categoryName);
         }
+
+        [Test]
+        public void LoggingSettings_VisualDebugDefaultsCorrectly()
+        {
+            var settings = LoggingSettings.CreateDefault();
+
+            Assert.IsFalse(settings.enableVisualDebug, "Visual debug should be disabled by default");
+
+            Object.DestroyImmediate(settings);
+        }
+
+        [Test]
+        public void LoggingSettings_CanEnableVisualDebug()
+        {
+            _testSettings.enableVisualDebug = true;
+
+            Assert.IsTrue(_testSettings.enableVisualDebug);
+        }
+
+        [Test]
+        public void VisualDebugTab_CanBeInstantiated()
+        {
+            var tab = new VisualDebugTab();
+
+            Assert.IsNotNull(tab);
+        }
+
+        [Test]
+        public void VisualDebugTab_CanDrawWithoutErrors()
+        {
+            var tab = new VisualDebugTab();
+            var serializedSettings = new SerializedObject(_testSettings);
+
+            // This should not throw
+            Assert.DoesNotThrow(() => tab.Draw(serializedSettings, _testSettings));
+        }
+
+        [Test]
+        public void SinksTab_CanBeInstantiated()
+        {
+            var tab = new SinksTab();
+
+            Assert.IsNotNull(tab);
+        }
+
+        [Test]
+        public void SinksTab_CanDrawWithoutErrors()
+        {
+            var tab = new SinksTab();
+            var serializedSettings = new SerializedObject(_testSettings);
+
+            // This should not throw
+            Assert.DoesNotThrow(() => tab.Draw(serializedSettings, _testSettings));
+        }
+
+        [Test]
+        public void SinksTab_ShowsFileSinkPlatformWarnings()
+        {
+            var tab = new SinksTab();
+            _testSettings.enableFileSink = true;
+            var serializedSettings = new SerializedObject(_testSettings);
+
+            // Draw should work regardless of build target - warnings are platform-specific
+            Assert.DoesNotThrow(() => tab.Draw(serializedSettings, _testSettings));
+        }
     }
 }

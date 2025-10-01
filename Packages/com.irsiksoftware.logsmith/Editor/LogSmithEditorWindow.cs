@@ -13,7 +13,8 @@ namespace IrsikSoftware.LogSmith.Editor
         {
             Categories,
             Sinks,
-            Templates
+            Templates,
+            VisualDebug
         }
 
         private Tab _currentTab = Tab.Categories;
@@ -25,6 +26,7 @@ namespace IrsikSoftware.LogSmith.Editor
         private CategoriesTab _categoriesTab;
         private SinksTab _sinksTab;
         private TemplatesTab _templatesTab;
+        private VisualDebugTab _visualDebugTab;
 
         [MenuItem("Window/LogSmith/Settings", priority = 2000)]
         public static void ShowWindow()
@@ -47,6 +49,7 @@ namespace IrsikSoftware.LogSmith.Editor
             _categoriesTab = new CategoriesTab();
             _sinksTab = new SinksTab();
             _templatesTab = new TemplatesTab();
+            _visualDebugTab = new VisualDebugTab();
         }
 
         private void OnGUI()
@@ -86,6 +89,8 @@ namespace IrsikSoftware.LogSmith.Editor
                 _currentTab = Tab.Sinks;
             if (GUILayout.Toggle(_currentTab == Tab.Templates, "Templates", EditorStyles.toolbarButton))
                 _currentTab = Tab.Templates;
+            if (GUILayout.Toggle(_currentTab == Tab.VisualDebug, "Visual Debug", EditorStyles.toolbarButton))
+                _currentTab = Tab.VisualDebug;
 
             GUILayout.FlexibleSpace();
 
@@ -109,6 +114,9 @@ namespace IrsikSoftware.LogSmith.Editor
                     break;
                 case Tab.Templates:
                     _templatesTab.Draw(_serializedSettings, _settings);
+                    break;
+                case Tab.VisualDebug:
+                    _visualDebugTab.Draw(_serializedSettings, _settings);
                     break;
             }
         }
