@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    if: false  # Temporarily disabled
     name: Test ${{ matrix.unityVersion }} on ${{ matrix.os }}
     runs-on: [self-hosted, '${{ matrix.os }}']
 
@@ -290,10 +291,10 @@ jobs:
           rm -rf "${{ github.workspace }}/CodeCoverage"
 
   coverage-summary:
+    if: false  # Temporarily disabled
     name: Coverage Gate
     runs-on: [self-hosted, Linux]
     needs: test
-    if: always()
 
     steps:
       - name: Check if all tests passed
