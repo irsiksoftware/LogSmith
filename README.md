@@ -4,6 +4,85 @@
 
 LogSmith is a clean-room Unity logging solution built from scratch, leveraging Unity's native logging system (`com.unity.logging`) with advanced features for professional game development. Designed for Unity 6000.2 with broad compatibility back to Unity 2022.3 LTS.
 
+## Quickstart (Under 5 Minutes)
+
+### Option 1: Basic Usage (No DI)
+
+```csharp
+using IrsikSoftware.LogSmith;
+
+public class GameManager : MonoBehaviour
+{
+    private void Start()
+    {
+        // Get a logger for this category
+        var log = LogSmith.GetLogger("Gameplay");
+
+        // Log at different levels
+        log.Info("Game starting");
+        log.Warn("Low memory detected");
+        log.Error("Failed to load level");
+    }
+}
+```
+
+### Option 2: With VContainer
+
+```csharp
+using IrsikSoftware.LogSmith;
+using VContainer;
+using VContainer.Unity;
+
+public class GameLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        // Register LogSmith (automatic)
+        builder.RegisterLogSmith();
+
+        // Your other registrations...
+        builder.RegisterEntryPoint<GameManager>();
+    }
+}
+
+public class GameManager : IStartable
+{
+    private readonly ILog _log;
+
+    // Constructor injection
+    public GameManager(ILog log)
+    {
+        _log = log;
+    }
+
+    public void Start()
+    {
+        _log.Info("Game manager started");
+    }
+}
+```
+
+### Configuration
+
+1. **Create Settings**: Right-click in Project → Create → LogSmith → Logging Settings
+2. **Open Editor**: Window → LogSmith → Settings
+3. **Configure**:
+   - **Categories Tab**: Add/edit categories, set minimum levels, assign colors
+   - **Sinks Tab**: Enable Console/File sinks, configure paths and formats
+   - **Templates Tab**: Customize message formats with live preview
+
+### In-Game Debug Overlay
+
+Press **F1** in Play mode to toggle the debug overlay (filters by level, category, search text).
+
+### See Full Examples
+
+Check `Packages/com.irsiksoftware.logsmith/Samples~/` for:
+- **BasicUsage**: Simple logging without DI
+- **VContainerIntegration**: Full DI setup
+- **CustomTemplates**: Message format customization
+- **CustomSinks**: Extending with HTTP, database, or cloud sinks
+
 ## Key Goals for LogSmith v1.0
 
 1. **Native Unity Logging Backend** - Console + file sinks out of the box; extensible via public sink interface
