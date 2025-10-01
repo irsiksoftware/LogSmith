@@ -23,6 +23,11 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Per-category minimum level overrides")]
         public List<CategoryMinLevelOverride> categoryMinLevelOverrides = new List<CategoryMinLevelOverride>();
 
+        [Header("Category Definitions")]
+        [Tooltip("All registered categories with metadata (color, enabled state, minimum level)")]
+        public List<CategoryDefinition> categories = new List<CategoryDefinition>();
+
+        [Header("Sink Settings")]
         [Tooltip("Enable console output via ConsoleSink")]
         public bool enableConsoleSink = true;
 
@@ -49,6 +54,9 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Default text template for message formatting")]
         [TextArea(3, 5)]
         public string defaultTextTemplate = "{timestamp} [{level}] {category}: {message}";
+
+        [Tooltip("Per-category template overrides")]
+        public List<CategoryTemplateOverride> categoryTemplateOverrides = new List<CategoryTemplateOverride>();
 
         [Header("Performance")]
         [Tooltip("Buffer size for file writes (0 = unbuffered)")]
@@ -129,5 +137,41 @@ namespace IrsikSoftware.LogSmith
 
         [Tooltip("Minimum log level for this category")]
         public LogLevel minimumLevel = LogLevel.Info;
+    }
+
+    /// <summary>
+    /// Category definition with full metadata for Editor UI.
+    /// </summary>
+    [Serializable]
+    public class CategoryDefinition
+    {
+        [Tooltip("Category name")]
+        public string categoryName;
+
+        [Tooltip("Display color for this category")]
+        public Color color = Color.white;
+
+        [Tooltip("Minimum log level for this category")]
+        public LogLevel minimumLevel = LogLevel.Debug;
+
+        [Tooltip("Whether this category is enabled")]
+        public bool enabled = true;
+    }
+
+    /// <summary>
+    /// Per-category message template override.
+    /// </summary>
+    [Serializable]
+    public class CategoryTemplateOverride
+    {
+        [Tooltip("Category name to apply the template to")]
+        public string categoryName;
+
+        [Tooltip("Custom template for this category")]
+        [TextArea(2, 4)]
+        public string template;
+
+        [Tooltip("Whether to use JSON format for this category")]
+        public bool useJsonFormat;
     }
 }
