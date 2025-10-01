@@ -17,6 +17,7 @@ namespace IrsikSoftware.LogSmith.Core
 
         private ConsoleSink _consoleSink;
         private FileSink _fileSink;
+        private DebugOverlayController _debugOverlay;
         private bool _disposed;
         private bool _liveReloadEnabled;
 
@@ -101,10 +102,17 @@ namespace IrsikSoftware.LogSmith.Core
             // Enable live reload if configured
             _liveReloadEnabled = _settings.enableLiveReload;
 
+            // Initialize debug overlay if enabled
+            if (_settings.enableDebugOverlay)
+            {
+                InitializeDebugOverlay();
+            }
+
             var fileStatus = _settings.enableFileSink
                 ? (_fileSink != null ? "Enabled" : $"Disabled (unsupported on {_platformCapabilities.PlatformName})")
                 : "Disabled";
-            Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {fileStatus}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
+            var overlayStatus = _settings.enableDebugOverlay ? "Enabled (F1 to toggle)" : "Disabled";
+            Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {fileStatus}, Overlay: {overlayStatus}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
         }
 
         /// <summary>
@@ -174,6 +182,17 @@ namespace IrsikSoftware.LogSmith.Core
         }
 
         /// <summary>
+        /// Initializes the debug overlay for in-game log viewing.
+        /// </summary>
+        private void InitializeDebugOverlay()
+        {
+            var overlayObject = new GameObject("[LogSmith] DebugOverlay");
+            _debugOverlay = overlayObject.AddComponent<DebugOverlayController>();
+            _debugOverlay.Initialize(_router);
+            Debug.Log("[LogSmith] Debug Overlay initialized - Press F1 to toggle");
+        }
+
+        /// <summary>
         /// Converts a relative log file path to an absolute path using Application.persistentDataPath.
         /// </summary>
         private string GetFullLogPath(string relativePath)
@@ -220,6 +239,12 @@ namespace IrsikSoftware.LogSmith.Core
                 _router.UnregisterSink(_fileSink);
                 _fileSink.Dispose();
                 _fileSink = null;
+            }
+
+            if (_debugOverlay != null)
+            {
+                UnityEngine.Object.Destroy(_debugOverlay.gameObject);
+                _debugOverlay = null;
             }
 
             Debug.Log("[LogSmith] UnityLoggingBootstrap disposed");
