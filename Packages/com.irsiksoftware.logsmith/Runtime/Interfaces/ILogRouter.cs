@@ -99,6 +99,11 @@ namespace IrsikSoftware.LogSmith
         public string CallerMemberName;
 
         /// <summary>
+        /// Line number where the log was called from (optional).
+        /// </summary>
+        public int CallerLineNumber;
+
+        /// <summary>
         /// Additional context key-value pairs (optional).
         /// </summary>
         public System.Collections.Generic.Dictionary<string, object> Context;
