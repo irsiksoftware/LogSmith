@@ -69,6 +69,10 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Maximum number of log entries in overlay buffer")]
         public int overlayMaxLogCount = 500;
 
+        [Header("Visual Debug Rendering")]
+        [Tooltip("Enable visual debug shape rendering (lines, quads) using render pipeline adapters")]
+        public bool enableVisualDebug = false;
+
         [Header("Live Reload")]
         [Tooltip("Enable automatic reload of settings changes at runtime")]
         public bool enableLiveReload = true;
@@ -91,6 +95,7 @@ namespace IrsikSoftware.LogSmith
             settings.fileBufferSize = 4096;
             settings.enableDebugOverlay = false;
             settings.overlayMaxLogCount = 500;
+            settings.enableVisualDebug = false;
             settings.enableLiveReload = true;
             return settings;
         }

@@ -2,7 +2,8 @@
     "name": "IrsikSoftware.LogSmith.URP",
     "rootNamespace": "IrsikSoftware.LogSmith.URP",
     "references": [
-        "IrsikSoftware.LogSmith"
+        "IrsikSoftware.LogSmith",
+        "Unity.RenderPipelines.Universal.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
