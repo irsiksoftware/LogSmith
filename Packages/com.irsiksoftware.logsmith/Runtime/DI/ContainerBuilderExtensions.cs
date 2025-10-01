@@ -20,8 +20,8 @@ namespace IrsikSoftware.LogSmith.DI
             // Use default settings if none provided
             var config = settings ?? LoggingSettings.CreateDefault();
 
-            // Initialize Unity backend adapter
-            Adapters.NativeUnityLoggerAdapter.Initialize();
+            // Register settings instance
+            builder.RegisterInstance(config);
 
             // Register core services as singletons
             builder.Register<ILogRouter, LogRouter>(Lifetime.Singleton);
@@ -29,19 +29,8 @@ namespace IrsikSoftware.LogSmith.DI
             builder.Register<IMessageTemplateEngine, MessageTemplateEngine>(Lifetime.Singleton);
             builder.Register<ILogConfigProvider, LogConfigProvider>(Lifetime.Singleton);
 
-            // Register sinks based on settings
-            if (config.enableConsoleSink)
-            {
-                builder.Register<ConsoleSink>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            }
-
-            if (config.enableFileSink)
-            {
-                builder.Register<FileSink>(Lifetime.Singleton)
-                    .WithParameter("filePath", config.logFilePath)
-                    .AsSelf()
-                    .AsImplementedInterfaces();
-            }
+            // Register UnityLoggingBootstrap to handle initialization
+            builder.Register<UnityLoggingBootstrap>(Lifetime.Singleton);
 
             // Register ILog factory
             builder.Register<ILog>(container =>
@@ -50,27 +39,15 @@ namespace IrsikSoftware.LogSmith.DI
                 return new LogSmithLogger(router, "Default");
             }, Lifetime.Singleton);
 
-            // Apply settings after container is built
+            // Apply settings after container is built using UnityLoggingBootstrap
             builder.RegisterBuildCallback(container =>
             {
-                var router = container.Resolve<ILogRouter>();
+                // UnityLoggingBootstrap will be created here and initialize the system
+                var bootstrap = container.Resolve<UnityLoggingBootstrap>();
+
+                // Category registry setup
                 var categoryRegistry = container.Resolve<ICategoryRegistry>();
-
-                // Set minimum log level
                 categoryRegistry.SetMinimumLevel("Default", config.minimumLogLevel);
-
-                // Register sinks with router
-                if (config.enableConsoleSink)
-                {
-                    var consoleSink = container.Resolve<ConsoleSink>();
-                    router.RegisterSink(consoleSink);
-                }
-
-                if (config.enableFileSink)
-                {
-                    var fileSink = container.Resolve<FileSink>();
-                    router.RegisterSink(fileSink);
-                }
             });
 
             return builder;

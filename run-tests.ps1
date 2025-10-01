@@ -8,37 +8,83 @@ then generates both CSV and HTML reports with test results.
 #>
 
 param(
-    [string]$UnityVersion = "6000.2.5f1"
+    [string]$UnityVersion = "6000.2.5f1",
+    [string]$IssueNumber = ""
 )
 
 # Set strict mode
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+# Define project path early
+$projectPath = $PSScriptRoot
+
 # Force close any running Unity instances
 Write-Host "Closing any running Unity instances..." -ForegroundColor Cyan
-$unityProcesses = Get-Process -Name "Unity" -ErrorAction SilentlyContinue
-if ($unityProcesses) {
-    $unityProcesses | ForEach-Object {
-        Write-Host "  Killing Unity process (PID: $($_.Id))..." -ForegroundColor Yellow
-        Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
+
+# Look for Unity processes with various names
+$processNames = @("Unity", "Unity.exe", "UnityHelper")
+$foundProcesses = $false
+
+foreach ($processName in $processNames) {
+    $unityProcesses = Get-Process -Name $processName -ErrorAction SilentlyContinue
+    if ($unityProcesses) {
+        $foundProcesses = $true
+        $unityProcesses | ForEach-Object {
+            Write-Host "  Killing $processName process (PID: $($_.Id))..." -ForegroundColor Yellow
+            Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
+        }
     }
-    # Wait a moment for processes to fully terminate
-    Start-Sleep -Seconds 2
+}
+
+if ($foundProcesses) {
+    # Wait longer for processes to fully terminate and release file locks
+    Write-Host "  Waiting for processes to terminate..." -ForegroundColor Yellow
+    Start-Sleep -Seconds 5
+
+    # Verify all Unity processes are gone
+    $remainingProcesses = Get-Process | Where-Object { $_.Name -like "*Unity*" }
+    if ($remainingProcesses) {
+        Write-Warning "Some Unity processes may still be running:"
+        $remainingProcesses | ForEach-Object { Write-Warning "  $($_.Name) (PID: $($_.Id))" }
+        Start-Sleep -Seconds 3
+    }
+
     Write-Host "Unity processes closed." -ForegroundColor Green
 } else {
     Write-Host "No running Unity instances found." -ForegroundColor Gray
 }
 
+# Remove any Unity lock files for this project
+Write-Host "Cleaning Unity lock files..." -ForegroundColor Cyan
+
+$tempPath = Join-Path $projectPath "Temp"
+if (Test-Path $tempPath) {
+    Write-Host "  Removing Temp folder..." -ForegroundColor Yellow
+    Remove-Item -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+# Also remove lock file from Library if it exists
+$libraryPath = Join-Path $projectPath "Library"
+$lockFile = Join-Path $libraryPath "UnityLockfile"
+if (Test-Path $lockFile) {
+    Write-Host "  Removing Unity lock file..." -ForegroundColor Yellow
+    Remove-Item -Path $lockFile -Force -ErrorAction SilentlyContinue
+}
+
+Write-Host "Unity lock files cleaned." -ForegroundColor Green
+
 # Create timestamp for output files
 $timestamp = Get-Date -Format "MM-dd-yyyy-HH-mm-ss"
 
+# Create issue prefix if issue number is provided
+$issuePrefix = if ($IssueNumber) { "GH$IssueNumber-" } else { "" }
+
 # Define paths
-$projectPath = $PSScriptRoot
 $unityPath = "C:\Program Files\Unity\Hub\Editor\$UnityVersion\Editor\Unity.exe"
 $outputDir = Join-Path $projectPath "TestOutputs"
-$csvOutputPath = Join-Path $outputDir "TestResults-for-claude-$timestamp.csv"
-$htmlOutputPath = Join-Path $outputDir "Test-Results-$timestamp.html"
+$csvOutputPath = Join-Path $outputDir "TestResults-for-claude-$issuePrefix$timestamp.csv"
+$htmlOutputPath = Join-Path $outputDir "Test-Results-$issuePrefix$timestamp.html"
 $tempResultsDir = Join-Path $projectPath "TempTestResults"
 
 # Verify Unity installation
@@ -72,6 +118,22 @@ $editModeLog = Join-Path $tempResultsDir "EditMode-log.txt"
     -testPlatform EditMode `
     -testResults $editModeResults `
     -logFile $editModeLog
+
+# Wait for Unity to fully close and release locks
+Write-Host "Waiting for Unity to close..." -ForegroundColor Yellow
+Start-Sleep -Seconds 3
+
+# Ensure no Unity processes are running
+$remainingUnity = Get-Process -Name "Unity" -ErrorAction SilentlyContinue
+if ($remainingUnity) {
+    Write-Host "  Waiting for remaining Unity processes to close..." -ForegroundColor Yellow
+    Start-Sleep -Seconds 5
+}
+
+# Clean lock files again before next test run
+Remove-Item -Path (Join-Path $projectPath "Temp") -Recurse -Force -ErrorAction SilentlyContinue
+$lockFile = Join-Path (Join-Path $projectPath "Library") "UnityLockfile"
+Remove-Item -Path $lockFile -Force -ErrorAction SilentlyContinue
 
 # Run PlayMode tests
 Write-Host "`nRunning PlayMode tests..." -ForegroundColor Cyan
@@ -230,35 +292,32 @@ $htmlContent = @"
             font-size: 32px;
             font-weight: bold;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .test-results {
             margin-top: 20px;
-        }
-        th {
-            background-color: #333;
-            color: white;
-            padding: 12px;
             text-align: left;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
         }
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ddd;
+        .test-item {
+            margin-bottom: 40px;
         }
-        tr.passed {
-            background-color: #E8F5E9;
+        .field-label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
         }
-        tr.failed {
-            background-color: #FFEBEE;
+        .field-value {
+            font-size: 14px;
+            color: #333;
+            margin: 0 0 10px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: pre-wrap;
         }
-        tr.skipped {
-            background-color: #FFF3E0;
-        }
-        tr:hover {
-            opacity: 0.8;
+        .field-value.message {
+            font-family: monospace;
+            font-size: 12px;
+            color: #d32f2f;
         }
         .result-badge {
             display: inline-block;
@@ -279,11 +338,6 @@ $htmlContent = @"
         .result-badge.skipped {
             background-color: #FF9800;
             color: white;
-        }
-        .message {
-            font-size: 12px;
-            color: #666;
-            font-family: monospace;
         }
         .footer {
             margin-top: 30px;
@@ -319,41 +373,49 @@ $htmlContent = @"
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Mode</th>
-                    <th>Test Suite</th>
-                    <th>Test Name</th>
-                    <th>Result</th>
-                    <th>Duration (s)</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="test-results">
 "@
 
-# Add table rows
+# Add test items
 foreach ($result in $allResults) {
-    $rowClass = $result.Result.ToLower()
     $badgeClass = $result.Result.ToLower()
     $message = $result.Message -replace '&', '&amp;' -replace '<', '&lt;' -replace '>', '&gt;' -replace '"', '&quot;' -replace "'", '&#39;'
 
     $htmlContent += @"
-                <tr class="$rowClass">
-                    <td>$($result.TestMode)</td>
-                    <td>$($result.TestSuite)</td>
-                    <td>$($result.TestName)</td>
-                    <td><span class="result-badge $badgeClass">$($result.Result)</span></td>
-                    <td>$($result.Duration)</td>
-                    <td class="message">$message</td>
-                </tr>
+            <div class="test-item">
+                <p class="field-label">Mode</p>
+                <p class="field-value">$($result.TestMode)</p>
+
+                <p class="field-label">Test Suite</p>
+                <p class="field-value">$($result.TestSuite)</p>
+
+                <p class="field-label">Test Name</p>
+                <p class="field-value">$($result.TestName)</p>
+
+                <p class="field-label">Result</p>
+                <p class="field-value"><span class="result-badge $badgeClass">$($result.Result)</span></p>
+
+                <p class="field-label">Duration</p>
+                <p class="field-value">$($result.Duration)s</p>
+"@
+
+    # Only add message field if there's a message
+    if ($message) {
+        $htmlContent += @"
+
+                <p class="field-label">Message</p>
+                <p class="field-value message">$message</p>
+"@
+    }
+
+    $htmlContent += @"
+            </div>
+            <br /><br /><br />
 "@
 }
 
 $htmlContent += @"
-            </tbody>
-        </table>
+        </div>
 
         <div class="footer">
             <p>Total execution time: $([math]::Round($totalDuration, 2)) seconds</p>
@@ -432,35 +494,32 @@ $htmlContent = @"
             font-size: 32px;
             font-weight: bold;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .test-results {
             margin-top: 20px;
-        }
-        th {
-            background-color: #333;
-            color: white;
-            padding: 12px;
             text-align: left;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
         }
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ddd;
+        .test-item {
+            margin-bottom: 40px;
         }
-        tr.passed {
-            background-color: #E8F5E9;
+        .field-label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
         }
-        tr.failed {
-            background-color: #FFEBEE;
+        .field-value {
+            font-size: 14px;
+            color: #333;
+            margin: 0 0 10px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: pre-wrap;
         }
-        tr.skipped {
-            background-color: #FFF3E0;
-        }
-        tr:hover {
-            opacity: 0.8;
+        .field-value.message {
+            font-family: monospace;
+            font-size: 12px;
+            color: #d32f2f;
         }
         .result-badge {
             display: inline-block;
@@ -481,11 +540,6 @@ $htmlContent = @"
         .result-badge.skipped {
             background-color: #FF9800;
             color: white;
-        }
-        .message {
-            font-size: 12px;
-            color: #666;
-            font-family: monospace;
         }
         .footer {
             margin-top: 30px;
@@ -521,41 +575,49 @@ $htmlContent = @"
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Mode</th>
-                    <th>Test Suite</th>
-                    <th>Test Name</th>
-                    <th>Result</th>
-                    <th>Duration (s)</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="test-results">
 "@
 
-# Add table rows with proper HTML encoding
+# Add test items
 foreach ($result in $allResults) {
-    $rowClass = $result.Result.ToLower()
     $badgeClass = $result.Result.ToLower()
     $message = $result.Message -replace '&', '&amp;' -replace '<', '&lt;' -replace '>', '&gt;' -replace '"', '&quot;' -replace "'", '&#39;'
 
     $htmlContent += @"
-                <tr class="$rowClass">
-                    <td>$($result.TestMode)</td>
-                    <td>$($result.TestSuite)</td>
-                    <td>$($result.TestName)</td>
-                    <td><span class="result-badge $badgeClass">$($result.Result)</span></td>
-                    <td>$($result.Duration)</td>
-                    <td class="message">$message</td>
-                </tr>
+            <div class="test-item">
+                <p class="field-label">Mode</p>
+                <p class="field-value">$($result.TestMode)</p>
+
+                <p class="field-label">Test Suite</p>
+                <p class="field-value">$($result.TestSuite)</p>
+
+                <p class="field-label">Test Name</p>
+                <p class="field-value">$($result.TestName)</p>
+
+                <p class="field-label">Result</p>
+                <p class="field-value"><span class="result-badge $badgeClass">$($result.Result)</span></p>
+
+                <p class="field-label">Duration</p>
+                <p class="field-value">$($result.Duration)s</p>
+"@
+
+    # Only add message field if there's a message
+    if ($message) {
+        $htmlContent += @"
+
+                <p class="field-label">Message</p>
+                <p class="field-value message">$message</p>
+"@
+    }
+
+    $htmlContent += @"
+            </div>
+            <br /><br /><br />
 "@
 }
 
 $htmlContent += @"
-            </tbody>
-        </table>
+        </div>
 
         <div class="footer">
             <p>Total execution time: $([math]::Round($totalDuration, 2)) seconds</p>

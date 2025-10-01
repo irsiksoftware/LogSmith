@@ -5,7 +5,7 @@ namespace IrsikSoftware.LogSmith.Core
     /// <summary>
     /// Console sink implementation using Unity's native logging backend.
     /// </summary>
-    internal class ConsoleSink : ILogSink
+    public class ConsoleSink : ILogSink
     {
         public string Name => "Console";
 

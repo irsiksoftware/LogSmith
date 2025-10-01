@@ -26,6 +26,21 @@ namespace IrsikSoftware.LogSmith
         /// Subscribes to log message events for custom processing.
         /// </summary>
         IDisposable Subscribe(Action<LogMessage> handler);
+
+        /// <summary>
+        /// Sets the global minimum log level for all categories.
+        /// </summary>
+        void SetGlobalMinimumLevel(LogLevel level);
+
+        /// <summary>
+        /// Sets a minimum log level filter for a specific category.
+        /// </summary>
+        void SetCategoryFilter(string category, LogLevel minimumLevel);
+
+        /// <summary>
+        /// Removes the filter for a specific category.
+        /// </summary>
+        void ClearCategoryFilter(string category);
     }
 
     /// <summary>

@@ -23,6 +23,15 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("File path for log output (relative to Application.persistentDataPath)")]
         public string logFilePath = "Logs/logsmith.log";
 
+        [Tooltip("Enable log file rotation")]
+        public bool enableLogRotation = true;
+
+        [Tooltip("Maximum file size in MB before rotation (0 = no limit)")]
+        public int maxFileSizeMB = 10;
+
+        [Tooltip("Number of archived log files to retain (0 = keep all)")]
+        public int retentionCount = 5;
+
         [Header("Message Formatting")]
         [Tooltip("Default message format mode")]
         public MessageFormatMode defaultFormatMode = MessageFormatMode.Text;
@@ -35,6 +44,10 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Buffer size for file writes (0 = unbuffered)")]
         public int fileBufferSize = 4096;
 
+        [Header("Live Reload")]
+        [Tooltip("Enable automatic reload of settings changes at runtime")]
+        public bool enableLiveReload = true;
+
         /// <summary>
         /// Creates default settings for quick initialization.
         /// </summary>
@@ -45,9 +58,13 @@ namespace IrsikSoftware.LogSmith
             settings.enableConsoleSink = true;
             settings.enableFileSink = false;
             settings.logFilePath = "Logs/logsmith.log";
+            settings.enableLogRotation = true;
+            settings.maxFileSizeMB = 10;
+            settings.retentionCount = 5;
             settings.defaultFormatMode = MessageFormatMode.Text;
             settings.defaultTextTemplate = "{timestamp} [{level}] {category}: {message}";
             settings.fileBufferSize = 4096;
+            settings.enableLiveReload = true;
             return settings;
         }
     }
