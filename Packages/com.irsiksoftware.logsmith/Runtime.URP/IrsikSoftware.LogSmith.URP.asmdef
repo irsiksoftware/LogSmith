@@ -1,0 +1,22 @@
+{
+    "name": "IrsikSoftware.LogSmith.URP",
+    "rootNamespace": "IrsikSoftware.LogSmith.URP",
+    "references": [
+        "IrsikSoftware.LogSmith"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "",
+            "define": "LOGSMITH_URP_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,22 @@
+{
+    "name": "IrsikSoftware.LogSmith.HDRP",
+    "rootNamespace": "IrsikSoftware.LogSmith.HDRP",
+    "references": [
+        "IrsikSoftware.LogSmith"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.high-definition",
+            "expression": "",
+            "define": "LOGSMITH_HDRP_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
+}
