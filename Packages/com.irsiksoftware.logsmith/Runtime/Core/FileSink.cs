@@ -153,13 +153,22 @@ namespace IrsikSoftware.LogSmith.Core
                 _writer?.Dispose();
                 _writer = null;
 
-                // Generate archived file name with timestamp
-                var timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+                // Generate archived file name with timestamp (including milliseconds to avoid collisions)
+                var timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff");
                 var directory = Path.GetDirectoryName(_filePath);
                 var fileName = Path.GetFileNameWithoutExtension(_filePath);
                 var extension = Path.GetExtension(_filePath);
                 var archivedFileName = $"{fileName}_{timestamp}{extension}";
                 var archivedFilePath = Path.Combine(directory, archivedFileName);
+
+                // If archived file already exists (unlikely with milliseconds, but handle it)
+                int counter = 1;
+                while (File.Exists(archivedFilePath))
+                {
+                    archivedFileName = $"{fileName}_{timestamp}_{counter}{extension}";
+                    archivedFilePath = Path.Combine(directory, archivedFileName);
+                    counter++;
+                }
 
                 // Move current log to archived file
                 if (File.Exists(_filePath))

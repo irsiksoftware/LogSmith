@@ -223,40 +223,47 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         [Test]
         public void FileSink_RespectsRetentionCount()
         {
-            // Arrange
-            var settings = LoggingSettings.CreateDefault();
-            settings.enableConsoleSink = false;
-            settings.enableFileSink = true;
-            settings.logFilePath = Path.Combine(_testDirectory, "retention.log");
-            settings.enableLogRotation = true;
-            settings.maxFileSizeMB = 0; // Very small to trigger rotation
-            settings.retentionCount = 2; // Keep only 2 archived files
+            // Arrange - Create 5 pre-existing archived files with different timestamps
+            var logPath = Path.Combine(_testDirectory, "retention.log");
+            var directory = Path.GetDirectoryName(logPath);
+            var baseFileName = Path.GetFileNameWithoutExtension(logPath);
+            var extension = Path.GetExtension(logPath);
 
-            var router = new LogRouter();
-            var fileSink = new FileSink(settings.logFilePath, null, true, 0, 2);
-
-            // Manually create archived files to test retention
-            var directory = Path.GetDirectoryName(settings.logFilePath);
-            var baseFileName = Path.GetFileNameWithoutExtension(settings.logFilePath);
-            var extension = Path.GetExtension(settings.logFilePath);
-
-            // Create mock archived files
+            // Create mock archived files with different LastWriteTime values
+            var now = DateTime.Now;
             for (int i = 0; i < 5; i++)
             {
-                var archivedPath = Path.Combine(directory, $"{baseFileName}_{DateTime.Now.AddMinutes(-i):yyyyMMdd-HHmmss}{extension}");
+                var archivedPath = Path.Combine(directory, $"{baseFileName}_{now.AddMinutes(-i):yyyyMMdd-HHmmss}{extension}");
                 File.WriteAllText(archivedPath, $"Archived content {i}");
-                Thread.Sleep(1100); // Ensure unique timestamps
+                // Set distinct LastWriteTime to ensure ordering
+                File.SetLastWriteTime(archivedPath, now.AddMinutes(-i));
             }
 
+            // Verify 5 files were created
+            var filesBeforeRotation = Directory.GetFiles(directory, $"{baseFileName}_*{extension}");
+            Assert.AreEqual(5, filesBeforeRotation.Length, "Should have 5 archived files before rotation");
+
+            // Create a main log file large enough to trigger rotation
+            File.WriteAllText(logPath, new string('A', 1024)); // 1KB file
+
+            // Act - Create FileSink with retention count of 2 and trigger rotation
+            var fileSink = new FileSink(logPath, null, enableRotation: true, maxFileSizeMB: 0, retentionCount: 2);
             try
             {
-                // Act - Dispose will not cleanup, but we can verify initial state
-                var archivedFiles = Directory.GetFiles(directory, $"{baseFileName}_*{extension}");
+                // Write a message to trigger rotation (maxFileSizeMB=0 means any size triggers rotation)
+                fileSink.Write(new LogMessage
+                {
+                    Level = LogLevel.Info,
+                    Category = "Test",
+                    Message = "Test message",
+                    Timestamp = DateTime.UtcNow
+                });
+                fileSink.Flush();
 
-                // Assert - Should have created 5 files
-                Assert.AreEqual(5, archivedFiles.Length);
-
-                // Note: Actual cleanup happens during rotation, which is tested in other tests
+                // Assert - After rotation with retentionCount=2, only 2 archived files should remain
+                // (plus the newly rotated file = 3 total)
+                var filesAfterRotation = Directory.GetFiles(directory, $"{baseFileName}_*{extension}");
+                Assert.LessOrEqual(filesAfterRotation.Length, 3, "Should have at most 3 archived files after rotation (2 old + 1 new)");
             }
             finally
             {
