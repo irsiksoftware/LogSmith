@@ -62,6 +62,13 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Buffer size for file writes (0 = unbuffered)")]
         public int fileBufferSize = 4096;
 
+        [Header("Debug Overlay")]
+        [Tooltip("Enable in-game debug overlay (toggle with F1)")]
+        public bool enableDebugOverlay = false;
+
+        [Tooltip("Maximum number of log entries in overlay buffer")]
+        public int overlayMaxLogCount = 500;
+
         [Header("Live Reload")]
         [Tooltip("Enable automatic reload of settings changes at runtime")]
         public bool enableLiveReload = true;
@@ -82,6 +89,8 @@ namespace IrsikSoftware.LogSmith
             settings.defaultFormatMode = MessageFormatMode.Text;
             settings.defaultTextTemplate = "{timestamp} [{level}] {category}: {message}";
             settings.fileBufferSize = 4096;
+            settings.enableDebugOverlay = false;
+            settings.overlayMaxLogCount = 500;
             settings.enableLiveReload = true;
             return settings;
         }
