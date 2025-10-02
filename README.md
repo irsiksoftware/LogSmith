@@ -1,5 +1,7 @@
 # LogSmith
 
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+
 **A production-grade Unity logging package designed for the Unity Asset Store**
 
 LogSmith is a clean-room Unity logging solution built from scratch, leveraging Unity's native logging system (`com.unity.logging`) with advanced features for professional game development. Designed for Unity 6000.2 with broad compatibility back to Unity 2022.3 LTS.
