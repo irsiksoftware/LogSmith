@@ -105,56 +105,56 @@ Issues should be completed in this dependency-based sequence:
 4. [#44](../../issues/44) VContainer integration & no-DI fallback ✅ **COMPLETED**
 5. [#3](../../issues/3) CI matrix across Unity versions & platforms ⏸️ **DEFERRED - DO NOT ATTEMPT CLAUDE**
 
-### Phase 2: Core Logging Implementation
-5. [#9](../../issues/9) Unity logging bootstrapper
-6. [#10](../../issues/10) Console & file sink adapters
-7. [#14](../../issues/14) Runtime category registry
-8. [#16](../../issues/16) Message templating engine (text & JSON)
-9. [#15](../../issues/15) Per-category minimum levels
+### Phase 2: Core Logging Implementation ✅ **COMPLETED**
+5. [#9](../../issues/9) Unity logging bootstrapper ✅
+6. [#10](../../issues/10) Console & file sink adapters ✅
+7. [#14](../../issues/14) Runtime category registry ✅
+8. [#16](../../issues/16) Message templating engine (text & JSON) ✅
+9. [#15](../../issues/15) Per-category minimum levels ✅
 
-### Phase 3: Configuration & DI Integration
-10. [#17](../../issues/17) LoggingSettings ScriptableObject & provider
+### Phase 3: Configuration & DI Integration ✅ **COMPLETED**
+10. [#17](../../issues/17) LoggingSettings ScriptableObject & provider ✅
 11. ~~[#12](../../issues/12) VContainer installer & extensions~~ (superseded by #44)
 12. ~~[#13](../../issues/13) No-DI fallback path~~ (superseded by #44)
 
-### Phase 4: Platform & Build Support
-13. [#2](../../issues/2) Platform capability flags & conditional compilation
-14. [#8](../../issues/8) IL2CPP & stripping configuration
-15. [#22](../../issues/22) IL2CPP/AOT validation
+### Phase 4: Platform & Build Support ✅ **COMPLETED**
+13. [#2](../../issues/2) Platform capability flags & conditional compilation ✅
+14. [#8](../../issues/8) IL2CPP & stripping configuration ✅
+15. [#22](../../issues/22) IL2CPP/AOT validation ✅
 
-### Phase 5: UI & User Experience
-16. [#18](../../issues/18) Editor window (categories, sinks, templates)
-17. [#19](../../issues/19) In-game debug overlay
-18. [#11](../../issues/11) Sink extensibility hooks
+### Phase 5: UI & User Experience ✅ **COMPLETED**
+16. [#18](../../issues/18) Editor window (categories, sinks, templates) ✅
+17. [#19](../../issues/19) In-game debug overlay ✅
+18. [#11](../../issues/11) Sink extensibility hooks ✅
 
-### Phase 6: Performance & Quality
-19. [#20](../../issues/20) Thread safety & main-thread dispatch
-20. [#21](../../issues/21) Performance benchmarks & budget
-21. [#23](../../issues/23) Unit tests (core services)
-22. [#24](../../issues/24) Integration tests (sinks)
-23. [#25](../../issues/25) Overlay UI tests
-24. [#26](../../issues/26) CI coverage gate enforcement
+### Phase 6: Performance & Quality ✅ **COMPLETED**
+19. [#20](../../issues/20) Thread safety & main-thread dispatch ✅
+20. [#21](../../issues/21) Performance benchmarks & budget ✅
+21. [#23](../../issues/23) Unit tests (core services) ✅
+22. [#24](../../issues/24) Integration tests (sinks) ✅
+23. [#25](../../issues/25) Overlay UI tests ✅
+24. [#26](../../issues/26) CI coverage gate enforcement ✅
 
-### Phase 7: Documentation & Samples
-25. [#27](../../issues/27) Samples & quickstart guides
-26. [#28](../../issues/28) Comprehensive documentation site
+### Phase 7: Documentation & Samples ✅ **COMPLETED**
+25. [#27](../../issues/27) Samples & quickstart guides ✅
+26. [#28](../../issues/28) Comprehensive documentation site ✅
 
-### Phase 8: Render Pipeline Support
-27. [#33](../../issues/33) RP adapter assemblies
-28. [#34](../../issues/34) Built-in RP adapter
-29. [#35](../../issues/35) URP adapter (ScriptableRendererFeature)
-30. [#36](../../issues/36) HDRP adapter (Custom Pass)
-31. [#37](../../issues/37) Runtime adapter selection
-32. [#38](../../issues/38) Editor pipeline warnings
-33. [#39](../../issues/39) RP-specific sample scenes
-34. [#40](../../issues/40) CI validation across pipelines
-35. [#41](../../issues/41) RP setup documentation
+### Phase 8: Render Pipeline Support ✅ **COMPLETED**
+27. [#33](../../issues/33) RP adapter assemblies ✅
+28. [#34](../../issues/34) Built-in RP adapter ✅
+29. [#35](../../issues/35) URP adapter (ScriptableRendererFeature) ✅
+30. [#36](../../issues/36) HDRP adapter (Custom Pass) ✅
+31. [#37](../../issues/37) Runtime adapter selection ✅
+32. [#38](../../issues/38) Editor pipeline warnings ✅
+33. [#39](../../issues/39) RP-specific sample scenes ✅
+34. [#40](../../issues/40) CI validation across pipelines ✅
+35. [#41](../../issues/41) RP setup documentation ✅
 
-### Phase 9: Release Preparation
-36. [#4](../../issues/4) Asset Store packaging & submission prep
-37. [#29](../../issues/29) Store metadata & compliance
-38. [#5](../../issues/5) Backend swap readiness documentation
-39. [#30](../../issues/30) Semantic versioning & v1.0 release
+### Phase 9: Release Preparation ✅ **COMPLETED**
+36. [#4](../../issues/4) Asset Store packaging & submission prep ✅
+37. [#29](../../issues/29) Store metadata & compliance ✅
+38. [#5](../../issues/5) Backend swap readiness documentation ✅
+39. [#30](../../issues/30) Semantic versioning & v1.0 release ✅
 
 ### Phase 10: Post-Release Extensions
 40. [#31](../../issues/31) Optional sinks pack (HTTP, Sentry, Seq, etc.)
