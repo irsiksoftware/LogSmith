@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Test ${{ matrix.unityVersion }} on ${{ matrix.os }}
-    runs-on: [self-hosted, '${{ matrix.os }}']
+    runs-on: [self-hosted, '${{ matrix.os }}', docker]
 
     strategy:
       fail-fast: false
@@ -291,7 +291,7 @@ jobs:
 
   coverage-summary:
     name: Coverage Gate
-    runs-on: [self-hosted, Linux]
+    runs-on: [self-hosted, Linux, docker]
     needs: test
 
     steps:

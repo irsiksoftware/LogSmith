@@ -10,7 +10,7 @@ jobs:
   rp-validation:
     if: false  # Temporarily disabled until CI infrastructure is ready
     name: RP Test ${{ matrix.unityVersion }} - ${{ matrix.pipeline }}
-    runs-on: [self-hosted, Windows]
+    runs-on: [self-hosted, Windows, docker]
 
     strategy:
       fail-fast: false
@@ -140,7 +140,7 @@ jobs:
   rp-validation-summary:
     if: false  # Temporarily disabled until CI infrastructure is ready
     name: RP Validation Summary
-    runs-on: [self-hosted, Windows]
+    runs-on: [self-hosted, Windows, docker]
     needs: rp-validation
 
     steps:
