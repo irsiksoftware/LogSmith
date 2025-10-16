@@ -1,0 +1,23 @@
+{
+  "name": "IrsikSoftware.LogSmith.Sinks.Tests",
+  "rootNamespace": "IrsikSoftware.LogSmith.Sinks.Tests",
+  "references": [
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "IrsikSoftware.LogSmith",
+    "IrsikSoftware.LogSmith.Sinks"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
