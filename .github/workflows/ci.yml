@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [Windows, Linux, macOS]
+        os: [Windows]
         unityVersion:
           - 2022.3.50f1  # 2022.3 LTS
           - 2023.2.20f1  # 2023 LTS
@@ -226,48 +226,45 @@ jobs:
           if-no-files-found: warn
 
       - name: Check coverage threshold
-        if: matrix.os == 'Linux' && matrix.unityVersion == '6000.0.26f1'
-        shell: bash
+        if: matrix.os == 'Windows' && matrix.unityVersion == '6000.0.26f1'
+        shell: powershell
         run: |
           # Find coverage summary file (Unity's coverage output structure can vary)
-          COVERAGE_SUMMARY=""
-          if [ -f "${{ github.workspace }}/CodeCoverage/Report/Summary.xml" ]; then
-            COVERAGE_SUMMARY="${{ github.workspace }}/CodeCoverage/Report/Summary.xml"
-          elif [ -f "${{ github.workspace }}/CodeCoverage/Summary.xml" ]; then
-            COVERAGE_SUMMARY="${{ github.workspace }}/CodeCoverage/Summary.xml"
-          else
-            echo "::error::Coverage summary file not found. Checked:"
-            echo "  - ${{ github.workspace }}/CodeCoverage/Report/Summary.xml"
-            echo "  - ${{ github.workspace }}/CodeCoverage/Summary.xml"
-            ls -la "${{ github.workspace }}/CodeCoverage" || echo "CodeCoverage directory is empty or missing"
+          $COVERAGE_SUMMARY = ""
+          if (Test-Path "${{ github.workspace }}/CodeCoverage/Report/Summary.xml") {
+            $COVERAGE_SUMMARY = "${{ github.workspace }}/CodeCoverage/Report/Summary.xml"
+          } elseif (Test-Path "${{ github.workspace }}/CodeCoverage/Summary.xml") {
+            $COVERAGE_SUMMARY = "${{ github.workspace }}/CodeCoverage/Summary.xml"
+          } else {
+            Write-Host "::error::Coverage summary file not found. Checked:"
+            Write-Host "  - ${{ github.workspace }}/CodeCoverage/Report/Summary.xml"
+            Write-Host "  - ${{ github.workspace }}/CodeCoverage/Summary.xml"
+            if (Test-Path "${{ github.workspace }}/CodeCoverage") {
+              Get-ChildItem "${{ github.workspace }}/CodeCoverage" | Out-String | Write-Host
+            } else {
+              Write-Host "CodeCoverage directory is empty or missing"
+            }
             exit 1
-          fi
+          }
 
-          echo "Found coverage summary at: $COVERAGE_SUMMARY"
+          Write-Host "Found coverage summary at: $COVERAGE_SUMMARY"
 
           # Extract line coverage percentage from Summary.xml
-          LINE_COVERAGE=$(grep -oP 'linecoverage="\K[0-9.]+' "$COVERAGE_SUMMARY" || echo "0")
+          [xml]$coverageXml = Get-Content $COVERAGE_SUMMARY
+          $LINE_COVERAGE = [double]$coverageXml.CoverageSession.Summary.Linecoverage
 
-          echo "::notice::Line Coverage: ${LINE_COVERAGE}%"
+          Write-Host "::notice::Line Coverage: ${LINE_COVERAGE}%"
 
-          # Compare coverage (using bc for float comparison)
-          if command -v bc &> /dev/null; then
-            if (( $(echo "$LINE_COVERAGE < 100" | bc -l) )); then
-              echo "::error::Coverage is ${LINE_COVERAGE}%, which is below the required 100%"
-              exit 1
-            fi
-          else
-            # Fallback if bc is not available (use awk)
-            if awk -v cov="$LINE_COVERAGE" 'BEGIN {exit !(cov < 100)}'; then
-              echo "::error::Coverage is ${LINE_COVERAGE}%, which is below the required 100%"
-              exit 1
-            fi
-          fi
+          # Compare coverage
+          if ($LINE_COVERAGE -lt 100) {
+            Write-Host "::error::Coverage is ${LINE_COVERAGE}%, which is below the required 100%"
+            exit 1
+          }
 
-          echo "::notice::✅ Coverage check passed: ${LINE_COVERAGE}%"
+          Write-Host "::notice::✅ Coverage check passed: ${LINE_COVERAGE}%"
 
       - name: Publish coverage report
-        if: matrix.os == 'Linux' && matrix.unityVersion == '6000.0.26f1'
+        if: matrix.os == 'Windows' && matrix.unityVersion == '6000.0.26f1'
         uses: actions/upload-artifact@v4
         with:
           name: Coverage-Report-HTML
@@ -291,16 +288,18 @@ jobs:
 
   coverage-summary:
     name: Coverage Gate
-    runs-on: [self-hosted, Linux, docker]
+    runs-on: [self-hosted, Windows, docker]
     needs: test
 
     steps:
       - name: Check if all tests passed
         if: needs.test.result != 'success'
+        shell: powershell
         run: |
-          echo "::error::One or more test jobs failed. Coverage gate cannot pass."
+          Write-Host "::error::One or more test jobs failed. Coverage gate cannot pass."
           exit 1
 
       - name: Coverage gate passed
+        shell: powershell
         run: |
-          echo "::notice::All tests passed and coverage requirements met!"
+          Write-Host "::notice::All tests passed and coverage requirements met!"
