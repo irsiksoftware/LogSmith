@@ -49,10 +49,9 @@ namespace IrsikSoftware.LogSmith.Core
             {
                 try
                 {
-                    // Format message using template engine if needed
-                    // For console, we typically just use the raw message
-                    // but template engine allows consistent formatting across sinks
-                    NativeUnityLoggerAdapter.Write(message.Level, message.Category, message.Message);
+                    // Format message using template engine according to current format
+                    string formattedMessage = _templateEngine.Format(message, _currentFormat);
+                    NativeUnityLoggerAdapter.Write(message.Level, message.Category, formattedMessage);
                 }
                 catch (Exception ex)
                 {

@@ -134,6 +134,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                     });
 
                     bootstrap.Flush();
+                    MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
                     // Assert
                     Assert.AreEqual(1, messageCount);
@@ -161,6 +162,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
 
                     // Warn should pass through
                     router.Route(new LogMessage { Level = LogLevel.Warn, Category = "Test", Message = "Warn", Timestamp = DateTime.UtcNow });
+
+                    MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
                 }
 
                 // Assert
@@ -294,7 +297,11 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                     router.Route(new LogMessage { Level = LogLevel.Info, Category = "Test", Message = "Info", Timestamp = DateTime.UtcNow });
 
                     // Error should pass through
+                    // Expect the error log that will be output to console
+                    UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[Test\] Error.*"));
                     router.Route(new LogMessage { Level = LogLevel.Error, Category = "Test", Message = "Error", Timestamp = DateTime.UtcNow });
+
+                    MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
                 }
 
                 // Assert
@@ -419,6 +426,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             using (router.Subscribe(_ => messageCountBefore++))
             {
                 router.Route(new LogMessage { Level = LogLevel.Info, Category = "Test", Message = "Before", Timestamp = DateTime.UtcNow });
+                MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
             }
 
             // Act - Dispose
@@ -428,6 +436,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             using (router.Subscribe(_ => messageCountAfter++))
             {
                 router.Route(new LogMessage { Level = LogLevel.Info, Category = "Test", Message = "After", Timestamp = DateTime.UtcNow });
+                MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
             }
 
             // Assert
@@ -521,7 +530,10 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
 
                 // Category1 has Error minimum - Info should be blocked
                 router.Route(new LogMessage { Level = LogLevel.Info, Category = "Category1", Message = "Info1", Timestamp = DateTime.UtcNow });
+
                 // Category1 has Error minimum - Error should pass
+                // Expect the error log that will be output to console
+                UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[Category1\] Error1.*"));
                 router.Route(new LogMessage { Level = LogLevel.Error, Category = "Category1", Message = "Error1", Timestamp = DateTime.UtcNow });
 
                 // Category2 has Warn minimum - Debug should be blocked
@@ -531,6 +543,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
 
                 // Unconfigured category uses global Trace minimum - all should pass
                 router.Route(new LogMessage { Level = LogLevel.Trace, Category = "Category3", Message = "Trace3", Timestamp = DateTime.UtcNow });
+
+                MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
                 // Assert
                 Assert.AreEqual(3, messageCount, "Should have 3 messages: Error1, Warn2, Trace3");
@@ -561,6 +575,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                     router.Route(new LogMessage { Level = LogLevel.Trace, Category = "TestCategory", Message = "Trace1", Timestamp = DateTime.UtcNow });
                     // Debug should pass
                     router.Route(new LogMessage { Level = LogLevel.Debug, Category = "TestCategory", Message = "Debug1", Timestamp = DateTime.UtcNow });
+                    MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
                 }
                 Assert.AreEqual(1, messageCount1, "Initially only Debug should pass");
 
@@ -574,8 +589,13 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                 {
                     // Debug should now be blocked (min is Error)
                     router.Route(new LogMessage { Level = LogLevel.Debug, Category = "TestCategory", Message = "Debug2", Timestamp = DateTime.UtcNow });
+
                     // Error should pass
+                    // Expect the error log that will be output to console
+                    UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[TestCategory\] Error2.*"));
                     router.Route(new LogMessage { Level = LogLevel.Error, Category = "TestCategory", Message = "Error2", Timestamp = DateTime.UtcNow });
+
+                    MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
                 }
 
                 // Assert
@@ -608,6 +628,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                     {
                         router.Route(new LogMessage { Level = LogLevel.Debug, Category = "ValidCategory", Message = "Debug", Timestamp = DateTime.UtcNow });
                         router.Route(new LogMessage { Level = LogLevel.Warn, Category = "ValidCategory", Message = "Warn", Timestamp = DateTime.UtcNow });
+                        MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
                     }
                     Assert.AreEqual(1, messageCount, "Only Warn should pass for ValidCategory");
                 }
