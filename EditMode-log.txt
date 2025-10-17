@@ -1,0 +1,39 @@
+Unity Editor version:    2022.3.50f1 (c3db7f8bf9b1)
+Branch:                  2022.3/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 26.0.1 (Build 25A362)
+Darwin version:          25.0.0
+Architecture:            x86_64
+Running under Rosetta:   NO
+Available memory:        32768 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-ender" at "2025-10-17T15:09:21.574937Z"
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.15.5'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-ender"
+[Licensing::IpcConnector] License Client channel disconnected successfully.
+[Licensing::IpcConnector] Connection attempt to the License Client on channel: "LicenseClient-ender-2022.3.50" failed because channel doesn't exist; code: "0x80000002"
+Launching external process: /Applications/Unity/Hub/Editor/2022.3.50f1/Unity.app/Contents/Frameworks/UnityLicensingClient.app/Contents/MacOS/Unity.Licensing.Client
+[Licensing::Module] Successfully launched the LicensingClient (PId: 10575)
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-ender-2022.3.50" at "2025-10-17T15:09:22.986451Z"
+[Licensing::Client] Error: Code 1 while verifying Licensing Client signature (process Id: 10575, path: "/Applications/Unity/Hub/Editor/2022.3.50f1/Unity.app/Contents/Frameworks/UnityLicensingClient.app/Contents/MacOS/Unity.Licensing.Client")
+[Licensing::Module] Error: LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.15.5+a2f8afb
+  Session Id:              a02b7977c1f546f7ac6b2e0d31241498
+  Correlation Id:          547520b8e972c05bd2402e58a024d5a6
+  External correlation Id: 2007358852040749774
+  Machine Id:              JlBJNOM+sIL+PSESIdM5BhmSjw4=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ender-2022.3.50" (connect: 0.82s, validation: 0.09s, handshake: 0.02s)
+[Licensing::IpcConnector] Successfully connected to the License Notification on channel: "LicenseClient-ender-2022.3.50-notifications" at "2025-10-17T15:09:23.09095Z"
+[Licensing::Module] Connected to LicensingClient (PId: 10575, launch time: 0.00, total connection time: 0.93s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Error: Code 500 while processing request (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
+[Licensing::Client] Error: Code 500 while updating license in client (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Module] Error: 'com.unity.editor.headless' was not found.
+Pro License: NO
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+No valid Unity Editor license found. Please activate your license.
