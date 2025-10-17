@@ -41,9 +41,10 @@ Add this line to your `Packages/manifest.json` dependencies:
 ### Optional Dependencies
 
 **VContainer** (for dependency injection features):
-- If you want to use the DI features, install VContainer via git URL:
-  ```
-  https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0
+- **Easy way**: Import the "VContainer Integration" sample from LogSmith's Samples tab - it will automatically install VContainer for you
+- **Manual way**: Add VContainer to your `manifest.json`:
+  ```json
+  "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0"
   ```
 - LogSmith works perfectly without VContainer using the static API (`LogSmith.GetLogger()`)
 

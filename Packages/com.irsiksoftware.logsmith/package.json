@@ -33,7 +33,7 @@
     },
     {
       "displayName": "VContainer Integration",
-      "description": "Full dependency injection setup with VContainer including LifetimeScope configuration",
+      "description": "Full dependency injection setup with VContainer including LifetimeScope configuration (automatically installs VContainer)",
       "path": "Samples~/VContainerIntegration"
     },
     {
