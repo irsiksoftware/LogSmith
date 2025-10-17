@@ -101,6 +101,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             }))
             {
                 LogSmith.Logger.Info("Test subscription");
+                MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
             }
 
             // Assert

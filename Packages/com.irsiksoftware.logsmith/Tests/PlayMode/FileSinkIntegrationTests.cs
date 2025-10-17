@@ -53,13 +53,24 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
 
         private LogMessage CreateTestMessage(string message = "Test message", LogLevel level = LogLevel.Info, string category = "Test")
         {
+            // Get frame count safely - Time.frameCount can only be called from main thread
+            int frameCount = -1;
+            try
+            {
+                frameCount = Time.frameCount;
+            }
+            catch (UnityException)
+            {
+                // Called from background thread - frameCount unavailable
+            }
+
             return new LogMessage
             {
                 Level = level,
                 Category = category,
                 Message = message,
                 Timestamp = DateTime.UtcNow,
-                Frame = Time.frameCount,
+                Frame = frameCount,
                 ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
                 ThreadName = System.Threading.Thread.CurrentThread.Name ?? "Main",
                 CallerFilePath = "TestFile.cs",
@@ -74,33 +85,33 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_Write_CreatesFile()
         {
-            // Arrange
-            using var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false);
-            var message = CreateTestMessage("Initial message");
-
-            // Act
-            sink.Write(message);
-            sink.Flush();
+            // Arrange & Act
+            using (var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false))
+            {
+                var message = CreateTestMessage("Initial message");
+                sink.Write(message);
+                sink.Flush();
+            } // Dispose sink before reading file
             yield return null; // Wait one frame for file system operations
 
             // Assert
             Assert.IsTrue(File.Exists(_testFilePath), "Log file should be created");
             var content = File.ReadAllText(_testFilePath);
-            Assert.IsTrue(content.Contains("Test message"), "File should contain the logged message");
+            Assert.IsTrue(content.Contains("Initial message"), "File should contain the logged message");
         }
 
         [UnityTest]
         public IEnumerator FileSink_Write_MultipleMessages_AppendsToFile()
         {
-            // Arrange
-            using var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false);
-
-            // Act
-            for (int i = 0; i < 10; i++)
+            // Arrange & Act
+            using (var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false))
             {
-                sink.Write(CreateTestMessage($"Message {i}"));
-            }
-            sink.Flush();
+                for (int i = 0; i < 10; i++)
+                {
+                    sink.Write(CreateTestMessage($"Message {i}"));
+                }
+                sink.Flush();
+            } // Dispose sink before reading file
             yield return null;
 
             // Assert
@@ -117,39 +128,40 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_Write_TextFormat_ProducesReadableOutput()
         {
-            // Arrange
-            using var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false);
-            sink.CurrentFormat = MessageFormat.Text;
-            var message = CreateTestMessage("Readable text message", LogLevel.Warn, "TestCategory");
-
-            // Act
-            sink.Write(message);
-            sink.Flush();
+            // Arrange & Act
+            using (var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false))
+            {
+                sink.CurrentFormat = MessageFormat.Text;
+                var message = CreateTestMessage("Readable text message", LogLevel.Warn, "TestCategory");
+                sink.Write(message);
+                sink.Flush();
+            } // Dispose sink before reading file
             yield return null;
 
             // Assert
             var content = File.ReadAllText(_testFilePath);
             Assert.IsTrue(content.Contains("Readable text message"));
-            Assert.IsTrue(content.Contains("WARN") || content.Contains("Warning"));
+            Assert.IsTrue(content.Contains("Warn") || content.Contains("WARN") || content.Contains("Warning"),
+                "Should contain Warn level indicator");
             Assert.IsTrue(content.Contains("TestCategory"));
         }
 
         [UnityTest]
         public IEnumerator FileSink_Write_JsonFormat_ProducesValidJson()
         {
-            // Arrange
-            using var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false);
-            sink.CurrentFormat = MessageFormat.Json;
-            var message = CreateTestMessage("JSON message", LogLevel.Error, "JsonCategory");
-            message.Context = new Dictionary<string, object>
+            // Arrange & Act
+            using (var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false))
             {
-                { "userId", "user123" },
-                { "requestId", 456 }
-            };
-
-            // Act
-            sink.Write(message);
-            sink.Flush();
+                sink.CurrentFormat = MessageFormat.Json;
+                var message = CreateTestMessage("JSON message", LogLevel.Error, "JsonCategory");
+                message.Context = new Dictionary<string, object>
+                {
+                    { "userId", "user123" },
+                    { "requestId", 456 }
+                };
+                sink.Write(message);
+                sink.Flush();
+            } // Dispose sink before reading file
             yield return null;
 
             // Assert
@@ -169,23 +181,27 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_Rotation_TriggersWhenFileSizeExceeded()
         {
-            // Arrange - Use 1MB max size to trigger rotation
-            using var sink = new FileSink(_testFilePath, _templateEngine,
-                enableRotation: true, maxFileSizeMB: 1, retentionCount: 5);
-
-            // Act - Write enough messages to exceed 1MB
-            // Average message size ~150 bytes, so write ~8000 messages to exceed 1MB
-            for (int i = 0; i < 8000; i++)
+            // Arrange & Act
+            using (var sink = new FileSink(_testFilePath, _templateEngine,
+                enableRotation: true, maxFileSizeMB: 1, retentionCount: 5))
             {
-                sink.Write(CreateTestMessage($"Message number {i} with some padding text to increase size"));
-
-                // Every 1000 messages, yield to prevent blocking
-                if (i % 1000 == 0)
+                // Write enough messages to well exceed 1MB to ensure rotation triggers
+                // Default template produces ~85-90 byte messages
+                // 1MB = 1,048,576 bytes
+                // Write 15,000 messages (15,000 × 90 = 1,350,000 bytes = ~1.3MB) to ensure rotation
+                for (int i = 0; i < 15000; i++)
                 {
-                    yield return null;
+                    sink.Write(CreateTestMessage($"Message number {i} with some padding text to increase size"));
+
+                    // Every 1000 messages, flush and yield to ensure file size is accurate for rotation checks
+                    if (i % 1000 == 0)
+                    {
+                        sink.Flush();
+                        yield return null;
+                    }
                 }
-            }
-            sink.Flush();
+                sink.Flush();
+            } // Dispose sink before reading files
             yield return null;
 
             // Assert - Should have rotated file plus archived file(s)
@@ -207,11 +223,15 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
             using var sink = new FileSink(_testFilePath, _templateEngine,
                 enableRotation: true, maxFileSizeMB: 1, retentionCount: 5);
 
-            // Act - Write enough to trigger rotation
-            for (int i = 0; i < 8000; i++)
+            // Act - Write enough to trigger rotation (15,000 messages to exceed 1MB)
+            for (int i = 0; i < 15000; i++)
             {
                 sink.Write(CreateTestMessage($"Rotation test message {i} with padding for file size increase"));
-                if (i % 1000 == 0) yield return null;
+                if (i % 1000 == 0)
+                {
+                    sink.Flush();
+                    yield return null;
+                }
             }
             sink.Flush();
             yield return null;
@@ -236,18 +256,22 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_Rotation_PreservesAllMessages()
         {
-            // Arrange
-            const int messageCount = 8000;
-            using var sink = new FileSink(_testFilePath, _templateEngine,
-                enableRotation: true, maxFileSizeMB: 1, retentionCount: 10);
-
-            // Act
-            for (int i = 0; i < messageCount; i++)
+            // Arrange & Act
+            const int messageCount = 15000;
+            using (var sink = new FileSink(_testFilePath, _templateEngine,
+                enableRotation: true, maxFileSizeMB: 1, retentionCount: 10))
             {
-                sink.Write(CreateTestMessage($"MSG_{i:D5}"));
-                if (i % 1000 == 0) yield return null;
-            }
-            sink.Flush();
+                for (int i = 0; i < messageCount; i++)
+                {
+                    sink.Write(CreateTestMessage($"MSG_{i:D5}"));
+                    if (i % 1000 == 0)
+                    {
+                        sink.Flush();
+                        yield return null;
+                    }
+                }
+                sink.Flush();
+            } // Dispose sink before reading files
             yield return null;
 
             // Assert - Read all log files and verify all messages are present
@@ -263,8 +287,8 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
 
             // Check a sample of messages across the range
             Assert.IsTrue(combinedContent.Contains("MSG_00000"), "Should contain first message");
-            Assert.IsTrue(combinedContent.Contains("MSG_04000"), "Should contain middle message");
-            Assert.IsTrue(combinedContent.Contains("MSG_07999"), "Should contain last message");
+            Assert.IsTrue(combinedContent.Contains("MSG_07500"), "Should contain middle message");
+            Assert.IsTrue(combinedContent.Contains("MSG_14999"), "Should contain last message");
         }
 
         #endregion
@@ -280,13 +304,17 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
                 enableRotation: true, maxFileSizeMB: 1, retentionCount: retentionCount);
 
             // Act - Write enough to trigger multiple rotations (need > retentionCount rotations)
-            // Write in batches to allow rotation between batches
+            // Need 15,000 messages per batch to exceed 1MB and trigger rotation
             for (int batch = 0; batch < 6; batch++)
             {
-                for (int i = 0; i < 2000; i++)
+                for (int i = 0; i < 15000; i++)
                 {
                     sink.Write(CreateTestMessage($"Batch{batch}_Msg{i} with extra padding text for size"));
-                    if (i % 500 == 0) yield return null;
+                    if (i % 1000 == 0)
+                    {
+                        sink.Flush();
+                        yield return null;
+                    }
                 }
                 sink.Flush();
                 yield return null;
@@ -308,13 +336,17 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
             using var sink = new FileSink(_testFilePath, _templateEngine,
                 enableRotation: true, maxFileSizeMB: 1, retentionCount: retentionCount);
 
-            // Act - Force multiple rotations
+            // Act - Force multiple rotations (15,000 messages per batch to trigger rotation)
             for (int batch = 0; batch < 5; batch++)
             {
-                for (int i = 0; i < 2000; i++)
+                for (int i = 0; i < 15000; i++)
                 {
                     sink.Write(CreateTestMessage($"RetentionTest_B{batch}_M{i}_PaddingForFileSizeIncrease"));
-                    if (i % 500 == 0) yield return null;
+                    if (i % 1000 == 0)
+                    {
+                        sink.Flush();
+                        yield return null;
+                    }
                 }
                 sink.Flush();
                 yield return null;
@@ -336,22 +368,27 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_Retention_ZeroRetention_KeepsAllFiles()
         {
-            // Arrange - Retention 0 means no cleanup
-            using var sink = new FileSink(_testFilePath, _templateEngine,
-                enableRotation: true, maxFileSizeMB: 1, retentionCount: 0);
-
-            // Act - Force a few rotations
-            for (int batch = 0; batch < 3; batch++)
+            // Arrange & Act - Retention 0 means no cleanup
+            using (var sink = new FileSink(_testFilePath, _templateEngine,
+                enableRotation: true, maxFileSizeMB: 1, retentionCount: 0))
             {
-                for (int i = 0; i < 2000; i++)
+                // Force a few rotations - each batch should be ~1MB
+                // Need 15,000 messages per batch to trigger rotation
+                for (int batch = 0; batch < 3; batch++)
                 {
-                    sink.Write(CreateTestMessage($"NoRetention_Batch{batch}_Msg{i}_Padding"));
-                    if (i % 500 == 0) yield return null;
+                    for (int i = 0; i < 15000; i++)
+                    {
+                        sink.Write(CreateTestMessage($"NoRetention_Batch{batch}_Msg{i}_Padding"));
+                        if (i % 1000 == 0)
+                        {
+                            sink.Flush();
+                            yield return null;
+                        }
+                    }
+                    sink.Flush();
+                    yield return null;
                 }
-                sink.Flush();
-                yield return null;
-            }
-
+            } // Dispose sink before reading files
             yield return null;
 
             // Assert - With retention=0, should keep all rotated files
@@ -502,38 +539,40 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_ConcurrentWrites_ThreadSafe()
         {
-            // Arrange
-            using var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false);
-            const int threadCount = 4;
-            const int messagesPerThread = 250;
-            var threads = new System.Threading.Thread[threadCount];
-
-            // Act - Write from multiple threads
-            for (int t = 0; t < threadCount; t++)
+            // Arrange & Act
+            using (var sink = new FileSink(_testFilePath, _templateEngine, enableRotation: false))
             {
-                int threadIndex = t;
-                threads[t] = new System.Threading.Thread(() =>
+                const int threadCount = 4;
+                const int messagesPerThread = 250;
+                var threads = new System.Threading.Thread[threadCount];
+
+                // Write from multiple threads
+                for (int t = 0; t < threadCount; t++)
                 {
-                    for (int i = 0; i < messagesPerThread; i++)
+                    int threadIndex = t;
+                    threads[t] = new System.Threading.Thread(() =>
                     {
-                        sink.Write(CreateTestMessage($"Thread{threadIndex}_Msg{i}"));
-                    }
-                });
-                threads[t].Start();
-            }
+                        for (int i = 0; i < messagesPerThread; i++)
+                        {
+                            sink.Write(CreateTestMessage($"Thread{threadIndex}_Msg{i}"));
+                        }
+                    });
+                    threads[t].Start();
+                }
 
-            // Wait for threads
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
+                // Wait for threads
+                foreach (var thread in threads)
+                {
+                    thread.Join();
+                }
 
-            sink.Flush();
+                sink.Flush();
+            } // Dispose sink before reading file
             yield return null;
 
             // Assert - All messages should be written (1000 total)
             var lines = File.ReadAllLines(_testFilePath);
-            Assert.AreEqual(threadCount * messagesPerThread, lines.Length,
+            Assert.AreEqual(4 * 250, lines.Length,
                 "All messages from all threads should be written");
         }
 

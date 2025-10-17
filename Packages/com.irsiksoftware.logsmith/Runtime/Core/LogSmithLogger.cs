@@ -31,13 +31,24 @@ namespace IrsikSoftware.LogSmith.Core
 
         private void Log(LogLevel level, string message)
         {
+            // Get frame count safely - Time.frameCount can only be called from main thread
+            int frameCount = -1;
+            try
+            {
+                frameCount = UnityEngine.Time.frameCount;
+            }
+            catch (UnityEngine.UnityException)
+            {
+                // Called from background thread - frameCount unavailable
+            }
+
             var logMessage = new LogMessage
             {
                 Level = level,
                 Category = _category,
                 Message = message,
                 Timestamp = DateTime.UtcNow,
-                Frame = UnityEngine.Time.frameCount,
+                Frame = frameCount,
                 ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
                 ThreadName = System.Threading.Thread.CurrentThread.Name ?? string.Empty
             };

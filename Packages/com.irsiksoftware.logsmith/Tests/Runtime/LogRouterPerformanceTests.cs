@@ -202,10 +202,16 @@ namespace IrsikSoftware.LogSmith.Tests
             }
             stopwatch.Stop();
 
+            // Process queued subscriber notifications
+            MainThreadDispatcher.Instance.ProcessQueue();
+
             // Assert - Subscription dispatch should not significantly impact routing performance
             var averageMicroseconds = (stopwatch.Elapsed.TotalMilliseconds * 1000.0) / iterations;
             Assert.Less(averageMicroseconds, 300.0,
                 $"Routing with subscription took {averageMicroseconds:F2}µs average, expected < 300µs");
+
+            // Verify subscribers actually received messages
+            Assert.AreEqual(iterations, receivedCount, "All messages should be received by subscriber");
 
             UnityEngine.Debug.Log($"[PERF] Routing with subscription: {averageMicroseconds:F2}µs average ({iterations} iterations)");
 

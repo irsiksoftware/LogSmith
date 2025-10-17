@@ -314,6 +314,7 @@ namespace IrsikSoftware.LogSmith.Tests
 
             // Act
             _router.Route(message);
+            MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
             // Assert
             Assert.AreEqual(1, receivedMessages.Count);
@@ -346,6 +347,7 @@ namespace IrsikSoftware.LogSmith.Tests
 
             // Act
             _router.Route(message);
+            MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
             // Assert
             Assert.AreEqual(1, messages1.Count);
@@ -369,10 +371,12 @@ namespace IrsikSoftware.LogSmith.Tests
 
             // Act
             _router.Route(message1);
+            MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
             subscription.Dispose();
 
             var message2 = CreateTestMessage(LogLevel.Info, "After dispose");
             _router.Route(message2);
+            MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
             // Assert - Only first message should be received
             Assert.AreEqual(1, receivedMessages.Count);
@@ -413,6 +417,7 @@ namespace IrsikSoftware.LogSmith.Tests
 
             // Act - Should not throw
             Assert.DoesNotThrow(() => _router.Route(message));
+            MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
             // Assert - Other subscribers should still receive messages
             Assert.AreEqual(1, messages1.Count);
@@ -438,6 +443,7 @@ namespace IrsikSoftware.LogSmith.Tests
             // Act
             _router.Route(debugMessage);
             _router.Route(warnMessage);
+            MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
 
             // Assert - Only warn message should be received
             Assert.AreEqual(1, receivedMessages.Count);
