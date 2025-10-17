@@ -1,7 +1,9 @@
 using IrsikSoftware.LogSmith.Core;
 using UnityEngine;
+#if LOGSMITH_VCONTAINER_PRESENT
 using VContainer;
 using VContainer.Unity;
+#endif
 
 namespace IrsikSoftware.LogSmith
 {
@@ -15,7 +17,9 @@ namespace IrsikSoftware.LogSmith
         private static ILog _defaultLogger;
         private static bool _initialized;
         private static bool _isUsingDependencyInjection;
+#if LOGSMITH_VCONTAINER_PRESENT
         private static IObjectResolver _container;
+#endif
         private static Core.UnityLoggingBootstrap _bootstrap;
 
         /// <summary>
@@ -62,6 +66,7 @@ namespace IrsikSoftware.LogSmith
         {
             if (_initialized) return;
 
+#if LOGSMITH_VCONTAINER_PRESENT
             // Try to find VContainer scope
             if (TryInitializeWithVContainer())
             {
@@ -69,6 +74,7 @@ namespace IrsikSoftware.LogSmith
                 _initialized = true;
                 return;
             }
+#endif
 
             // Fallback to static initialization
             InitializeStatic();
@@ -98,6 +104,7 @@ namespace IrsikSoftware.LogSmith
             _defaultLogger = new LogSmithLogger(_router, "Default");
         }
 
+#if LOGSMITH_VCONTAINER_PRESENT
         /// <summary>
         /// Attempts to initialize using VContainer.
         /// </summary>
@@ -131,6 +138,7 @@ namespace IrsikSoftware.LogSmith
                 return false;
             }
         }
+#endif
 
         /// <summary>
         /// Creates a logger for a specific category.
@@ -191,6 +199,7 @@ namespace IrsikSoftware.LogSmith
         {
             EnsureInitialized();
 
+#if LOGSMITH_VCONTAINER_PRESENT
             if (!_isUsingDependencyInjection || _container == null)
             {
                 return null;
@@ -204,6 +213,9 @@ namespace IrsikSoftware.LogSmith
             {
                 return null;
             }
+#else
+            return null;
+#endif
         }
 
         private static void EnsureInitialized()

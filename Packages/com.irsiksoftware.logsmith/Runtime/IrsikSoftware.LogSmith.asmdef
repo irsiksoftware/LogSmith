@@ -4,8 +4,7 @@
     "references": [
         "Unity.Logging",
         "Unity.Burst",
-        "Unity.Collections",
-        "VContainer"
+        "Unity.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -14,6 +13,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "jp.hadashikick.vcontainer",
+            "expression": "1.0.0",
+            "define": "LOGSMITH_VCONTAINER_PRESENT"
+        }
+    ],
     "noEngineReferences": false
 }
