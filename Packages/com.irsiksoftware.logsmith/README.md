@@ -38,6 +38,15 @@ Add this line to your `Packages/manifest.json` dependencies:
 - Unity 2022.3 LTS or newer
 - Unity Logging package (`com.unity.logging`)
 
+### Optional Dependencies
+
+**VContainer** (for dependency injection features):
+- If you want to use the DI features, install VContainer via git URL:
+  ```
+  https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0
+  ```
+- LogSmith works perfectly without VContainer using the static API (`LogSmith.GetLogger()`)
+
 ## Quick Start
 
 ### Basic Usage (No DI)
