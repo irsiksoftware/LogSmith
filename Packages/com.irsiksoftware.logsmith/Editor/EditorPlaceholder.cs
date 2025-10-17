@@ -1,14 +1,2 @@
-namespace IrsikSoftware.LogSmith.Editor
-{
-    /// <summary>
-    /// Placeholder class to ensure assembly compilation.
-    /// This will be replaced with actual implementation in subsequent phases.
-    /// </summary>
-    internal static class EditorPlaceholder
-    {
-        internal static void EnsureAssemblyExists()
-        {
-            // Placeholder method to prevent empty assembly warnings
-        }
-    }
-}
+// This file intentionally left empty - EditorPlaceholder is no longer needed
+// The LogSmithEditorWindow now serves as the main editor implementation

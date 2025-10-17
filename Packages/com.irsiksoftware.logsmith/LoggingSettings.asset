@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbf792a8231d22e44bd55c496f3c2dee, type: 3}
+  m_Name: LoggingSettings
+  m_EditorClassIdentifier: 
+  minimumLogLevel: 1
+  enableConsoleSink: 1
+  categories:
+  - name: 
+    color: {r: 0.21600129, g: 0.93530995, b: 0.07941297, a: 0}
+    minimumLevel: 0
+    enabled: 0
+  enableFileSink: 0
+  logFilePath: Logs/logsmith.log
+  fileOutputFormat: 0
+  maxFileSizeMB: 10
+  retainedFileCount: 5
+  defaultFormatMode: 0
+  defaultTextTemplate: '{timestamp} [{level}] {category}: {message}'
+  defaultJsonTemplate: '{"timestamp":"{timestamp}","level":"{level}","category":"{category}","message":"{message}"}'
+  templateOverrides: []
+  fileBufferSize: 4096
