@@ -169,8 +169,7 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         [UnityTest]
         public IEnumerator FileSink_Rotation_TriggersWhenFileSizeExceeded()
         {
-            // Arrange - Use very small max size (1KB) to trigger rotation easily
-            const int maxSizeBytes = 1024;
+            // Arrange - Use 1MB max size to trigger rotation
             using var sink = new FileSink(_testFilePath, _templateEngine,
                 enableRotation: true, maxFileSizeMB: 1, retentionCount: 5);
 

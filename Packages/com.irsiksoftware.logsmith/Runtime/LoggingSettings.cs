@@ -143,40 +143,4 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Minimum log level for this category")]
         public LogLevel minimumLevel = LogLevel.Info;
     }
-
-    /// <summary>
-    /// Category definition with full metadata for Editor UI.
-    /// </summary>
-    [Serializable]
-    public class CategoryDefinition
-    {
-        [Tooltip("Category name")]
-        public string categoryName;
-
-        [Tooltip("Display color for this category")]
-        public Color color = Color.white;
-
-        [Tooltip("Minimum log level for this category")]
-        public LogLevel minimumLevel = LogLevel.Debug;
-
-        [Tooltip("Whether this category is enabled")]
-        public bool enabled = true;
-    }
-
-    /// <summary>
-    /// Per-category message template override.
-    /// </summary>
-    [Serializable]
-    public class CategoryTemplateOverride
-    {
-        [Tooltip("Category name to apply the template to")]
-        public string categoryName;
-
-        [Tooltip("Custom template for this category")]
-        [TextArea(2, 4)]
-        public string template;
-
-        [Tooltip("Whether to use JSON format for this category")]
-        public bool useJsonFormat;
-    }
 }

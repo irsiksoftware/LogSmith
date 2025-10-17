@@ -157,7 +157,6 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
         {
             // Arrange
             var logger = new LogSmithLogger(_router, "Throttle");
-            var updateCount = 0;
 
             // Monitor updates by tracking needsUpdate flag changes
             var overlayType = typeof(DebugOverlayController);

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace IrsikSoftware.LogSmith
 {
@@ -8,19 +9,25 @@ namespace IrsikSoftware.LogSmith
     [Serializable]
     public class CategoryTemplateOverride
     {
+        [Tooltip("Category name to apply the template to")]
         public string categoryName;
-        public string textTemplate;
-        public string jsonTemplate;
+
+        [Tooltip("Custom template for this category")]
+        [TextArea(2, 4)]
+        public string template;
+
+        [Tooltip("Whether to use JSON format for this category")]
+        public bool useJsonFormat;
 
         public CategoryTemplateOverride()
         {
         }
 
-        public CategoryTemplateOverride(string categoryName, string textTemplate = "", string jsonTemplate = "")
+        public CategoryTemplateOverride(string categoryName, string template = "", bool useJsonFormat = false)
         {
             this.categoryName = categoryName;
-            this.textTemplate = textTemplate;
-            this.jsonTemplate = jsonTemplate;
+            this.template = template;
+            this.useJsonFormat = useJsonFormat;
         }
     }
 }

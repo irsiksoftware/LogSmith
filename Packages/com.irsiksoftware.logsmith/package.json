@@ -28,9 +28,44 @@
   },
   "samples": [
     {
-      "displayName": "Demo",
-      "description": "Comprehensive logging examples with pre-configured demo scene and interactive scripts demonstrating all LogSmith features",
+      "displayName": "Basic Usage",
+      "description": "Simple logging examples using the static API without dependency injection",
+      "path": "Samples~/BasicUsage"
+    },
+    {
+      "displayName": "VContainer Integration",
+      "description": "Full dependency injection setup with VContainer including LifetimeScope configuration",
+      "path": "Samples~/VContainerIntegration"
+    },
+    {
+      "displayName": "Custom Sinks",
+      "description": "Example implementations showing how to create custom log sinks (HTTP, database, cloud)",
+      "path": "Samples~/CustomSinks"
+    },
+    {
+      "displayName": "Custom Templates",
+      "description": "Documentation and examples for customizing message formatting",
+      "path": "Samples~/CustomTemplates"
+    },
+    {
+      "displayName": "Comprehensive Demo",
+      "description": "Interactive demo scene with all LogSmith features and 7 example scripts",
       "path": "Samples~/Demo"
+    },
+    {
+      "displayName": "Built-in RP Demo",
+      "description": "Visual debug overlay demonstration for Built-in Render Pipeline",
+      "path": "Samples~/Built-in"
+    },
+    {
+      "displayName": "URP Demo",
+      "description": "Visual debug overlay demonstration for Universal Render Pipeline (requires URP package)",
+      "path": "Samples~/URP"
+    },
+    {
+      "displayName": "HDRP Demo",
+      "description": "Visual debug overlay demonstration for High Definition Render Pipeline (requires HDRP package)",
+      "path": "Samples~/HDRP"
     }
   ]
 }
