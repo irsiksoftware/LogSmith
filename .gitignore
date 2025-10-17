@@ -77,3 +77,14 @@ mono_crash.*
 
 # Claude Code directory
 .claude/
+
+# CI/Test artifacts
+/TestResults/
+/CodeCoverage/
+/TestOutputs/
+/TempTestResults/
+build-log.txt
+compile-log.txt
+
+# Configuration files with credentials
+settings.ini

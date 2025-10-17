@@ -16,6 +16,7 @@ namespace IrsikSoftware.LogSmith
         private static bool _initialized;
         private static bool _isUsingDependencyInjection;
         private static IObjectResolver _container;
+        private static Core.UnityLoggingBootstrap _bootstrap;
 
         /// <summary>
         /// Returns true if LogSmith is using VContainer for dependency injection.
@@ -80,15 +81,18 @@ namespace IrsikSoftware.LogSmith
         /// </summary>
         private static void InitializeStatic()
         {
-            // Initialize Unity.Logging backend
-            Adapters.NativeUnityLoggerAdapter.Initialize();
+            // Create category registry
+            var categoryRegistry = new Core.CategoryRegistry();
 
-            // Create router
-            _router = new LogRouter();
+            // Create router with category registry
+            _router = new LogRouter(categoryRegistry);
+            var templateEngine = new Core.MessageTemplateEngine();
 
-            // Register default console sink
-            var consoleSink = new ConsoleSink();
-            _router.RegisterSink(consoleSink);
+            // Use default settings
+            var settings = LoggingSettings.CreateDefault();
+
+            // Bootstrap the system using UnityLoggingBootstrap
+            _bootstrap = new Core.UnityLoggingBootstrap(settings, _router, templateEngine);
 
             // Create default logger
             _defaultLogger = new LogSmithLogger(_router, "Default");
@@ -135,6 +139,48 @@ namespace IrsikSoftware.LogSmith
         {
             EnsureInitialized();
             return _defaultLogger.WithCategory(category);
+        }
+
+        /// <summary>
+        /// Reloads logging settings from the current LoggingSettings configuration.
+        /// Only available when using static initialization.
+        /// </summary>
+        public static void ReloadSettings()
+        {
+            EnsureInitialized();
+
+            if (_isUsingDependencyInjection)
+            {
+                // When using DI, resolve bootstrap from container
+                var bootstrap = Resolve<Core.UnityLoggingBootstrap>();
+                bootstrap?.ReloadSettings();
+            }
+            else
+            {
+                // Static mode
+                _bootstrap?.ReloadSettings();
+            }
+        }
+
+        /// <summary>
+        /// Switches the file sink output format at runtime.
+        /// </summary>
+        /// <param name="format">The desired message format (Text or JSON).</param>
+        public static void SwitchFormat(MessageFormat format)
+        {
+            EnsureInitialized();
+
+            if (_isUsingDependencyInjection)
+            {
+                // When using DI, resolve bootstrap from container
+                var bootstrap = Resolve<Core.UnityLoggingBootstrap>();
+                bootstrap?.SwitchFormat(format);
+            }
+            else
+            {
+                // Static mode
+                _bootstrap?.SwitchFormat(format);
+            }
         }
 
         /// <summary>

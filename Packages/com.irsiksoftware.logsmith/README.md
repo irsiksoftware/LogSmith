@@ -40,7 +40,78 @@ Add this line to your `Packages/manifest.json` dependencies:
 
 ## Quick Start
 
-*Documentation and samples will be available once the foundation is complete.*
+### Basic Usage (No DI)
+
+```csharp
+using IrsikSoftware.LogSmith;
+
+public class GameManager : MonoBehaviour
+{
+    private void Start()
+    {
+        // Get a logger for this category
+        var log = LogSmith.GetLogger("Gameplay");
+
+        // Log at different levels
+        log.Info("Game starting");
+        log.Warn("Low memory detected");
+        log.Error("Failed to load level");
+    }
+}
+```
+
+### With VContainer
+
+```csharp
+using IrsikSoftware.LogSmith;
+using VContainer;
+using VContainer.Unity;
+
+public class GameLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        // Register LogSmith
+        builder.RegisterLogSmith();
+
+        // Your other registrations...
+        builder.RegisterEntryPoint<GameManager>();
+    }
+}
+
+public class GameManager : IStartable
+{
+    private readonly ILog _log;
+
+    public GameManager(ILog log)
+    {
+        _log = log;
+    }
+
+    public void Start()
+    {
+        _log.Info("Game manager started");
+    }
+}
+```
+
+### Configuration
+
+1. **Create Settings**: Right-click in Project → Create → LogSmith → Logging Settings
+2. **Open Editor**: Window → LogSmith → Settings
+3. **Configure categories, sinks, and message templates**
+
+### In-Game Debug Overlay
+
+Press **F1** in Play mode to toggle the debug overlay.
+
+### Full Documentation
+
+See [Documentation~](Documentation~/index.md) for comprehensive guides covering:
+- Architecture & dependency injection
+- Category management & templates
+- Custom sinks & render pipeline support
+- IL2CPP compatibility & troubleshooting
 
 ## License
 

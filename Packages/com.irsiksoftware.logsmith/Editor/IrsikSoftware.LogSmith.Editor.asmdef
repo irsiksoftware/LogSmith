@@ -16,6 +16,17 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "",
+            "define": "LOGSMITH_URP_PRESENT"
+        },
+        {
+            "name": "com.unity.render-pipelines.high-definition",
+            "expression": "",
+            "define": "LOGSMITH_HDRP_PRESENT"
+        }
+    ],
     "noEngineReferences": false
 }

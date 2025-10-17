@@ -5,14 +5,21 @@ namespace IrsikSoftware.LogSmith.Core
 {
     /// <summary>
     /// Routes log messages to registered sinks with filtering and event stream support.
+    /// Thread-safe: ILog can be called from any thread. UI subscribers receive events on main thread.
     /// </summary>
     internal class LogRouter : ILogRouter
     {
         private readonly List<ILogSink> _sinks = new List<ILogSink>();
         private readonly List<Action<LogMessage>> _subscribers = new List<Action<LogMessage>>();
         private readonly Dictionary<string, LogLevel> _categoryFilters = new Dictionary<string, LogLevel>();
+        private readonly ICategoryRegistry _categoryRegistry;
         private readonly object _lock = new object();
         private LogLevel _globalMinimumLevel = LogLevel.Trace;
+
+        public LogRouter(ICategoryRegistry categoryRegistry = null)
+        {
+            _categoryRegistry = categoryRegistry;
+        }
 
         public void RegisterSink(ILogSink sink)
         {
@@ -61,17 +68,27 @@ namespace IrsikSoftware.LogSmith.Core
                     }
                 }
 
-                // Notify subscribers
-                foreach (var subscriber in _subscribers)
+                // Notify subscribers on main thread via MainThreadDispatcher
+                if (_subscribers.Count > 0)
                 {
-                    try
+                    // Capture subscriber list to avoid holding lock during dispatch
+                    var subscribersCopy = new List<Action<LogMessage>>(_subscribers);
+
+                    // Dispatch to main thread with bounded queue
+                    MainThreadDispatcher.Instance.Enqueue(() =>
                     {
-                        subscriber(message);
-                    }
-                    catch (Exception ex)
-                    {
-                        UnityEngine.Debug.LogError($"[LogSmith] Subscriber failed: {ex.Message}");
-                    }
+                        foreach (var subscriber in subscribersCopy)
+                        {
+                            try
+                            {
+                                subscriber(message);
+                            }
+                            catch (Exception ex)
+                            {
+                                UnityEngine.Debug.LogError($"[LogSmith] Subscriber failed: {ex.Message}");
+                            }
+                        }
+                    });
                 }
             }
         }
@@ -115,13 +132,26 @@ namespace IrsikSoftware.LogSmith.Core
 
         private bool ShouldRoute(LogMessage message)
         {
-            // Check category-specific filter first
+            // First check if category is enabled in the registry
+            if (_categoryRegistry != null && !_categoryRegistry.IsEnabled(message.Category))
+            {
+                return false;
+            }
+
+            // Check category-specific filter first (takes precedence over registry)
             if (_categoryFilters.TryGetValue(message.Category, out var categoryMinLevel))
             {
                 return message.Level >= categoryMinLevel;
             }
 
-            // Fall back to global minimum level
+            // Fall back to category registry minimum level if available
+            if (_categoryRegistry != null && _categoryRegistry.HasCategory(message.Category))
+            {
+                var registryMinLevel = _categoryRegistry.GetMinimumLevel(message.Category);
+                return message.Level >= registryMinLevel;
+            }
+
+            // Finally fall back to global minimum level
             return message.Level >= _globalMinimumLevel;
         }
 

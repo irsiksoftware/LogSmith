@@ -6,7 +6,7 @@ namespace IrsikSoftware.LogSmith.Tests
     /// Placeholder test class to ensure assembly compilation.
     /// This will be replaced with actual tests in subsequent phases.
     /// </summary>
-    internal class TestPlaceholder
+    public class TestPlaceholder
     {
         [Test]
         public void PlaceholderTest_ShouldPass()
