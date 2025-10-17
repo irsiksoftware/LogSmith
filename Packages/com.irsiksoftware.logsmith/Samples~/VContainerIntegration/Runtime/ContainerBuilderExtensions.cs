@@ -1,4 +1,3 @@
-#if LOGSMITH_VCONTAINER_PRESENT
 using VContainer;
 using IrsikSoftware.LogSmith.Core;
 
@@ -56,4 +55,3 @@ namespace IrsikSoftware.LogSmith.DI
         }
     }
 }
-#endif

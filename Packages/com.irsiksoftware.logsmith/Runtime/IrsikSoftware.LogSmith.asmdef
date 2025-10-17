@@ -13,12 +13,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "jp.hadashikick.vcontainer",
-            "expression": "",
-            "define": "LOGSMITH_VCONTAINER_PRESENT"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }
