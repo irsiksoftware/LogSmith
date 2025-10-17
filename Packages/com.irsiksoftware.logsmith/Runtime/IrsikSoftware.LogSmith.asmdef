@@ -4,8 +4,7 @@
     "references": [
         "Unity.Logging",
         "Unity.Burst",
-        "Unity.Collections",
-        "VContainer"
+        "Unity.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
