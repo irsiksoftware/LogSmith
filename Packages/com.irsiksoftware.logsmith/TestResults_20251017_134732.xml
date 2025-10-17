@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="97" result="Failed(Child)" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.108094">
+  <test-suite type="TestSuite" id="1116" name="LogSmith" fullname="LogSmith" runstate="Runnable" testcasecount="97" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.108094" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1108" name="IrsikSoftware.LogSmith.Tests.PlayMode.dll" fullname="F:/Code/LogSmith/Library/ScriptAssemblies/IrsikSoftware.LogSmith.Tests.PlayMode.dll" runstate="Runnable" testcasecount="97" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.098497" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="101340" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1109" name="IrsikSoftware" fullname="IrsikSoftware" runstate="Runnable" testcasecount="97" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.094369" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1110" name="LogSmith" fullname="IrsikSoftware.LogSmith" runstate="Runnable" testcasecount="97" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.090521" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1111" name="Tests" fullname="IrsikSoftware.LogSmith.Tests" runstate="Runnable" testcasecount="97" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.086874" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1112" name="PlayMode" fullname="IrsikSoftware.LogSmith.Tests.PlayMode" runstate="Runnable" testcasecount="97" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:30Z" duration="18.083167" total="97" passed="87" failed="10" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1001" name="BuiltInRenderPipelineAdapterTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" testcasecount="10" result="Failed" site="Child" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.200565" total="10" passed="9" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1010" name="Cleanup_RemovesRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Cleanup_RemovesRenderer" methodname="Cleanup_RemovesRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="229174591" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.008727" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1002" name="Initialize_CreatesVisualDebugRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Initialize_CreatesVisualDebugRenderer" methodname="Initialize_CreatesVisualDebugRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="1603477367" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.001070" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1004" name="Initialize_DisablesRendererByDefault" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Initialize_DisablesRendererByDefault" methodname="Initialize_DisablesRendererByDefault" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="1506822267" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.000351" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1003" name="Initialize_EnablesRendererWhenRequested" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Initialize_EnablesRendererWhenRequested" methodname="Initialize_EnablesRendererWhenRequested" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="796616121" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.000284" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1011" name="IsActive_ReturnsTrueWhenNoOtherPipelinesAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.IsActive_ReturnsTrueWhenNoOtherPipelinesAvailable" methodname="IsActive_ReturnsTrueWhenNoOtherPipelinesAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="476857475" result="Failed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.003084" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.IsActive_ReturnsTrueWhenNoOtherPipelinesAvailable () [0x00001] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\BuiltInRenderPipelineAdapterTests.cs:160
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1007" name="VisualDebugRenderer_CanClear" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanClear" methodname="VisualDebugRenderer_CanClear" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="20747013" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.002926" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1005" name="VisualDebugRenderer_CanDrawLine" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanDrawLine" methodname="VisualDebugRenderer_CanDrawLine" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="553478114" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.000265" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1006" name="VisualDebugRenderer_CanDrawQuad" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanDrawQuad" methodname="VisualDebugRenderer_CanDrawQuad" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="171391387" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.000274" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1008" name="VisualDebugRenderer_CanToggleEnabled" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanToggleEnabled" methodname="VisualDebugRenderer_CanToggleEnabled" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="236602539" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.000205" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1009" name="VisualDebugRenderer_ExpiredShapesAreRemoved" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_ExpiredShapesAreRemoved" methodname="VisualDebugRenderer_ExpiredShapesAreRemoved" classname="IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests" runstate="Runnable" seed="1076726486" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.170213" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1012" name="ConsoleSinkIntegrationTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.176507" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1022" name="ConsoleSink_Dispose_DoesNotThrow" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Dispose_DoesNotThrow" methodname="ConsoleSink_Dispose_DoesNotThrow" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="2045810488" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.014860" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1023" name="ConsoleSink_DisposedSink_DoesNotWriteOrThrow" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_DisposedSink_DoesNotWriteOrThrow" methodname="ConsoleSink_DisposedSink_DoesNotWriteOrThrow" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="335434725" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.019491" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1024" name="ConsoleSink_Flush_DoesNotThrow" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Flush_DoesNotThrow" methodname="ConsoleSink_Flush_DoesNotThrow" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="309218184" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.011925" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1020" name="ConsoleSink_JsonFormat_OutputsValidStructure" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_JsonFormat_OutputsValidStructure" methodname="ConsoleSink_JsonFormat_OutputsValidStructure" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="306458994" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.016007" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[JsonCategory] {"timestamp":"2025-10-17T17:19:12.4796189Z","level":"Info","category":"JsonCategory","message":"JSON test","frame":65,"threadId":1,"threadName":"Main","file":"TestFile.cs","method":"TestMethod","context":{"key":"value"}}
+]]></output>
+                </test-case>
+                <test-case id="1019" name="ConsoleSink_TextFormat_ContainsMetadata" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_TextFormat_ContainsMetadata" methodname="ConsoleSink_TextFormat_ContainsMetadata" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="1892090039" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.015515" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[TestCategory] [17:19:12] [Info] [TestCategory] Metadata test
+]]></output>
+                </test-case>
+                <test-case id="1021" name="ConsoleSink_WithContext_IncludesContextData" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_WithContext_IncludesContextData" methodname="ConsoleSink_WithContext_IncludesContextData" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="266591124" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.013987" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[Test] [17:19:12] [Info] [Test] Context message
+]]></output>
+                </test-case>
+                <test-case id="1017" name="ConsoleSink_Write_CriticalLevel_UsesErrorType" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_CriticalLevel_UsesErrorType" methodname="ConsoleSink_Write_CriticalLevel_UsesErrorType" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="1537644669" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.013490" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[CRITICAL] [Test] [17:19:12] [Critical] [Test] Critical message
+]]></output>
+                </test-case>
+                <test-case id="1016" name="ConsoleSink_Write_ErrorLevel_UsesErrorType" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_ErrorLevel_UsesErrorType" methodname="ConsoleSink_Write_ErrorLevel_UsesErrorType" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="1180846358" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.012405" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[Test] [17:19:12] [Error] [Test] Error message
+]]></output>
+                </test-case>
+                <test-case id="1014" name="ConsoleSink_Write_InfoLevel_UsesLogType" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_InfoLevel_UsesLogType" methodname="ConsoleSink_Write_InfoLevel_UsesLogType" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="227191096" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.012078" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[Test] [17:19:12] [Info] [Test] Info message
+]]></output>
+                </test-case>
+                <test-case id="1018" name="ConsoleSink_Write_MultipleMessages_AllCaptured" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_MultipleMessages_AllCaptured" methodname="ConsoleSink_Write_MultipleMessages_AllCaptured" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="1129843847" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.015168" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[Test] [17:19:12] [Info] [Test] Message 0
+[Test] [17:19:12] [Info] [Test] Message 1
+[Test] [17:19:12] [Info] [Test] Message 2
+[Test] [17:19:12] [Info] [Test] Message 3
+[Test] [17:19:12] [Info] [Test] Message 4
+]]></output>
+                </test-case>
+                <test-case id="1013" name="ConsoleSink_Write_OutputsToUnityConsole" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_OutputsToUnityConsole" methodname="ConsoleSink_Write_OutputsToUnityConsole" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="203748183" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.012423" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[Test] [17:19:12] [Info] [Test] Console test message
+]]></output>
+                </test-case>
+                <test-case id="1015" name="ConsoleSink_Write_WarnLevel_UsesWarningType" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_WarnLevel_UsesWarningType" methodname="ConsoleSink_Write_WarnLevel_UsesWarningType" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests" runstate="Runnable" seed="1254815926" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.012075" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[Test] [17:19:12] [Warn] [Test] Warning message
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1025" name="DebugOverlayUITests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:13Z" duration="1.023056" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1027" name="CategorySwitching_SelectingCategory_ShowsOnlyThatCategory" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.CategorySwitching_SelectingCategory_ShowsOnlyThatCategory" methodname="CategorySwitching_SelectingCategory_ShowsOnlyThatCategory" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="367919975" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.079700" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1030" name="CircularBuffer_ExceedingCapacity_MaintainsLimit" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.CircularBuffer_ExceedingCapacity_MaintainsLimit" methodname="CircularBuffer_ExceedingCapacity_MaintainsLimit" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="140715799" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.148287" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1033" name="ClearBuffer_AfterLogging_RemovesAllMessages" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.ClearBuffer_AfterLogging_RemovesAllMessages" methodname="ClearBuffer_AfterLogging_RemovesAllMessages" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="112579748" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.076817" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1031" name="CombinedFilters_LevelCategoryAndSearch_AllApplied" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.CombinedFilters_LevelCategoryAndSearch_AllApplied" methodname="CombinedFilters_LevelCategoryAndSearch_AllApplied" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="258317651" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:12Z" duration="0.068975" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1026" name="FilterToggle_ChangingMinLevel_FiltersCorrectly" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.FilterToggle_ChangingMinLevel_FiltersCorrectly" methodname="FilterToggle_ChangingMinLevel_FiltersCorrectly" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="1720182324" result="Passed" start-time="2025-10-17 17:19:12Z" end-time="2025-10-17 17:19:13Z" duration="0.068673" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1032" name="GCAllocation_RepeatedUpdates_NoSignificantGCSpikes" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.GCAllocation_RepeatedUpdates_NoSignificantGCSpikes" methodname="GCAllocation_RepeatedUpdates_NoSignificantGCSpikes" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="785765874" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.398429" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[GC Test] Allocated 38.21 KB for 100 messages + 10 filter updates
+]]></output>
+                </test-case>
+                <test-case id="1028" name="SearchFilter_EnteringSearchText_FiltersMessages" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.SearchFilter_EnteringSearchText_FiltersMessages" methodname="SearchFilter_EnteringSearchText_FiltersMessages" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="989237620" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.067181" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1029" name="ThrottledRefresh_HighFrequencyLogs_ThrottlesUpdates" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.ThrottledRefresh_HighFrequencyLogs_ThrottlesUpdates" methodname="ThrottledRefresh_HighFrequencyLogs_ThrottlesUpdates" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="70374511" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.092267" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1034" name="VisibilityToggle_F1Key_TogglesOverlay" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.VisibilityToggle_F1Key_TogglesOverlay" methodname="VisibilityToggle_F1Key_TogglesOverlay" classname="IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests" runstate="Runnable" seed="947742036" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.016705" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1035" name="FileSinkIntegrationTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" testcasecount="14" result="Failed" site="Child" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:19Z" duration="5.581900" total="14" passed="9" failed="5" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1049" name="FileSink_ConcurrentWrites_ThreadSafe" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_ConcurrentWrites_ThreadSafe" methodname="FileSink_ConcurrentWrites_ThreadSafe" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1805379947" result="Failed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.014701" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[Unhandled log message: '[Exception] UnityException: get_frameCount can only be called from the main thread.
+Constructors and field initializers will be executed from the loading thread when loading a scene.
+Don't use this function in the constructor or field initializers, instead move initialization code to the Awake or Start function.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                    <stack-trace><![CDATA[IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.CreateTestMessage (System.String message, IrsikSoftware.LogSmith.LogLevel level, System.String category) (at ./Packages/com.irsiksoftware.logsmith/Tests/PlayMode/FileSinkIntegrationTests.cs:56)
+IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests+<>c__DisplayClass19_1.<FileSink_ConcurrentWrites_ThreadSafe>b__0 () (at ./Packages/com.irsiksoftware.logsmith/Tests/PlayMode/FileSinkIntegrationTests.cs:521)
+System.Threading.ThreadHelper.ThreadStart_Context (System.Object state) (at <59bd7c40c082431db25e1e728ab62789>:0)
+System.Threading.ExecutionContext.RunInternal (System.Threading.ExecutionContext executionContext, System.Threading.ContextCallback callback, System.Object state, System.Boolean preserveSyncCtx) (at <59bd7c40c082431db25e1e728ab62789>:0)
+System.Threading.ExecutionContext.Run (System.Threading.ExecutionContext executionContext, System.Threading.ContextCallback callback, System.Object state, System.Boolean preserveSyncCtx) (at <59bd7c40c082431db25e1e728ab62789>:0)
+System.Threading.ExecutionContext.Run (System.Threading.ExecutionContext executionContext, System.Threading.ContextCallback callback, System.Object state) (at <59bd7c40c082431db25e1e728ab62789>:0)
+System.Threading.ThreadHelper.ThreadStart () (at <59bd7c40c082431db25e1e728ab62789>:0)
+UnityEngine.Time:get_frameCount()
+IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests:CreateTestMessage(String, LogLevel, String) (at ./Packages/com.irsiksoftware.logsmith/Tests/PlayMode/FileSinkIntegrationTests.cs:56)
+IrsikSoftware.LogSmith.Tests.PlayMode.<>c__DisplayClass19_1:<FileSink_ConcurrentWrites_ThreadSafe>b__0() (at ./Packages/com.irsiksoftware.logsmith/Tests/PlayMode/FileSinkIntegrationTests.cs:521)
+System.Threading.ThreadHelper:ThreadStart()
+
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1046" name="FileSink_DeterministicOutput_SameInputProducesSameFormat" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_DeterministicOutput_SameInputProducesSameFormat" methodname="FileSink_DeterministicOutput_SameInputProducesSameFormat" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="847978715" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.019874" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1048" name="FileSink_DisposedSink_DoesNotWriteOrThrow" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_DisposedSink_DoesNotWriteOrThrow" methodname="FileSink_DisposedSink_DoesNotWriteOrThrow" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1469455997" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.012502" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1047" name="FileSink_JsonOutput_IsDeterministic" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_JsonOutput_IsDeterministic" methodname="FileSink_JsonOutput_IsDeterministic" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1729965375" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:13Z" duration="0.016873" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1043" name="FileSink_Retention_DeletesOldestFiles" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Retention_DeletesOldestFiles" methodname="FileSink_Retention_DeletesOldestFiles" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="111645939" result="Passed" start-time="2025-10-17 17:19:13Z" end-time="2025-10-17 17:19:14Z" duration="1.261862" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1044" name="FileSink_Retention_KeepsCurrentFileAndRecentArchives" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Retention_KeepsCurrentFileAndRecentArchives" methodname="FileSink_Retention_KeepsCurrentFileAndRecentArchives" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1367360051" result="Passed" start-time="2025-10-17 17:19:14Z" end-time="2025-10-17 17:19:16Z" duration="1.091522" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1045" name="FileSink_Retention_ZeroRetention_KeepsAllFiles" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Retention_ZeroRetention_KeepsAllFiles" methodname="FileSink_Retention_ZeroRetention_KeepsAllFiles" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1694110546" result="Failed" start-time="2025-10-17 17:19:16Z" end-time="2025-10-17 17:19:16Z" duration="0.643751" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  With zero retention, all rotated files should be kept
+  Expected: greater than or equal to 2
+  But was:  1
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests+<FileSink_Retention_ZeroRetention_KeepsAllFiles>d__15.MoveNext () [0x001a6] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\FileSinkIntegrationTests.cs:362
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in .\Library\PackageCache\com.unity.test-framework@038a2b0cacd2\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1041" name="FileSink_Rotation_ArchivedFileName_ContainsTimestamp" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Rotation_ArchivedFileName_ContainsTimestamp" methodname="FileSink_Rotation_ArchivedFileName_ContainsTimestamp" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="955554762" result="Passed" start-time="2025-10-17 17:19:16Z" end-time="2025-10-17 17:19:17Z" duration="0.797619" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1042" name="FileSink_Rotation_PreservesAllMessages" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Rotation_PreservesAllMessages" methodname="FileSink_Rotation_PreservesAllMessages" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1023942760" result="Passed" start-time="2025-10-17 17:19:17Z" end-time="2025-10-17 17:19:18Z" duration="0.847349" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1040" name="FileSink_Rotation_TriggersWhenFileSizeExceeded" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Rotation_TriggersWhenFileSizeExceeded" methodname="FileSink_Rotation_TriggersWhenFileSizeExceeded" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="2063128829" result="Failed" start-time="2025-10-17 17:19:18Z" end-time="2025-10-17 17:19:19Z" duration="0.799651" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Should have multiple log files after rotation
+  Expected: greater than 1
+  But was:  1
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests+<FileSink_Rotation_TriggersWhenFileSizeExceeded>d__10.MoveNext () [0x0014a] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\FileSinkIntegrationTests.cs:194
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in .\Library\PackageCache\com.unity.test-framework@038a2b0cacd2\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1036" name="FileSink_Write_CreatesFile" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_CreatesFile" methodname="FileSink_Write_CreatesFile" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="975467235" result="Failed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.017167" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  File should contain the logged message
+  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests+<FileSink_Write_CreatesFile>d__6.MoveNext () [0x000fb] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\FileSinkIntegrationTests.cs:89
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in .\Library\PackageCache\com.unity.test-framework@038a2b0cacd2\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1039" name="FileSink_Write_JsonFormat_ProducesValidJson" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_JsonFormat_ProducesValidJson" methodname="FileSink_Write_JsonFormat_ProducesValidJson" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="1125309656" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.017347" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1037" name="FileSink_Write_MultipleMessages_AppendsToFile" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_MultipleMessages_AppendsToFile" methodname="FileSink_Write_MultipleMessages_AppendsToFile" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="248452585" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.016947" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1038" name="FileSink_Write_TextFormat_ProducesReadableOutput" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_TextFormat_ProducesReadableOutput" methodname="FileSink_Write_TextFormat_ProducesReadableOutput" classname="IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests" runstate="Runnable" seed="775822535" result="Failed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.017616" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests+<FileSink_Write_TextFormat_ProducesReadableOutput>d__8.MoveNext () [0x000fe] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\FileSinkIntegrationTests.cs:133
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in .\Library\PackageCache\com.unity.test-framework@038a2b0cacd2\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1050" name="HDRPAdapterTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.007985" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1059" name="Cleanup_RemovesRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Cleanup_RemovesRenderer" methodname="Cleanup_RemovesRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="2096567213" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000547" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1052" name="Initialize_CreatesVisualDebugRenderer_WhenHDRPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Initialize_CreatesVisualDebugRenderer_WhenHDRPAvailable" methodname="Initialize_CreatesVisualDebugRenderer_WhenHDRPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="655420426" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000593" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[HDRPAdapter] HDRP is not available in this project
+]]></output>
+                </test-case>
+                <test-case id="1054" name="Initialize_DisablesRendererByDefault" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Initialize_DisablesRendererByDefault" methodname="Initialize_DisablesRendererByDefault" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="1975039882" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000188" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1053" name="Initialize_EnablesRendererWhenRequested" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Initialize_EnablesRendererWhenRequested" methodname="Initialize_EnablesRendererWhenRequested" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="1545207728" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000189" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1051" name="IsAvailable_ReturnsExpectedValue" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.IsAvailable_ReturnsExpectedValue" methodname="IsAvailable_ReturnsExpectedValue" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="148416584" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000141" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1057" name="VisualDebugRenderer_CanClear_WhenHDRPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanClear_WhenHDRPAvailable" methodname="VisualDebugRenderer_CanClear_WhenHDRPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="1205084806" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000186" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1055" name="VisualDebugRenderer_CanDrawLine_WhenHDRPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanDrawLine_WhenHDRPAvailable" methodname="VisualDebugRenderer_CanDrawLine_WhenHDRPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="1130362717" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000183" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1056" name="VisualDebugRenderer_CanDrawQuad_WhenHDRPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanDrawQuad_WhenHDRPAvailable" methodname="VisualDebugRenderer_CanDrawQuad_WhenHDRPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="323848900" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000183" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1058" name="VisualDebugRenderer_CanToggleEnabled_WhenHDRPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanToggleEnabled_WhenHDRPAvailable" methodname="VisualDebugRenderer_CanToggleEnabled_WhenHDRPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests" runstate="Runnable" seed="1383681747" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000178" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[HDRP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1060" name="JsonSchemaSnapshotTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.184620" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1074" name="JsonOutput_ContainsCallerInfo" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsCallerInfo" methodname="JsonOutput_ContainsCallerInfo" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="95105211" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011339" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1073" name="JsonOutput_ContainsFrameInfo" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsFrameInfo" methodname="JsonOutput_ContainsFrameInfo" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="314156093" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011676" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1061" name="JsonOutput_ContainsRequiredFields" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsRequiredFields" methodname="JsonOutput_ContainsRequiredFields" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="1869622400" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010954" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1072" name="JsonOutput_ContainsThreadInfo" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsThreadInfo" methodname="JsonOutput_ContainsThreadInfo" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="1357697105" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010764" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1067" name="JsonOutput_EmptyContext_ValidStructure" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_EmptyContext_ValidStructure" methodname="JsonOutput_EmptyContext_ValidStructure" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="588445584" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010779" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1064" name="JsonOutput_LevelField_CorrectValues" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_LevelField_CorrectValues" methodname="JsonOutput_LevelField_CorrectValues" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="657387200" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011276" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1069" name="JsonOutput_NewlineCharacters_ProperlyEscaped" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_NewlineCharacters_ProperlyEscaped" methodname="JsonOutput_NewlineCharacters_ProperlyEscaped" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="169334520" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.012540" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1075" name="JsonOutput_SchemaStability_AllLogLevels" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_SchemaStability_AllLogLevels" methodname="JsonOutput_SchemaStability_AllLogLevels" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="1871657017" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010785" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1076" name="JsonOutput_SchemaStability_DifferentCategories" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_SchemaStability_DifferentCategories" methodname="JsonOutput_SchemaStability_DifferentCategories" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="1546573350" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010866" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1070" name="JsonOutput_Snapshot_BasicMessage" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_Snapshot_BasicMessage" methodname="JsonOutput_Snapshot_BasicMessage" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="695337793" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010834" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1071" name="JsonOutput_Snapshot_WithContext" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_Snapshot_WithContext" methodname="JsonOutput_Snapshot_WithContext" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="1626231092" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011161" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1068" name="JsonOutput_SpecialCharacters_ProperlyEscaped" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_SpecialCharacters_ProperlyEscaped" methodname="JsonOutput_SpecialCharacters_ProperlyEscaped" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="745595905" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010981" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1063" name="JsonOutput_TimestampFormat_ISO8601" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_TimestampFormat_ISO8601" methodname="JsonOutput_TimestampFormat_ISO8601" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="691446763" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011117" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1062" name="JsonOutput_ValidJsonStructure" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ValidJsonStructure" methodname="JsonOutput_ValidJsonStructure" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="2011559909" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010874" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1065" name="JsonOutput_WithContext_IncludesContextObject" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_WithContext_IncludesContextObject" methodname="JsonOutput_WithContext_IncludesContextObject" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="1721394589" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010813" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1066" name="JsonOutput_WithoutContext_ValidStructure" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_WithoutContext_ValidStructure" methodname="JsonOutput_WithoutContext_ValidStructure" classname="IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests" runstate="Runnable" seed="289842457" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.010934" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1077" name="LogRouterPlayModePerformanceTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.094427" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1082" name="RuntimeRouting_AcrossMultipleFrames_SustainedPerformance" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_AcrossMultipleFrames_SustainedPerformance" methodname="RuntimeRouting_AcrossMultipleFrames_SustainedPerformance" classname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" runstate="Runnable" seed="108326964" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.042554" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[PERF][PlayMode] Sustained performance: 0.030ms average over 10 frames
+]]></output>
+                </test-case>
+                <test-case id="1079" name="RuntimeRouting_HighThroughput_MaintainsFrameBudget" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_HighThroughput_MaintainsFrameBudget" methodname="RuntimeRouting_HighThroughput_MaintainsFrameBudget" classname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" runstate="Runnable" seed="469329115" result="Failed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.012156" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  PlayMode high throughput took 0.21ms, expected < 0.2ms/frame
+  Expected: less than 0.20000000000000001d
+  But was:  0.2084d
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests+<RuntimeRouting_HighThroughput_MaintainsFrameBudget>d__7.MoveNext () [0x000af] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\LogRouterPlayModePerformanceTests.cs:94
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in .\Library\PackageCache\com.unity.test-framework@038a2b0cacd2\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1080" name="RuntimeRouting_MultipleSinks_MeetsPerformanceTarget" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_MultipleSinks_MeetsPerformanceTarget" methodname="RuntimeRouting_MultipleSinks_MeetsPerformanceTarget" classname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" runstate="Runnable" seed="1184076449" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.012060" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[PERF][PlayMode] Multi sink routing (3 sinks): 0.29µs average
+]]></output>
+                </test-case>
+                <test-case id="1078" name="RuntimeRouting_SingleSink_CompletesUnder200Microseconds" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_SingleSink_CompletesUnder200Microseconds" methodname="RuntimeRouting_SingleSink_CompletesUnder200Microseconds" classname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" runstate="Runnable" seed="2024671752" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011550" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[PERF][PlayMode] Single sink routing: 0.21µs average (1000 iterations)
+]]></output>
+                </test-case>
+                <test-case id="1081" name="RuntimeRouting_WithFiltering_FastRejection" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_WithFiltering_FastRejection" methodname="RuntimeRouting_WithFiltering_FastRejection" classname="IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests" runstate="Runnable" seed="1470741874" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.011415" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[PERF][PlayMode] Filtered routing: 0.12µs average
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1083" name="RenderPipelineAdapterServiceTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.013171" total="9" passed="8" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1087" name="Cleanup_RemovesActiveRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Cleanup_RemovesActiveRenderer" methodname="Cleanup_RemovesActiveRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="524318065" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.001713" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1090" name="DetectedPipeline_MatchesCurrentProject" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.DetectedPipeline_MatchesCurrentProject" methodname="DetectedPipeline_MatchesCurrentProject" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="1974916447" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.001127" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1085" name="Initialize_ActivatesAdapter_WhenAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_ActivatesAdapter_WhenAvailable" methodname="Initialize_ActivatesAdapter_WhenAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="1807141956" result="Failed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000974" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_ActivatesAdapter_WhenAvailable () [0x00029] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\RenderPipelineAdapterServiceTests.cs:53
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1084" name="Initialize_DetectsPipeline" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_DetectsPipeline" methodname="Initialize_DetectsPipeline" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="705714706" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.001445" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1086" name="Initialize_LogsInfoMessage" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_LogsInfoMessage" methodname="Initialize_LogsInfoMessage" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="1225720858" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000899" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1089" name="Initialize_WithEnabledFalse_DisablesRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_WithEnabledFalse_DisablesRenderer" methodname="Initialize_WithEnabledFalse_DisablesRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="1371714871" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000752" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1088" name="Initialize_WithEnabledTrue_EnablesRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_WithEnabledTrue_EnablesRenderer" methodname="Initialize_WithEnabledTrue_EnablesRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="279853391" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000757" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[RenderPipelineAdapterService] Built-in Render Pipeline detected but adapter not available
+[RenderPipelineAdapterService] No adapter available for Built-in Render Pipeline, using No-Op fallback
+]]></output>
+                </test-case>
+                <test-case id="1092" name="RenderPipelineDetector_DetectPipeline_DoesNotThrow" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.RenderPipelineDetector_DetectPipeline_DoesNotThrow" methodname="RenderPipelineDetector_DetectPipeline_DoesNotThrow" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="1297029796" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000270" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1091" name="RenderPipelineDetector_GetPipelineName_ReturnsValidNames" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.RenderPipelineDetector_GetPipelineName_ReturnsValidNames" methodname="RenderPipelineDetector_GetPipelineName_ReturnsValidNames" classname="IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests" runstate="Runnable" seed="633294078" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:19Z" duration="0.000147" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1093" name="ThreadSafetyStressTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:30Z" duration="10.786453" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1096" name="BoundedQueue_DropsMessagesWhenFull" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.BoundedQueue_DropsMessagesWhenFull" methodname="BoundedQueue_DropsMessagesWhenFull" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests" runstate="Runnable" seed="629003564" result="Passed" start-time="2025-10-17 17:19:19Z" end-time="2025-10-17 17:19:30Z" duration="10.536864" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1097" name="ConcurrentSubscribeAndUnsubscribe_NoDataRaces" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.ConcurrentSubscribeAndUnsubscribe_NoDataRaces" methodname="ConcurrentSubscribeAndUnsubscribe_NoDataRaces" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests" runstate="Runnable" seed="720582868" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.183972" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="MultiThreadedLogging_NoDataRaces" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.MultiThreadedLogging_NoDataRaces" methodname="MultiThreadedLogging_NoDataRaces" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests" runstate="Runnable" seed="554171819" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.015515" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1095" name="SubscribersReceiveOnMainThread" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.SubscribersReceiveOnMainThread" methodname="SubscribersReceiveOnMainThread" classname="IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests" runstate="Runnable" seed="60607657" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.045028" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1098" name="URPAdapterTests" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.008240" total="9" passed="7" failed="2" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1107" name="Cleanup_RemovesRenderer" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Cleanup_RemovesRenderer" methodname="Cleanup_RemovesRenderer" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="24443017" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000496" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1100" name="Initialize_CreatesVisualDebugRenderer_WhenURPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_CreatesVisualDebugRenderer_WhenURPAvailable" methodname="Initialize_CreatesVisualDebugRenderer_WhenURPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="1765142649" result="Failed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000920" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: null
+  But was:  <IrsikSoftware.LogSmith.URP.URPOverlayRenderer>
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_CreatesVisualDebugRenderer_WhenURPAvailable () [0x00014] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\URPAdapterTests.cs:53
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[[URPOverlayRenderer] Initialized. Make sure URPOverlayRendererFeature is added to your URP Renderer asset.
+]]></output>
+                </test-case>
+                <test-case id="1102" name="Initialize_DisablesRendererByDefault" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_DisablesRendererByDefault" methodname="Initialize_DisablesRendererByDefault" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="1828550280" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000199" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1101" name="Initialize_EnablesRendererWhenRequested" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_EnablesRendererWhenRequested" methodname="Initialize_EnablesRendererWhenRequested" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="746412334" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000188" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1099" name="IsAvailable_ReturnsExpectedValue" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.IsAvailable_ReturnsExpectedValue" methodname="IsAvailable_ReturnsExpectedValue" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="508011624" result="Failed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000259" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                    <stack-trace><![CDATA[at IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.IsAvailable_ReturnsExpectedValue () [0x00001] in .\Packages\com.irsiksoftware.logsmith\Tests\PlayMode\URPAdapterTests.cs:41
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1105" name="VisualDebugRenderer_CanClear_WhenURPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanClear_WhenURPAvailable" methodname="VisualDebugRenderer_CanClear_WhenURPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="2105782233" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000189" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1103" name="VisualDebugRenderer_CanDrawLine_WhenURPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanDrawLine_WhenURPAvailable" methodname="VisualDebugRenderer_CanDrawLine_WhenURPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="588387646" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000188" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1104" name="VisualDebugRenderer_CanDrawQuad_WhenURPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanDrawQuad_WhenURPAvailable" methodname="VisualDebugRenderer_CanDrawQuad_WhenURPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="1115846689" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000186" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                </test-case>
+                <test-case id="1106" name="VisualDebugRenderer_CanToggleEnabled_WhenURPAvailable" fullname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanToggleEnabled_WhenURPAvailable" methodname="VisualDebugRenderer_CanToggleEnabled_WhenURPAvailable" classname="IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests" runstate="Runnable" seed="300193904" result="Passed" start-time="2025-10-17 17:19:30Z" end-time="2025-10-17 17:19:30Z" duration="0.000185" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[URP not available, skipping test]]></message>
+                  </reason>
+                  <output><![CDATA[Saving results to: C:/Users/Ender/AppData/LocalLow/DefaultCompany/LogSmith\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,3 +1,4 @@
+#if LOGSMITH_VCONTAINER_PRESENT
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -88,3 +89,4 @@ namespace IrsikSoftware.LogSmith.DI
         }
     }
 }
+#endif
