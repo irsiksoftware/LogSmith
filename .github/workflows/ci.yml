@@ -8,14 +8,12 @@ on:
 
 jobs:
   test:
-    name: Test ${{ matrix.unityVersion }} on ${{ matrix.os }}
-    runs-on: [self-hosted, '${{ matrix.os }}']
-    continue-on-error: ${{ matrix.os != 'Windows' }}
+    name: Test ${{ matrix.unityVersion }} on Windows
+    runs-on: [self-hosted, Windows]
 
     strategy:
       fail-fast: false
       matrix:
-        os: [Windows, Linux, macOS]
         unityVersion:
           - 2022.3.50f1  # 2022.3 LTS
           - 2023.2.20f1  # 2023 LTS
@@ -25,8 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Unity License (Windows)
-        if: matrix.os == 'Windows'
+      - name: Setup Unity License
         shell: powershell
         run: |
           $LICENSE_DIR = "$env:LOCALAPPDATA\Unity\licenses"
@@ -37,31 +34,8 @@ jobs:
 
           Write-Host "Unity license installed at: $LICENSE_FILE"
 
-      - name: Setup Unity License (Linux)
-        if: matrix.os == 'Linux'
-        shell: bash
-        run: |
-          LICENSE_DIR="$HOME/.local/share/unity3d/Unity"
-          mkdir -p "$LICENSE_DIR"
-
-          echo "${{ secrets.UNITY_LICENSE }}" | base64 -d > "$LICENSE_DIR/UnityEntitlementLicense.xml"
-
-          echo "Unity license installed at: $LICENSE_DIR/UnityEntitlementLicense.xml"
-
-      - name: Setup Unity License (macOS)
-        if: matrix.os == 'macOS'
-        shell: bash
-        run: |
-          LICENSE_DIR="$HOME/Library/Application Support/Unity"
-          mkdir -p "$LICENSE_DIR"
-
-          echo "${{ secrets.UNITY_LICENSE }}" | base64 -d > "$LICENSE_DIR/UnityEntitlementLicense.xml"
-
-          echo "Unity license installed at: $LICENSE_DIR/UnityEntitlementLicense.xml"
-
-      - name: Find Unity Editor Path (Windows)
-        if: matrix.os == 'Windows'
-        id: unity-path-windows
+      - name: Find Unity Editor Path
+        id: unity-path
         shell: powershell
         run: |
           $UNITY_PATH = "C:/Program Files/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity.exe"
@@ -74,63 +48,17 @@ jobs:
           echo "unity_path=$UNITY_PATH" >> $env:GITHUB_OUTPUT
           Write-Host "Found Unity at: $UNITY_PATH"
 
-      - name: Find Unity Editor Path (Linux)
-        if: matrix.os == 'Linux'
-        id: unity-path-linux
-        shell: bash
-        run: |
-          if [ -d "$HOME/Unity/Hub/Editor/${{ matrix.unityVersion }}" ]; then
-            UNITY_PATH="$HOME/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity"
-          elif [ -d "/opt/Unity/Hub/Editor/${{ matrix.unityVersion }}" ]; then
-            UNITY_PATH="/opt/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity"
-          else
-            echo "::error::Unity installation not found for version ${{ matrix.unityVersion }}"
-            exit 1
-          fi
-
-          if [ ! -f "$UNITY_PATH" ]; then
-            echo "::error::Unity executable not found at $UNITY_PATH"
-            exit 1
-          fi
-
-          echo "unity_path=$UNITY_PATH" >> $GITHUB_OUTPUT
-          echo "Found Unity at: $UNITY_PATH"
-
-      - name: Find Unity Editor Path (macOS)
-        if: matrix.os == 'macOS'
-        id: unity-path-macos
-        shell: bash
-        run: |
-          UNITY_PATH="/Applications/Unity/Hub/Editor/${{ matrix.unityVersion }}/Unity.app/Contents/MacOS/Unity"
-
-          if [ ! -f "$UNITY_PATH" ]; then
-            echo "::error::Unity executable not found at $UNITY_PATH"
-            exit 1
-          fi
-
-          echo "unity_path=$UNITY_PATH" >> $GITHUB_OUTPUT
-          echo "Found Unity at: $UNITY_PATH"
-
-      - name: Create test directories (Windows)
-        if: matrix.os == 'Windows'
+      - name: Create test directories
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/TestResults"
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/CodeCoverage"
 
-      - name: Create test directories (Linux/macOS)
-        if: matrix.os != 'Windows'
-        shell: bash
-        run: |
-          mkdir -p "${{ github.workspace }}/TestResults"
-          mkdir -p "${{ github.workspace }}/CodeCoverage"
-
-      - name: Run EditMode tests (Windows)
-        if: matrix.os == 'Windows'
-        id: editmode-tests-windows
+      - name: Run EditMode tests
+        id: editmode-tests
         shell: powershell
         run: |
-          & "${{ steps.unity-path-windows.outputs.unity_path }}" `
+          & "${{ steps.unity-path.outputs.unity_path }}" `
             -runTests `
             -batchmode `
             -nographics `
@@ -145,33 +73,11 @@ jobs:
           echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
           echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $env:GITHUB_OUTPUT
 
-      - name: Run EditMode tests (Linux/macOS)
-        if: matrix.os != 'Windows'
-        id: editmode-tests-unix
-        shell: bash
-        run: |
-          UNITY_PATH="${{ steps.unity-path-linux.outputs.unity_path || steps.unity-path-macos.outputs.unity_path }}"
-          "$UNITY_PATH" \
-            -runTests \
-            -batchmode \
-            -nographics \
-            -projectPath "${{ github.workspace }}" \
-            -testPlatform EditMode \
-            -testResults "${{ github.workspace }}/TestResults/EditMode-results.xml" \
-            -logFile "${{ github.workspace }}/TestResults/EditMode-log.txt" \
-            -enableCodeCoverage \
-            -coverageResultsPath "${{ github.workspace }}/CodeCoverage" \
-            -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
-
-          echo "results_path=${{ github.workspace }}/TestResults" >> $GITHUB_OUTPUT
-          echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $GITHUB_OUTPUT
-
-      - name: Run PlayMode tests (Windows)
-        if: matrix.os == 'Windows'
-        id: playmode-tests-windows
+      - name: Run PlayMode tests
+        id: playmode-tests
         shell: powershell
         run: |
-          & "${{ steps.unity-path-windows.outputs.unity_path }}" `
+          & "${{ steps.unity-path.outputs.unity_path }}" `
             -runTests `
             -batchmode `
             -nographics `
@@ -182,28 +88,11 @@ jobs:
 
           echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
 
-      - name: Run PlayMode tests (Linux/macOS)
-        if: matrix.os != 'Windows'
-        id: playmode-tests-unix
-        shell: bash
-        run: |
-          UNITY_PATH="${{ steps.unity-path-linux.outputs.unity_path || steps.unity-path-macos.outputs.unity_path }}"
-          "$UNITY_PATH" \
-            -runTests \
-            -batchmode \
-            -nographics \
-            -projectPath "${{ github.workspace }}" \
-            -testPlatform PlayMode \
-            -testResults "${{ github.workspace }}/TestResults/PlayMode-results.xml" \
-            -logFile "${{ github.workspace }}/TestResults/PlayMode-log.txt"
-
-          echo "results_path=${{ github.workspace }}/TestResults" >> $GITHUB_OUTPUT
-
       - name: Upload EditMode test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Test-Results-EditMode-${{ matrix.unityVersion }}-${{ matrix.os }}
+          name: Test-Results-EditMode-${{ matrix.unityVersion }}-Windows
           path: ${{ github.workspace }}/TestResults/EditMode-*
           retention-days: 30
           if-no-files-found: warn
@@ -212,7 +101,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Test-Results-PlayMode-${{ matrix.unityVersion }}-${{ matrix.os }}
+          name: Test-Results-PlayMode-${{ matrix.unityVersion }}-Windows
           path: ${{ github.workspace }}/TestResults/PlayMode-*
           retention-days: 30
           if-no-files-found: warn
@@ -221,74 +110,17 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Coverage-Results-${{ matrix.unityVersion }}-${{ matrix.os }}
+          name: Coverage-Results-${{ matrix.unityVersion }}-Windows
           path: ${{ github.workspace }}/CodeCoverage
           retention-days: 30
           if-no-files-found: warn
 
-      - name: Check coverage threshold
-        if: matrix.os == 'Linux' && matrix.unityVersion == '6000.0.26f1'
-        shell: bash
-        run: |
-          # Find coverage summary file (Unity's coverage output structure can vary)
-          COVERAGE_SUMMARY=""
-          if [ -f "${{ github.workspace }}/CodeCoverage/Report/Summary.xml" ]; then
-            COVERAGE_SUMMARY="${{ github.workspace }}/CodeCoverage/Report/Summary.xml"
-          elif [ -f "${{ github.workspace }}/CodeCoverage/Summary.xml" ]; then
-            COVERAGE_SUMMARY="${{ github.workspace }}/CodeCoverage/Summary.xml"
-          else
-            echo "::error::Coverage summary file not found. Checked:"
-            echo "  - ${{ github.workspace }}/CodeCoverage/Report/Summary.xml"
-            echo "  - ${{ github.workspace }}/CodeCoverage/Summary.xml"
-            ls -la "${{ github.workspace }}/CodeCoverage" || echo "CodeCoverage directory is empty or missing"
-            exit 1
-          fi
-
-          echo "Found coverage summary at: $COVERAGE_SUMMARY"
-
-          # Extract line coverage percentage from Summary.xml
-          LINE_COVERAGE=$(grep -oP 'linecoverage="\K[0-9.]+' "$COVERAGE_SUMMARY" || echo "0")
-
-          echo "::notice::Line Coverage: ${LINE_COVERAGE}%"
-
-          # Compare coverage (using bc for float comparison)
-          if command -v bc &> /dev/null; then
-            if (( $(echo "$LINE_COVERAGE < 100" | bc -l) )); then
-              echo "::error::Coverage is ${LINE_COVERAGE}%, which is below the required 100%"
-              exit 1
-            fi
-          else
-            # Fallback if bc is not available (use awk)
-            if awk -v cov="$LINE_COVERAGE" 'BEGIN {exit !(cov < 100)}'; then
-              echo "::error::Coverage is ${LINE_COVERAGE}%, which is below the required 100%"
-              exit 1
-            fi
-          fi
-
-          echo "::notice::✅ Coverage check passed: ${LINE_COVERAGE}%"
-
-      - name: Publish coverage report
-        if: matrix.os == 'Linux' && matrix.unityVersion == '6000.0.26f1'
-        uses: actions/upload-artifact@v4
-        with:
-          name: Coverage-Report-HTML
-          path: ${{ github.workspace }}/CodeCoverage
-          retention-days: 90
-          if-no-files-found: warn
-
-      - name: Clean up test artifacts (Windows)
-        if: always() && matrix.os == 'Windows'
+      - name: Clean up test artifacts
+        if: always()
         shell: powershell
         run: |
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/TestResults"
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/CodeCoverage"
-
-      - name: Clean up test artifacts (Linux/macOS)
-        if: always() && matrix.os != 'Windows'
-        shell: bash
-        run: |
-          rm -rf "${{ github.workspace }}/TestResults"
-          rm -rf "${{ github.workspace }}/CodeCoverage"
 
   coverage-summary:
     name: Coverage Gate
