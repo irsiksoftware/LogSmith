@@ -9,10 +9,10 @@ namespace IrsikSoftware.LogSmith
     [Serializable]
     public class CategoryDefinition
     {
-        [Tooltip("The name of the category (e.g., 'Gameplay', 'Network', 'UI')")]
-        public string name = "Default";
+        [Tooltip("Category name")]
+        public string categoryName;
 
-        [Tooltip("Display color for this category in logs and UI")]
+        [Tooltip("Display color for this category")]
         public Color color = Color.white;
 
         [Tooltip("Minimum log level for this category")]
@@ -25,9 +25,9 @@ namespace IrsikSoftware.LogSmith
         {
         }
 
-        public CategoryDefinition(string name, Color color, LogLevel minimumLevel = LogLevel.Debug, bool enabled = true)
+        public CategoryDefinition(string categoryName, Color color, LogLevel minimumLevel = LogLevel.Debug, bool enabled = true)
         {
-            this.name = name;
+            this.categoryName = categoryName;
             this.color = color;
             this.minimumLevel = minimumLevel;
             this.enabled = enabled;

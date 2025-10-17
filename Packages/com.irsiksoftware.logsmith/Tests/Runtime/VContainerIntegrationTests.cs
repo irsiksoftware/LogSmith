@@ -34,7 +34,7 @@ namespace IrsikSoftware.LogSmith.Tests
             }
 
             // Clean up ANY LoggingLifetimeScope objects that might be left in the scene
-            var allScopes = Object.FindObjectsOfType<DI.LoggingLifetimeScope>();
+            var allScopes = Object.FindObjectsByType<DI.LoggingLifetimeScope>(FindObjectsSortMode.None);
             foreach (var scope in allScopes)
             {
                 Object.DestroyImmediate(scope.gameObject);
