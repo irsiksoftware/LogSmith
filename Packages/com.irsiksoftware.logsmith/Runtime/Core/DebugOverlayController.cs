@@ -71,9 +71,18 @@ namespace IrsikSoftware.LogSmith.Core
         private void Update()
         {
             // Toggle visibility with F1
-            if (Input.GetKeyDown(KeyCode.F1))
+            // Wrapped in try-catch to handle Input System package conflicts
+            try
             {
-                _isVisible = !_isVisible;
+                if (Input.GetKeyDown(KeyCode.F1))
+                {
+                    _isVisible = !_isVisible;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Ignore - happens when new Input System package is active
+                // Users should use the new Input System actions if available
             }
 
             // Throttled update

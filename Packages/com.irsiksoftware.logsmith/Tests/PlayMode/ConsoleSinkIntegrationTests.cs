@@ -41,13 +41,24 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
 
         private LogMessage CreateTestMessage(string message = "Test message", LogLevel level = LogLevel.Info, string category = "Test")
         {
+            // Get frame count safely - Time.frameCount can only be called from main thread
+            int frameCount = -1;
+            try
+            {
+                frameCount = Time.frameCount;
+            }
+            catch (UnityEngine.UnityException)
+            {
+                // Called from background thread - frameCount unavailable
+            }
+
             return new LogMessage
             {
                 Level = level,
                 Category = category,
                 Message = message,
                 Timestamp = DateTime.UtcNow,
-                Frame = Time.frameCount,
+                Frame = frameCount,
                 ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
                 ThreadName = System.Threading.Thread.CurrentThread.Name ?? "Main",
                 CallerFilePath = "TestFile.cs",
@@ -124,6 +135,9 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
             var message = CreateTestMessage("Error message", LogLevel.Error);
             _capturedLogs.Clear();
 
+            // Expect the error log
+            LogAssert.Expect(LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[Test\] Error message.*"));
+
             // Act
             sink.Write(message);
             yield return null;
@@ -142,6 +156,9 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
             var sink = new ConsoleSink(_templateEngine);
             var message = CreateTestMessage("Critical message", LogLevel.Critical);
             _capturedLogs.Clear();
+
+            // Expect the error log
+            LogAssert.Expect(LogType.Error, new System.Text.RegularExpressions.Regex(@".*\[Test\] Critical message.*"));
 
             // Act
             sink.Write(message);

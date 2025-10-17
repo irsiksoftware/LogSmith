@@ -28,6 +28,7 @@ namespace IrsikSoftware.LogSmith.DI
             builder.Register<ICategoryRegistry, CategoryRegistry>(Lifetime.Singleton);
             builder.Register<IMessageTemplateEngine, MessageTemplateEngine>(Lifetime.Singleton);
             builder.Register<ILogConfigProvider, LogConfigProvider>(Lifetime.Singleton);
+            builder.Register<IPlatformCapabilities, PlatformCapabilities>(Lifetime.Singleton);
 
             // Register UnityLoggingBootstrap to handle initialization
             builder.Register<UnityLoggingBootstrap>(Lifetime.Singleton);
