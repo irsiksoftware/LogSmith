@@ -34,7 +34,12 @@ namespace IrsikSoftware.LogSmith.Core
                             // Create a new GameObject for the dispatcher
                             var go = new GameObject("[LogSmith] MainThreadDispatcher");
                             _instance = go.AddComponent<MainThreadDispatcher>();
-                            DontDestroyOnLoad(go);
+
+                            // DontDestroyOnLoad only works in play mode, not in editor tests
+                            if (Application.isPlaying)
+                            {
+                                DontDestroyOnLoad(go);
+                            }
                         }
                     }
                 }
@@ -71,11 +76,18 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         private void Update()
         {
-            // Process all queued actions (up to a reasonable limit per frame to avoid spikes)
-            int processedCount = 0;
-            const int maxActionsPerFrame = 100;
+            ProcessQueue(maxActions: 100);
+        }
 
-            while (processedCount < maxActionsPerFrame && _executionQueue.TryDequeue(out var action))
+        /// <summary>
+        /// Processes queued actions immediately. Used for testing.
+        /// </summary>
+        /// <param name="maxActions">Maximum number of actions to process. If -1, processes all.</param>
+        public void ProcessQueue(int maxActions = -1)
+        {
+            int processedCount = 0;
+
+            while ((maxActions == -1 || processedCount < maxActions) && _executionQueue.TryDequeue(out var action))
             {
                 try
                 {
