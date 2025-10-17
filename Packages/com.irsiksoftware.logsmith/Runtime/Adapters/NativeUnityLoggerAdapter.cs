@@ -29,7 +29,8 @@ namespace IrsikSoftware.LogSmith.Adapters
         }
 
         /// <summary>
-        /// Writes a log message at the specified level using Unity's native logger.
+        /// Writes a log message at the specified level using Unity's Debug logging.
+        /// Note: We use UnityEngine.Debug instead of Unity.Logging to avoid FixedString size limitations.
         /// </summary>
         public static void Write(LogLevel level, string category, string message)
         {
@@ -38,22 +39,20 @@ namespace IrsikSoftware.LogSmith.Adapters
             switch (level)
             {
                 case LogLevel.Trace:
-                    UnityLog.Verbose(formattedMessage);
-                    break;
                 case LogLevel.Debug:
-                    UnityLog.Debug(formattedMessage);
+                    UnityEngine.Debug.Log(formattedMessage);
                     break;
                 case LogLevel.Info:
-                    UnityLog.Info(formattedMessage);
+                    UnityEngine.Debug.Log(formattedMessage);
                     break;
                 case LogLevel.Warn:
-                    UnityLog.Warning(formattedMessage);
+                    UnityEngine.Debug.LogWarning(formattedMessage);
                     break;
                 case LogLevel.Error:
-                    UnityLog.Error(formattedMessage);
+                    UnityEngine.Debug.LogError(formattedMessage);
                     break;
                 case LogLevel.Critical:
-                    UnityLog.Fatal(formattedMessage);
+                    UnityEngine.Debug.LogError($"[CRITICAL] {formattedMessage}");
                     break;
             }
         }

@@ -29,7 +29,7 @@
   "samples": [
     {
       "displayName": "Demo",
-      "description": "Basic usage examples and demo scenes",
+      "description": "Comprehensive logging examples with pre-configured demo scene and interactive scripts demonstrating all LogSmith features",
       "path": "Samples~/Demo"
     }
   ]
