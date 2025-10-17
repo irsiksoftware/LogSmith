@@ -16,7 +16,7 @@
     "versionDefines": [
         {
             "name": "jp.hadashikick.vcontainer",
-            "expression": "1.0.0",
+            "expression": "",
             "define": "LOGSMITH_VCONTAINER_PRESENT"
         }
     ],
