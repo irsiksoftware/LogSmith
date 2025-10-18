@@ -25,5 +25,27 @@
   "license": "MIT",
   "dependencies": {
     "com.irsiksoftware.logsmith": "1.0.0"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "HTTP Sink",
+      "description": "Example scene demonstrating HTTP Sink usage for sending logs to REST endpoints",
+      "path": "Samples~/HTTP Sink"
+    },
+    {
+      "displayName": "Sentry Sink",
+      "description": "Example scene demonstrating Sentry integration for error tracking and monitoring",
+      "path": "Samples~/Sentry Sink"
+    },
+    {
+      "displayName": "Seq Sink",
+      "description": "Example scene demonstrating Seq integration for structured logging and analysis",
+      "path": "Samples~/Seq Sink"
+    },
+    {
+      "displayName": "Elasticsearch Sink",
+      "description": "Example scene demonstrating Elasticsearch integration for large-scale log storage",
+      "path": "Samples~/Elasticsearch Sink"
+    }
+  ]
 }
