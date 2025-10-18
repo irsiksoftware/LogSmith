@@ -34,6 +34,15 @@ jobs:
 
           Write-Host "Unity license installed at: $LICENSE_FILE"
 
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ matrix.unityVersion }}-${{ hashFiles('Packages/packages-lock.json', 'Packages/manifest.json', 'ProjectSettings/ProjectVersion.txt') }}
+          restore-keys: |
+            Library-${{ matrix.unityVersion }}-
+            Library-
+
       - name: Find Unity Editor Path
         id: unity-path
         shell: powershell
