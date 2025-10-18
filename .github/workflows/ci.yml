@@ -59,21 +59,39 @@ jobs:
         shell: powershell
         run: |
           Write-Host "Running EditMode tests..."
-          & "${{ steps.unity-path.outputs.unity_path }}" `
-            -runTests `
-            -batchmode `
-            -nographics `
-            -projectPath "${{ github.workspace }}" `
-            -testPlatform EditMode `
-            -testResults "${{ github.workspace }}/TestResults/EditMode-results.xml" `
-            -logFile "${{ github.workspace }}/TestResults/EditMode-log.txt" `
-            -enableCodeCoverage `
-            -coverageResultsPath "${{ github.workspace }}/CodeCoverage" `
-            -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+          $exitCode = 0
 
+          try {
+            & "${{ steps.unity-path.outputs.unity_path }}" `
+              -runTests `
+              -batchmode `
+              -nographics `
+              -projectPath "${{ github.workspace }}" `
+              -testPlatform EditMode `
+              -testResults "${{ github.workspace }}/TestResults/EditMode-results.xml" `
+              -logFile "${{ github.workspace }}/TestResults/EditMode-log.txt" `
+              -enableCodeCoverage `
+              -coverageResultsPath "${{ github.workspace }}/CodeCoverage" `
+              -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+
+            $exitCode = $LASTEXITCODE
+          } catch {
+            Write-Host "##[error]Unity test runner crashed: $_"
+            exit 1
+          }
+
+          Write-Host "Unity exit code: $exitCode"
           Write-Host "Checking test results directory..."
           Get-ChildItem "${{ github.workspace }}/TestResults" -ErrorAction SilentlyContinue | Format-Table Name, Length
 
+          # Check if XML results were actually created
+          if (-Not (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml")) {
+            Write-Host "##[error]EditMode-results.xml was not created! Unity may have crashed."
+            Get-Content "${{ github.workspace }}/TestResults/EditMode-log.txt" -Tail 20
+            exit 1
+          }
+
+          Write-Host "EditMode tests completed successfully"
           echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
           echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $env:GITHUB_OUTPUT
 
@@ -82,18 +100,36 @@ jobs:
         shell: powershell
         run: |
           Write-Host "Running PlayMode tests..."
-          & "${{ steps.unity-path.outputs.unity_path }}" `
-            -runTests `
-            -batchmode `
-            -nographics `
-            -projectPath "${{ github.workspace }}" `
-            -testPlatform PlayMode `
-            -testResults "${{ github.workspace }}/TestResults/PlayMode-results.xml" `
-            -logFile "${{ github.workspace }}/TestResults/PlayMode-log.txt"
+          $exitCode = 0
 
+          try {
+            & "${{ steps.unity-path.outputs.unity_path }}" `
+              -runTests `
+              -batchmode `
+              -nographics `
+              -projectPath "${{ github.workspace }}" `
+              -testPlatform PlayMode `
+              -testResults "${{ github.workspace }}/TestResults/PlayMode-results.xml" `
+              -logFile "${{ github.workspace }}/TestResults/PlayMode-log.txt"
+
+            $exitCode = $LASTEXITCODE
+          } catch {
+            Write-Host "##[error]Unity test runner crashed: $_"
+            exit 1
+          }
+
+          Write-Host "Unity exit code: $exitCode"
           Write-Host "Checking test results directory..."
           Get-ChildItem "${{ github.workspace }}/TestResults" -ErrorAction SilentlyContinue | Format-Table Name, Length
 
+          # Check if XML results were actually created
+          if (-Not (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml")) {
+            Write-Host "##[error]PlayMode-results.xml was not created! Unity may have crashed."
+            Get-Content "${{ github.workspace }}/TestResults/PlayMode-log.txt" -Tail 20
+            exit 1
+          }
+
+          Write-Host "PlayMode tests completed successfully"
           echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
 
       - name: Generate test summary
