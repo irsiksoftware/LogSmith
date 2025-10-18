@@ -1,21 +1,37 @@
-MIT License
+Unity Asset Store End User License Agreement (EULA)
 
 Copyright (c) 2025 Irsik Software
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This package ("LogSmith Pro - Optional Sinks") is distributed exclusively through
+the Unity Asset Store and is governed by the Unity Asset Store EULA.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+**License Type:** Unity Asset Store Standard License
+**Product:** LogSmith Pro - Optional Sinks
+**Price:** $4.99 (one-time purchase)
+**Requires:** LogSmith (Free) - com.irsiksoftware.logsmith
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+By purchasing and using this package, you agree to the terms of the Unity Asset
+Store End User License Agreement, available at:
+https://unity.com/legal/as-terms
+
+**Key Points:**
+- This is NOT open source software
+- Use in unlimited commercial projects permitted
+- No source code redistribution allowed
+- Covered by Unity Asset Store EULA terms
+
+**What's Included:**
+- HTTP/REST Sink (generic endpoint logging)
+- Sentry Sink (error tracking and monitoring)
+- Seq Sink (structured logging with CLEF format)
+- Elasticsearch Sink (ECS-compatible bulk indexing)
+- Priority email support
+
+**Support:**
+For support inquiries, contact: support@irsiksoftware.com
+
+**Open Source Alternative:**
+LogSmith (Free) is available as open source (MIT License) on GitHub:
+https://github.com/DakotaIrsik/LogSmith
+
+For pricing information and feature comparison, see PRICING.md in the main repository.
