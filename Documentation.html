@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogSmith Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar - 25% */
+        .sidebar {
+            width: 25%;
+            background: #2c3e50;
+            color: #ecf0f1;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+
+        .sidebar h1 {
+            padding: 0 2rem 1rem 2rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #34495e;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar nav ul li a {
+            display: block;
+            padding: 0.75rem 2rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar nav ul li a:hover {
+            background: #34495e;
+            padding-left: 2.5rem;
+        }
+
+        .sidebar nav ul li a.active {
+            background: #3498db;
+            border-left: 4px solid #2980b9;
+        }
+
+        /* Main Content - 75% */
+        .content {
+            margin-left: 25%;
+            width: 75%;
+            padding: 3rem 4rem;
+            background: #fff;
+        }
+
+        .content section {
+            margin-bottom: 4rem;
+            padding-top: 1rem;
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .content h3 {
+            color: #34495e;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .content code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        .content pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .content pre code {
+            background: none;
+            color: #ecf0f1;
+            padding: 0;
+        }
+
+        .content ul, .content ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .note {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #3498db;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .badge.free {
+            background: #27ae60;
+        }
+
+        .badge.pro {
+            background: #e67e22;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h1>LogSmith Docs</h1>
+            <nav>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#quick-start">Quick Start</a></li>
+                    <li><a href="#configuration">Configuration</a></li>
+                    <li><a href="#vcontainer">VContainer Integration</a></li>
+                    <li><a href="#sinks">Sinks</a></li>
+                    <li><a href="#api-reference">API Reference</a></li>
+                    <li><a href="#troubleshooting">Troubleshooting</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Introduction -->
+            <section id="introduction">
+                <h2>Introduction</h2>
+                <p>
+                    LogSmith is a production-grade Unity logging package built from scratch to leverage Unity's native
+                    <code>com.unity.logging</code> system with advanced features for professional game development.
+                </p>
+                <p>
+                    Designed for Unity 6000.2 with broad compatibility back to Unity 2022.3 LTS, LogSmith provides
+                    a clean, extensible architecture that grows with your project - from prototype to production.
+                </p>
+
+                <h3>Key Features</h3>
+                <ul>
+                    <li><strong>Native Unity Backend</strong> - Built on Unity's official logging system</li>
+                    <li><strong>DI-First Architecture</strong> - Full VContainer integration with no-DI fallback</li>
+                    <li><strong>Runtime Category Management</strong> - Add/remove categories at runtime via editor</li>
+                    <li><strong>Message Templating</strong> - Customizable output formats with live preview</li>
+                    <li><strong>In-Game Debug Overlay</strong> - Press F1 for real-time log filtering</li>
+                    <li><strong>100% Test Coverage</strong> - EditMode + PlayMode tests with CI gates</li>
+                    <li><strong>Extensible Sinks</strong> - Console, File, and custom sink support</li>
+                </ul>
+
+                <div class="note">
+                    <strong>Open Source:</strong> LogSmith (Free) is open source under the MIT License.
+                    LogSmith Pro ($14.99) adds enterprise sink integrations (Sentry, Seq, Elasticsearch, HTTP).
+                </div>
+            </section>
+
+            <!-- Installation -->
+            <section id="installation">
+                <h2>Installation</h2>
+
+                <h3>Via Unity Package Manager (UPM)</h3>
+                <p>
+                    Add LogSmith to your project using Unity's Package Manager:
+                </p>
+                <ol>
+                    <li>Open <strong>Window → Package Manager</strong></li>
+                    <li>Click the <strong>+</strong> button</li>
+                    <li>Select <strong>Add package from git URL</strong></li>
+                    <li>Enter: <code>https://github.com/irsiksoftware/LogSmith.git</code></li>
+                    <li>Click <strong>Add</strong></li>
+                </ol>
+
+                <h3>Via Package Manager (Asset Store)</h3>
+                <p>
+                    Download LogSmith (Free) from the Unity Asset Store:
+                </p>
+                <ol>
+                    <li>Open <strong>Window → Package Manager</strong></li>
+                    <li>Switch to <strong>My Assets</strong></li>
+                    <li>Find <strong>LogSmith</strong></li>
+                    <li>Click <strong>Download</strong> then <strong>Import</strong></li>
+                </ol>
+
+                <h3>Requirements</h3>
+                <ul>
+                    <li><strong>Unity Version:</strong> 2022.3 LTS or later (tested on 2022.3, 2023, 6000.2)</li>
+                    <li><strong>Dependencies:</strong> com.unity.logging (automatically installed)</li>
+                    <li><strong>Optional:</strong> VContainer 1.17.0+ for DI features</li>
+                </ul>
+
+                <div class="warning">
+                    <strong>Platform Support:</strong> LogSmith supports all Unity platforms. File sink features
+                    may be limited on WebGL and some console platforms due to filesystem restrictions.
+                </div>
+            </section>
+
+            <!-- Quick Start -->
+            <section id="quick-start">
+                <h2>Quick Start <span class="badge free">FREE</span></h2>
+
+                <h3>Option 1: Static API (No DI Required)</h3>
+                <p>
+                    The simplest way to use LogSmith - just call the static API:
+                </p>
+                <pre><code>using IrsikSoftware.LogSmith;
+
+public class GameManager : MonoBehaviour
+{
+    private void Start()
+    {
+        // Get a logger for this category
+        var log = LogSmith.GetLogger("Gameplay");
+
+        // Log at different levels
+        log.Info("Game starting");
+        log.Warn("Low memory detected");
+        log.Error("Failed to load level");
+    }
+}</code></pre>
+
+                <h3>Option 2: With VContainer</h3>
+                <p>
+                    For projects using VContainer, LogSmith can be injected:
+                </p>
+                <pre><code>using IrsikSoftware.LogSmith;
+using VContainer;
+using VContainer.Unity;
+
+public class GameLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        // Register LogSmith (automatic)
+        builder.RegisterLogSmith();
+
+        // Your other registrations...
+        builder.RegisterEntryPoint<GameManager>();
+    }
+}
+
+public class GameManager : IStartable
+{
+    private readonly ILog _log;
+
+    // Constructor injection
+    public GameManager(ILog log)
+    {
+        _log = log;
+    }
+
+    public void Start()
+    {
+        _log.Info("Game manager started");
+    }
+}</code></pre>
+
+                <h3>Available Log Levels</h3>
+                <ul>
+                    <li><code>Trace(string message)</code> - Most verbose, for detailed debugging</li>
+                    <li><code>Debug(string message)</code> - General debugging information</li>
+                    <li><code>Info(string message)</code> - Informational messages</li>
+                    <li><code>Warn(string message)</code> - Warning messages</li>
+                    <li><code>Error(string message)</code> - Error messages</li>
+                    <li><code>Critical(string message)</code> - Critical failures</li>
+                </ul>
+            </section>
+
+            <!-- Configuration -->
+            <section id="configuration">
+                <h2>Configuration <span class="badge free">FREE</span></h2>
+
+                <h3>Creating LoggingSettings</h3>
+                <p>
+                    Create a LoggingSettings asset to configure LogSmith:
+                </p>
+                <ol>
+                    <li>Right-click in Project window</li>
+                    <li>Select <strong>Create → LogSmith → Logging Settings</strong></li>
+                    <li>Name it (e.g., "LoggingSettings")</li>
+                    <li>Configure via the editor window</li>
+                </ol>
+
+                <h3>Editor Window</h3>
+                <p>
+                    Open the LogSmith settings editor:
+                </p>
+                <ol>
+                    <li>Go to <strong>Window → LogSmith → Settings</strong></li>
+                    <li>Configure tabs:
+                        <ul>
+                            <li><strong>Categories</strong> - Add/edit categories, set minimum levels, assign colors</li>
+                            <li><strong>Sinks</strong> - Enable Console/File sinks, configure paths</li>
+                            <li><strong>Templates</strong> - Customize message formats with live preview</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>In-Game Debug Overlay</h3>
+                <p>
+                    Press <strong>F1</strong> in Play mode to toggle the debug overlay. Features:
+                </p>
+                <ul>
+                    <li>Filter by log level (Trace, Debug, Info, Warn, Error, Critical)</li>
+                    <li>Filter by category</li>
+                    <li>Search text filtering</li>
+                    <li>Color-coded categories for easy identification</li>
+                    <li>Minimal performance impact</li>
+                </ul>
+
+                <div class="note">
+                    <strong>Tip:</strong> The debug overlay works across all render pipelines (Built-in, URP, HDRP)
+                    and automatically adapts to your project's configuration.
+                </div>
+            </section>
+
+            <!-- VContainer Integration -->
+            <section id="vcontainer">
+                <h2>VContainer Integration <span class="badge free">FREE</span></h2>
+
+                <h3>Setup with VContainer</h3>
+                <p>
+                    LogSmith provides first-class VContainer support with automatic registration:
+                </p>
+                <pre><code>using IrsikSoftware.LogSmith.DI;
+using VContainer;
+using VContainer.Unity;
+
+public class GameLifetimeScope : LifetimeScope
+{
+    [SerializeField] private LoggingSettings settings;
+
+    protected override void Configure(IContainerBuilder builder)
+    {
+        // Register LogSmith with custom settings
+        builder.AddLogSmithLogging(settings);
+
+        // Or use default settings
+        // builder.AddLogSmithLogging();
+
+        // Register your game systems
+        builder.RegisterEntryPoint<GameManager>();
+        builder.Register<PlayerController>(Lifetime.Singleton);
+    }
+}</code></pre>
+
+                <h3>Constructor Injection</h3>
+                <p>
+                    Inject <code>ILog</code> into any class registered with VContainer:
+                </p>
+                <pre><code>public class PlayerController
+{
+    private readonly ILog _log;
+
+    public PlayerController(ILog log)
+    {
+        _log = log;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        _log.Warn($"Player took {amount} damage");
+    }
+}</code></pre>
+
+                <h3>Category-Specific Loggers</h3>
+                <p>
+                    Create category-specific loggers for better organization:
+                </p>
+                <pre><code>public class NetworkManager
+{
+    private readonly ILog _log;
+
+    public NetworkManager(ILog log)
+    {
+        // Create a category-specific logger
+        _log = log.WithCategory("Network");
+    }
+
+    public void Connect()
+    {
+        _log.Info("Connecting to server...");
+    }
+}</code></pre>
+
+                <div class="note">
+                    <strong>No DI? No Problem:</strong> LogSmith automatically falls back to a static API
+                    if VContainer isn't available. The same code works either way!
+                </div>
+            </section>
+
+            <!-- Sinks -->
+            <section id="sinks">
+                <h2>Sinks</h2>
+
+                <h3>Built-in Sinks <span class="badge free">FREE</span></h3>
+                <p>
+                    LogSmith includes two production-ready sinks:
+                </p>
+                <ul>
+                    <li><strong>ConsoleSink</strong> - Outputs to Unity Console with color support</li>
+                    <li><strong>FileSink</strong> - Writes logs to text files with rotation support</li>
+                </ul>
+
+                <h3>Pro Sinks <span class="badge pro">PRO $14.99</span></h3>
+                <p>
+                    LogSmith Pro adds enterprise-grade integrations:
+                </p>
+                <ul>
+                    <li><strong>HttpSink</strong> - Send logs to any HTTP/REST endpoint</li>
+                    <li><strong>SentrySink</strong> - Automatic error tracking with Sentry</li>
+                    <li><strong>SeqSink</strong> - Structured logging with Seq (CLEF format)</li>
+                    <li><strong>ElasticsearchSink</strong> - Bulk indexing to Elasticsearch (ECS compatible)</li>
+                </ul>
+
+                <h3>Custom Sinks</h3>
+                <p>
+                    Create your own sinks by implementing <code>ILogSink</code>:
+                </p>
+                <pre><code>using IrsikSoftware.LogSmith;
+
+public class CustomSink : ILogSink
+{
+    public string Name => "Custom";
+
+    public void Write(LogMessage message)
+    {
+        // Your custom logging logic
+        Debug.Log($"[{message.Level}] {message.Message}");
+    }
+
+    public void Flush()
+    {
+        // Flush any buffered messages
+    }
+}
+
+// Register your sink
+LogSmith.Router.RegisterSink(new CustomSink());</code></pre>
+            </section>
+
+            <!-- API Reference -->
+            <section id="api-reference">
+                <h2>API Reference</h2>
+
+                <h3>ILog Interface</h3>
+                <pre><code>public interface ILog
+{
+    void Trace(string message);
+    void Debug(string message);
+    void Info(string message);
+    void Warn(string message);
+    void Error(string message);
+    void Critical(string message);
+    ILog WithCategory(string category);
+}</code></pre>
+
+                <h3>Static API</h3>
+                <pre><code>// Get default logger
+var logger = LogSmith.Logger;
+
+// Create category-specific logger
+var gameplayLog = LogSmith.GetLogger("Gameplay");
+
+// Access router for advanced configuration
+var router = LogSmith.Router;
+
+// Reload settings at runtime
+LogSmith.ReloadSettings();
+
+// Switch output format
+LogSmith.SwitchFormat(MessageFormat.JSON);</code></pre>
+
+                <h3>LogRouter</h3>
+                <pre><code>// Register custom sinks
+router.RegisterSink(new CustomSink());
+
+// Unregister sinks
+router.UnregisterSink(sink);
+
+// Set global minimum level
+router.SetGlobalMinimumLevel(LogLevel.Info);
+
+// Set per-category minimum level
+router.SetCategoryFilter("Network", LogLevel.Debug);</code></pre>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting">
+                <h2>Troubleshooting</h2>
+
+                <h3>Logs Not Appearing</h3>
+                <ul>
+                    <li>Check that the category is enabled in the LogSmith settings</li>
+                    <li>Verify the minimum log level allows your message through</li>
+                    <li>Ensure Console/File sinks are enabled in settings</li>
+                    <li>Check Unity's Console window filters aren't hiding messages</li>
+                </ul>
+
+                <h3>VContainer Not Working</h3>
+                <ul>
+                    <li>Ensure VContainer 1.17.0+ is installed</li>
+                    <li>Check that <code>builder.AddLogSmithLogging()</code> is called</li>
+                    <li>Verify your LifetimeScope is active in the scene</li>
+                    <li>LogSmith will fall back to static API if VContainer isn't found</li>
+                </ul>
+
+                <h3>File Sink Not Writing</h3>
+                <ul>
+                    <li>Check file path permissions</li>
+                    <li>Verify platform supports file I/O (WebGL limitations)</li>
+                    <li>Check logs directory exists or can be created</li>
+                    <li>Look for errors in Unity Console about file access</li>
+                </ul>
+
+                <h3>Performance Issues</h3>
+                <ul>
+                    <li>Disable Trace/Debug levels in production builds</li>
+                    <li>Use category filtering to reduce log volume</li>
+                    <li>Disable debug overlay in builds (it's editor-only by default)</li>
+                    <li>Check sink configurations for batching/buffering options</li>
+                </ul>
+
+                <div class="warning">
+                    <strong>Platform-Specific Issues:</strong> Some platforms (WebGL, iOS, consoles) have
+                    restrictions on file I/O and threading. LogSmith detects these at runtime and adapts gracefully.
+                </div>
+
+                <h3>Getting Help</h3>
+                <p>
+                    Need more help? Here are your support options:
+                </p>
+                <ul>
+                    <li><strong>GitHub Issues:</strong> <a href="https://github.com/irsiksoftware/LogSmith/issues">Report bugs and request features</a></li>
+                    <li><strong>GitHub Discussions:</strong> <a href="https://github.com/irsiksoftware/LogSmith/discussions">Ask questions and share tips</a></li>
+                    <li><strong>Documentation:</strong> Check the README and samples in the package</li>
+                    <li><strong>Pro Support:</strong> Priority email support for LogSmith Pro customers</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
