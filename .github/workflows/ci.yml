@@ -329,74 +329,6 @@ jobs:
           $html | Out-File -FilePath "${{ github.workspace }}/TestResults/test-report-${{ matrix.unityVersion }}.html" -Encoding UTF8
           Write-Host "HTML report generated"
 
-      - name: Send Discord notification
-        if: always()
-        shell: powershell
-        run: |
-          if (-not "${{ secrets.TESTRESULTS_WEBHOOK }}") {
-            Write-Host "TESTRESULTS_WEBHOOK not configured, skipping Discord notification"
-            exit 0
-          }
-
-          $editTotal = 0
-          $editPassed = 0
-          $editFailed = 0
-          $playTotal = 0
-          $playPassed = 0
-          $playFailed = 0
-
-          if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
-            [xml]$editXml = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
-            $editSuite = $editXml.'test-run'
-            $editTotal = [int]$editSuite.total
-            $editPassed = [int]$editSuite.passed
-            $editFailed = [int]$editSuite.failed
-          }
-
-          if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
-            [xml]$playXml = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
-            $playSuite = $playXml.'test-run'
-            $playTotal = [int]$playSuite.total
-            $playPassed = [int]$playSuite.passed
-            $playFailed = [int]$playSuite.failed
-          }
-
-          $totalTests = $editTotal + $playTotal
-          $totalPassed = $editPassed + $playPassed
-          $totalFailed = $editFailed + $playFailed
-
-          $status = if ($totalFailed -eq 0) { "success" } else { "failure" }
-          $color = if ($totalFailed -eq 0) { 3066993 } else { 15158332 }
-          $emoji = if ($totalFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
-
-          $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
-          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          $nl = [Environment]::NewLine
-          $description = "**Total:** $totalTests | **Passed:** $totalPassed | **Failed:** $totalFailed$nl$nl[View Full HTML Report]($reportUrl)"
-
-          $payload = @{
-            embeds = @(
-              @{
-                title = "$emoji LogSmith Tests - Unity ${{ matrix.unityVersion }}"
-                description = $description
-                color = $color
-                fields = @(
-                  @{ name = "EditMode"; value = "$editPassed/$editTotal passed"; inline = $true }
-                  @{ name = "PlayMode"; value = "$playPassed/$playTotal passed"; inline = $true }
-                  @{ name = "Run"; value = "[#${{ github.run_number }}]($runUrl)"; inline = $true }
-                )
-                timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
-              }
-            )
-          } | ConvertTo-Json -Depth 10
-
-          try {
-            Invoke-RestMethod -Uri "${{ secrets.TESTRESULTS_WEBHOOK }}" -Method Post -Body $payload -ContentType "application/json"
-            Write-Host "Discord notification sent successfully"
-          } catch {
-            Write-Host "::warning::Failed to send Discord notification: $_"
-          }
-
       - name: Upload HTML test report
         if: always()
         uses: actions/upload-artifact@v4
@@ -448,6 +380,242 @@ jobs:
         run: |
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/TestResults"
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/CodeCoverage"
+
+  consolidate-and-notify:
+    name: Consolidate Results & Notify
+    runs-on: [self-hosted, Windows]
+    needs: test
+    if: always()
+
+    steps:
+      - name: Download all test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Consolidate test results and generate master HTML report
+        shell: powershell
+        run: |
+          Write-Host "Consolidating test results from all Unity versions..."
+
+          $versions = @("2022.3.50f1", "2023.2.20f1", "6000.0.26f1")
+          $allResults = @()
+
+          foreach ($version in $versions) {
+            $result = @{
+              Version = $version
+              EditMode = @{ Total = 0; Passed = 0; Failed = 0; Skipped = 0; Duration = 0 }
+              PlayMode = @{ Total = 0; Passed = 0; Failed = 0; Skipped = 0; Duration = 0 }
+              Status = "not_run"
+            }
+
+            # Check EditMode results
+            $editXmlPath = "artifacts/Test-Results-EditMode-$version-Windows/EditMode-results.xml"
+            if (Test-Path $editXmlPath) {
+              [xml]$editXml = Get-Content $editXmlPath
+              $editSuite = $editXml.'test-run'
+              $result.EditMode.Total = [int]$editSuite.total
+              $result.EditMode.Passed = [int]$editSuite.passed
+              $result.EditMode.Failed = [int]$editSuite.failed
+              $result.EditMode.Skipped = [int]$editSuite.skipped
+              $result.EditMode.Duration = [double]$editSuite.duration
+              $result.Status = "completed"
+            }
+
+            # Check PlayMode results
+            $playXmlPath = "artifacts/Test-Results-PlayMode-$version-Windows/PlayMode-results.xml"
+            if (Test-Path $playXmlPath) {
+              [xml]$playXml = Get-Content $playXmlPath
+              $playSuite = $playXml.'test-run'
+              $result.PlayMode.Total = [int]$playSuite.total
+              $result.PlayMode.Passed = [int]$playSuite.passed
+              $result.PlayMode.Failed = [int]$playSuite.failed
+              $result.PlayMode.Skipped = [int]$playSuite.skipped
+              $result.PlayMode.Duration = [double]$playSuite.duration
+            }
+
+            $allResults += $result
+          }
+
+          # Generate consolidated HTML report
+          $shortSha = "${{ github.sha }}".Substring(0, 7)
+          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          $runNumber = "${{ github.run_number }}"
+          $branch = "${{ github.ref_name }}"
+
+          $html = '<!DOCTYPE html>' + "`n"
+          $html += '<html>' + "`n"
+          $html += '<head>' + "`n"
+          $html += '  <meta charset="UTF-8">' + "`n"
+          $html += '  <title>LogSmith Test Results - All Versions</title>' + "`n"
+          $html += '  <style>' + "`n"
+          $html += '    body { font-family: -apple-system, BlinkMacSystemFont, ''Segoe UI'', Arial, sans-serif; margin: 20px; background: #f5f5f5; }' + "`n"
+          $html += '    .container { max-width: 1400px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }' + "`n"
+          $html += '    h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }' + "`n"
+          $html += '    h2 { color: #555; margin-top: 30px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }' + "`n"
+          $html += '    .version-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin: 20px 0; }' + "`n"
+          $html += '    .version-card { background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #4CAF50; }' + "`n"
+          $html += '    .version-card.failed { border-left-color: #f44336; }' + "`n"
+          $html += '    .version-card h3 { margin: 0 0 15px 0; color: #333; }' + "`n"
+          $html += '    .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }' + "`n"
+          $html += '    .stat-row:last-child { border-bottom: none; }' + "`n"
+          $html += '    .stat-label { font-weight: 600; color: #666; }' + "`n"
+          $html += '    .stat-value { color: #333; }' + "`n"
+          $html += '    .pass { color: #4CAF50; font-weight: bold; }' + "`n"
+          $html += '    .fail { color: #f44336; font-weight: bold; }' + "`n"
+          $html += '    .overall-summary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 8px; margin: 20px 0; }' + "`n"
+          $html += '    .overall-summary h2 { color: white; border: none; margin: 0 0 15px 0; }' + "`n"
+          $html += '    .summary-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }' + "`n"
+          $html += '    .summary-stat { text-align: center; }' + "`n"
+          $html += '    .summary-stat .label { font-size: 14px; opacity: 0.9; }' + "`n"
+          $html += '    .summary-stat .value { font-size: 32px; font-weight: bold; margin: 5px 0; }' + "`n"
+          $html += '  </style>' + "`n"
+          $html += '</head>' + "`n"
+          $html += '<body>' + "`n"
+          $html += '  <div class="container">' + "`n"
+          $html += "    <h1>LogSmith Test Results - All Unity Versions</h1>" + "`n"
+          $html += "    <p><strong>Run:</strong> <a href='$runUrl'>#$runNumber</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> $branch</p>" + "`n"
+
+          # Calculate overall statistics
+          $overallTotal = 0
+          $overallPassed = 0
+          $overallFailed = 0
+          $overallSkipped = 0
+
+          foreach ($result in $allResults) {
+            $overallTotal += $result.EditMode.Total + $result.PlayMode.Total
+            $overallPassed += $result.EditMode.Passed + $result.PlayMode.Passed
+            $overallFailed += $result.EditMode.Failed + $result.PlayMode.Failed
+            $overallSkipped += $result.EditMode.Skipped + $result.PlayMode.Skipped
+          }
+
+          # Overall summary
+          $html += '    <div class="overall-summary">' + "`n"
+          $html += '      <h2>Overall Summary</h2>' + "`n"
+          $html += '      <div class="summary-stats">' + "`n"
+          $html += "        <div class='summary-stat'><div class='label'>Total Tests</div><div class='value'>$overallTotal</div></div>" + "`n"
+          $html += "        <div class='summary-stat'><div class='label'>Passed</div><div class='value'>$overallPassed</div></div>" + "`n"
+          $html += "        <div class='summary-stat'><div class='label'>Failed</div><div class='value'>$overallFailed</div></div>" + "`n"
+          $html += "        <div class='summary-stat'><div class='label'>Skipped</div><div class='value'>$overallSkipped</div></div>" + "`n"
+          $html += '      </div>' + "`n"
+          $html += '    </div>' + "`n"
+
+          # Version breakdown
+          $html += '    <h2>Unity Versions</h2>' + "`n"
+          $html += '    <div class="version-grid">' + "`n"
+
+          foreach ($result in $allResults) {
+            $totalTests = $result.EditMode.Total + $result.PlayMode.Total
+            $totalPassed = $result.EditMode.Passed + $result.PlayMode.Passed
+            $totalFailed = $result.EditMode.Failed + $result.PlayMode.Failed
+            $cardClass = if ($totalFailed -gt 0) { "version-card failed" } else { "version-card" }
+
+            $html += "      <div class='$cardClass'>" + "`n"
+            $html += "        <h3>Unity $($result.Version)</h3>" + "`n"
+            $html += "        <div class='stat-row'><span class='stat-label'>Total Tests:</span><span class='stat-value'>$totalTests</span></div>" + "`n"
+            $html += "        <div class='stat-row'><span class='stat-label'>Passed:</span><span class='stat-value pass'>$totalPassed</span></div>" + "`n"
+            $html += "        <div class='stat-row'><span class='stat-label'>Failed:</span><span class='stat-value fail'>$totalFailed</span></div>" + "`n"
+            $html += "        <div class='stat-row'><span class='stat-label'>EditMode:</span><span class='stat-value'>$($result.EditMode.Passed)/$($result.EditMode.Total) passed</span></div>" + "`n"
+            $html += "        <div class='stat-row'><span class='stat-label'>PlayMode:</span><span class='stat-value'>$($result.PlayMode.Passed)/$($result.PlayMode.Total) passed</span></div>" + "`n"
+            $html += '      </div>' + "`n"
+          }
+
+          $html += '    </div>' + "`n"
+          $html += '  </div>' + "`n"
+          $html += '</body>' + "`n"
+          $html += '</html>' + "`n"
+
+          New-Item -ItemType Directory -Force -Path "consolidated" | Out-Null
+          $html | Out-File -FilePath "consolidated/test-report-all-versions.html" -Encoding UTF8
+          Write-Host "Consolidated HTML report generated"
+
+          # Store results for Discord notification
+          "$overallTotal" | Out-File -FilePath "consolidated/overall-total.txt"
+          "$overallPassed" | Out-File -FilePath "consolidated/overall-passed.txt"
+          "$overallFailed" | Out-File -FilePath "consolidated/overall-failed.txt"
+          "$overallSkipped" | Out-File -FilePath "consolidated/overall-skipped.txt"
+
+      - name: Upload consolidated HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test-Report-Consolidated
+          path: consolidated/test-report-all-versions.html
+          retention-days: 30
+
+      - name: Send Discord notification
+        if: always()
+        shell: powershell
+        run: |
+          if (-not "${{ secrets.TESTRESULTS_WEBHOOK }}") {
+            Write-Host "TESTRESULTS_WEBHOOK not configured, skipping Discord notification"
+            exit 0
+          }
+
+          # Read consolidated results
+          $overallTotal = [int](Get-Content "consolidated/overall-total.txt")
+          $overallPassed = [int](Get-Content "consolidated/overall-passed.txt")
+          $overallFailed = [int](Get-Content "consolidated/overall-failed.txt")
+          $overallSkipped = [int](Get-Content "consolidated/overall-skipped.txt")
+
+          $status = if ($overallFailed -eq 0) { "success" } else { "failure" }
+          $color = if ($overallFailed -eq 0) { 3066993 } else { 15158332 }
+          $emoji = if ($overallFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
+
+          $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          $nl = [Environment]::NewLine
+
+          # Build version summary
+          $versions = @("2022.3.50f1", "2023.2.20f1", "6000.0.26f1")
+          $versionSummary = ""
+          foreach ($version in $versions) {
+            $editXmlPath = "artifacts/Test-Results-EditMode-$version-Windows/EditMode-results.xml"
+            $playXmlPath = "artifacts/Test-Results-PlayMode-$version-Windows/PlayMode-results.xml"
+
+            $versionPassed = 0
+            $versionTotal = 0
+
+            if (Test-Path $editXmlPath) {
+              [xml]$editXml = Get-Content $editXmlPath
+              $versionPassed += [int]$editXml.'test-run'.passed
+              $versionTotal += [int]$editXml.'test-run'.total
+            }
+            if (Test-Path $playXmlPath) {
+              [xml]$playXml = Get-Content $playXmlPath
+              $versionPassed += [int]$playXml.'test-run'.passed
+              $versionTotal += [int]$playXml.'test-run'.total
+            }
+
+            $versionStatus = if ($versionPassed -eq $versionTotal) { "✓" } else { "✗" }
+            $versionSummary += "$versionStatus Unity $version`: $versionPassed/$versionTotal passed$nl"
+          }
+
+          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View Consolidated HTML Report]($reportUrl)"
+
+          $payload = @{
+            embeds = @(
+              @{
+                title = "$emoji LogSmith Tests - All Unity Versions"
+                description = $description
+                color = $color
+                fields = @(
+                  @{ name = "Unity 2022.3 LTS"; value = "See report for details"; inline = $true }
+                  @{ name = "Unity 2023.2 LTS"; value = "See report for details"; inline = $true }
+                  @{ name = "Unity 6 LTS"; value = "See report for details"; inline = $true }
+                  @{ name = "Run"; value = "[#${{ github.run_number }}]($runUrl)"; inline = $false }
+                )
+                timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+              }
+            )
+          } | ConvertTo-Json -Depth 10
+
+          try {
+            Invoke-RestMethod -Uri "${{ secrets.TESTRESULTS_WEBHOOK }}" -Method Post -Body $payload -ContentType "application/json"
+            Write-Host "Discord notification sent successfully"
+          } catch {
+            Write-Host "::warning::Failed to send Discord notification: $_"
+          }
 
   coverage-summary:
     name: Coverage Gate
