@@ -71,19 +71,26 @@ jobs:
           $exitCode = 0
 
           try {
-            & "${{ steps.unity-path.outputs.unity_path }}" `
-              -runTests `
-              -batchmode `
-              -nographics `
-              -projectPath "${{ github.workspace }}" `
-              -testPlatform EditMode `
-              -testResults "${{ github.workspace }}/TestResults/EditMode-results.xml" `
-              -logFile "${{ github.workspace }}/TestResults/EditMode-log.txt" `
-              -enableCodeCoverage `
-              -coverageResultsPath "${{ github.workspace }}/CodeCoverage" `
-              -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+            $unityArgs = @(
+              "-runTests",
+              "-batchmode",
+              "-nographics",
+              "-projectPath", "${{ github.workspace }}",
+              "-testPlatform", "EditMode",
+              "-testResults", "${{ github.workspace }}/TestResults/EditMode-results.xml",
+              "-logFile", "${{ github.workspace }}/TestResults/EditMode-log.txt",
+              "-enableCodeCoverage",
+              "-coverageResultsPath", "${{ github.workspace }}/CodeCoverage",
+              "-coverageOptions", "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+            )
 
-            $exitCode = $LASTEXITCODE
+            $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
+              -ArgumentList $unityArgs `
+              -Wait `
+              -PassThru `
+              -NoNewWindow
+
+            $exitCode = $process.ExitCode
           } catch {
             Write-Host "##[error]Unity test runner crashed: $_"
             exit 1
@@ -112,16 +119,23 @@ jobs:
           $exitCode = 0
 
           try {
-            & "${{ steps.unity-path.outputs.unity_path }}" `
-              -runTests `
-              -batchmode `
-              -nographics `
-              -projectPath "${{ github.workspace }}" `
-              -testPlatform PlayMode `
-              -testResults "${{ github.workspace }}/TestResults/PlayMode-results.xml" `
-              -logFile "${{ github.workspace }}/TestResults/PlayMode-log.txt"
+            $unityArgs = @(
+              "-runTests",
+              "-batchmode",
+              "-nographics",
+              "-projectPath", "${{ github.workspace }}",
+              "-testPlatform", "PlayMode",
+              "-testResults", "${{ github.workspace }}/TestResults/PlayMode-results.xml",
+              "-logFile", "${{ github.workspace }}/TestResults/PlayMode-log.txt"
+            )
 
-            $exitCode = $LASTEXITCODE
+            $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
+              -ArgumentList $unityArgs `
+              -Wait `
+              -PassThru `
+              -NoNewWindow
+
+            $exitCode = $process.ExitCode
           } catch {
             Write-Host "##[error]Unity test runner crashed: $_"
             exit 1
