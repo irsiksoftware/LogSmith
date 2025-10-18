@@ -370,16 +370,20 @@ jobs:
           $color = if ($totalFailed -eq 0) { 3066993 } else { 15158332 }
           $emoji = if ($totalFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
 
+          $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          $description = "**Total:** $totalTests | **Passed:** $totalPassed | **Failed:** $totalFailed`n`n[📊 View Full HTML Report]($reportUrl)"
+
           $payload = @{
             embeds = @(
               @{
                 title = "$emoji LogSmith Tests - Unity ${{ matrix.unityVersion }}"
-                description = "**Total:** $totalTests | **Passed:** $totalPassed | **Failed:** $totalFailed`n`n[📊 View Full HTML Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)"
+                description = $description
                 color = $color
                 fields = @(
                   @{ name = "EditMode"; value = "$editPassed/$editTotal passed"; inline = $true }
                   @{ name = "PlayMode"; value = "$playPassed/$playTotal passed"; inline = $true }
-                  @{ name = "Run"; value = "[#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"; inline = $true }
+                  @{ name = "Run"; value = "[#${{ github.run_number }}]($runUrl)"; inline = $true }
                 )
                 timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
               }
