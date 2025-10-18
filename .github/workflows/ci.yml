@@ -216,86 +216,81 @@ jobs:
           $runNumber = "${{ github.run_number }}"
           $branch = "${{ github.ref_name }}"
 
-          $htmlHeader = @"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>LogSmith Test Results - $unityVersion</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }
-    .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }
-    .tab { padding: 10px 20px; cursor: pointer; background: #f0f0f0; border: none; border-radius: 4px 4px 0 0; font-size: 16px; }
-    .tab.active { background: #4CAF50; color: white; }
-    .tab-content { display: none; padding: 20px 0; }
-    .tab-content.active { display: block; }
-    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
-    .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
-    .stat-card.passed { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }
-    .stat-card.failed { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }
-    .stat-card.skipped { background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%); }
-    .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }
-    .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-    th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
-    td { padding: 10px 12px; border-bottom: 1px solid #eee; }
-    tr:hover { background: #f9f9f9; }
-    .pass { color: #4CAF50; font-weight: bold; }
-    .fail { color: #f44336; font-weight: bold; }
-    .skip { color: #ff9800; font-weight: bold; }
-    .duration { color: #666; font-size: 0.9em; }
-  </style>
-  <script>
-    function showTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabName).classList.add('active');
-      event.target.classList.add('active');
-    }
-  </script>
-</head>
-<body>
-  <div class="container">
-    <h1>LogSmith Test Results - Unity $unityVersion</h1>
-    <p><strong>Run:</strong> <a href="$runUrl">#$runNumber</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> $branch</p>
-"@
-
-          $html = $htmlHeader
+          $html = '<!DOCTYPE html>' + "`n"
+          $html += '<html>' + "`n"
+          $html += '<head>' + "`n"
+          $html += '  <meta charset="UTF-8">' + "`n"
+          $html += "  <title>LogSmith Test Results - $unityVersion</title>" + "`n"
+          $html += '  <style>' + "`n"
+          $html += '    body { font-family: -apple-system, BlinkMacSystemFont, ''Segoe UI'', Arial, sans-serif; margin: 20px; background: #f5f5f5; }' + "`n"
+          $html += '    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }' + "`n"
+          $html += '    h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }' + "`n"
+          $html += '    .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }' + "`n"
+          $html += '    .tab { padding: 10px 20px; cursor: pointer; background: #f0f0f0; border: none; border-radius: 4px 4px 0 0; font-size: 16px; }' + "`n"
+          $html += '    .tab.active { background: #4CAF50; color: white; }' + "`n"
+          $html += '    .tab-content { display: none; padding: 20px 0; }' + "`n"
+          $html += '    .tab-content.active { display: block; }' + "`n"
+          $html += '    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }' + "`n"
+          $html += '    .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }' + "`n"
+          $html += '    .stat-card.passed { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }' + "`n"
+          $html += '    .stat-card.failed { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }' + "`n"
+          $html += '    .stat-card.skipped { background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%); }' + "`n"
+          $html += '    .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }' + "`n"
+          $html += '    .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }' + "`n"
+          $html += '    table { width: 100%; border-collapse: collapse; margin: 20px 0; }' + "`n"
+          $html += '    th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }' + "`n"
+          $html += '    td { padding: 10px 12px; border-bottom: 1px solid #eee; }' + "`n"
+          $html += '    tr:hover { background: #f9f9f9; }' + "`n"
+          $html += '    .pass { color: #4CAF50; font-weight: bold; }' + "`n"
+          $html += '    .fail { color: #f44336; font-weight: bold; }' + "`n"
+          $html += '    .skip { color: #ff9800; font-weight: bold; }' + "`n"
+          $html += '    .duration { color: #666; font-size: 0.9em; }' + "`n"
+          $html += '  </style>' + "`n"
+          $html += '  <script>' + "`n"
+          $html += '    function showTab(tabName) {' + "`n"
+          $html += '      document.querySelectorAll(''.tab-content'').forEach(el => el.classList.remove(''active''));' + "`n"
+          $html += '      document.querySelectorAll(''.tab'').forEach(el => el.classList.remove(''active''));' + "`n"
+          $html += '      document.getElementById(tabName).classList.add(''active'');' + "`n"
+          $html += '      event.target.classList.add(''active'');' + "`n"
+          $html += '    }' + "`n"
+          $html += '  </script>' + "`n"
+          $html += '</head>' + "`n"
+          $html += '<body>' + "`n"
+          $html += '  <div class="container">' + "`n"
+          $html += "    <h1>LogSmith Test Results - Unity $unityVersion</h1>" + "`n"
+          $html += "    <p><strong>Run:</strong> <a href='$runUrl'>#$runNumber</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> $branch</p>" + "`n"
 
           # EditMode Tests
           if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
             [xml]$editXml = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
             $editSuite = $editXml.'test-run'
 
-            $html += @"
-              <div class="tabs">
-                <button class="tab active" onclick="showTab('editmode')">EditMode Tests</button>
-                <button class="tab" onclick="showTab('playmode')">PlayMode Tests</button>
-              </div>
-
-              <div id="editmode" class="tab-content active">
-                <div class="summary">
-                  <div class="stat-card"><h3>Total Tests</h3><div class="value">$($editSuite.total)</div></div>
-                  <div class="stat-card passed"><h3>Passed</h3><div class="value">$($editSuite.passed)</div></div>
-                  <div class="stat-card failed"><h3>Failed</h3><div class="value">$($editSuite.failed)</div></div>
-                  <div class="stat-card skipped"><h3>Skipped</h3><div class="value">$($editSuite.skipped)</div></div>
-                  <div class="stat-card"><h3>Duration</h3><div class="value">$([math]::Round([double]$editSuite.duration, 2))s</div></div>
-                </div>
-                <table>
-                  <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>
-                  <tbody>
-"@
+            $html += '    <div class="tabs">' + "`n"
+            $html += '      <button class="tab active" onclick="showTab(''editmode'')">EditMode Tests</button>' + "`n"
+            $html += '      <button class="tab" onclick="showTab(''playmode'')">PlayMode Tests</button>' + "`n"
+            $html += '    </div>' + "`n"
+            $html += '    <div id="editmode" class="tab-content active">' + "`n"
+            $html += '      <div class="summary">' + "`n"
+            $html += "        <div class='stat-card'><h3>Total Tests</h3><div class='value'>$($editSuite.total)</div></div>" + "`n"
+            $html += "        <div class='stat-card passed'><h3>Passed</h3><div class='value'>$($editSuite.passed)</div></div>" + "`n"
+            $html += "        <div class='stat-card failed'><h3>Failed</h3><div class='value'>$($editSuite.failed)</div></div>" + "`n"
+            $html += "        <div class='stat-card skipped'><h3>Skipped</h3><div class='value'>$($editSuite.skipped)</div></div>" + "`n"
+            $html += "        <div class='stat-card'><h3>Duration</h3><div class='value'>$([math]::Round([double]$editSuite.duration, 2))s</div></div>" + "`n"
+            $html += '      </div>' + "`n"
+            $html += '      <table>' + "`n"
+            $html += '        <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>' + "`n"
+            $html += '        <tbody>' + "`n"
 
             foreach ($testCase in $editXml.SelectNodes("//test-case")) {
               $result = $testCase.result
               $resultClass = if ($result -eq "Passed") { "pass" } elseif ($result -eq "Failed") { "fail" } else { "skip" }
               $duration = [math]::Round([double]$testCase.duration, 3)
-              $html += "                  <tr><td>$($testCase.fullname)</td><td class='$resultClass'>$result</td><td class='duration'>${duration}s</td></tr>`n"
+              $html += "          <tr><td>$($testCase.fullname)</td><td class='$resultClass'>$result</td><td class='duration'>${duration}s</td></tr>" + "`n"
             }
 
-            $html += "                </tbody></table></div>`n"
+            $html += '        </tbody>' + "`n"
+            $html += '      </table>' + "`n"
+            $html += '    </div>' + "`n"
           }
 
           # PlayMode Tests
@@ -303,35 +298,33 @@ jobs:
             [xml]$playXml = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
             $playSuite = $playXml.'test-run'
 
-            $html += @"
-              <div id="playmode" class="tab-content">
-                <div class="summary">
-                  <div class="stat-card"><h3>Total Tests</h3><div class="value">$($playSuite.total)</div></div>
-                  <div class="stat-card passed"><h3>Passed</h3><div class="value">$($playSuite.passed)</div></div>
-                  <div class="stat-card failed"><h3>Failed</h3><div class="value">$($playSuite.failed)</div></div>
-                  <div class="stat-card skipped"><h3>Skipped</h3><div class="value">$($playSuite.skipped)</div></div>
-                  <div class="stat-card"><h3>Duration</h3><div class="value">$([math]::Round([double]$playSuite.duration, 2))s</div></div>
-                </div>
-                <table>
-                  <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>
-                  <tbody>
-"@
+            $html += '    <div id="playmode" class="tab-content">' + "`n"
+            $html += '      <div class="summary">' + "`n"
+            $html += "        <div class='stat-card'><h3>Total Tests</h3><div class='value'>$($playSuite.total)</div></div>" + "`n"
+            $html += "        <div class='stat-card passed'><h3>Passed</h3><div class='value'>$($playSuite.passed)</div></div>" + "`n"
+            $html += "        <div class='stat-card failed'><h3>Failed</h3><div class='value'>$($playSuite.failed)</div></div>" + "`n"
+            $html += "        <div class='stat-card skipped'><h3>Skipped</h3><div class='value'>$($playSuite.skipped)</div></div>" + "`n"
+            $html += "        <div class='stat-card'><h3>Duration</h3><div class='value'>$([math]::Round([double]$playSuite.duration, 2))s</div></div>" + "`n"
+            $html += '      </div>' + "`n"
+            $html += '      <table>' + "`n"
+            $html += '        <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>' + "`n"
+            $html += '        <tbody>' + "`n"
 
             foreach ($testCase in $playXml.SelectNodes("//test-case")) {
               $result = $testCase.result
               $resultClass = if ($result -eq "Passed") { "pass" } elseif ($result -eq "Failed") { "fail" } else { "skip" }
               $duration = [math]::Round([double]$testCase.duration, 3)
-              $html += "                  <tr><td>$($testCase.fullname)</td><td class='$resultClass'>$result</td><td class='duration'>${duration}s</td></tr>`n"
+              $html += "          <tr><td>$($testCase.fullname)</td><td class='$resultClass'>$result</td><td class='duration'>${duration}s</td></tr>" + "`n"
             }
 
-            $html += "                </tbody></table></div>`n"
+            $html += '        </tbody>' + "`n"
+            $html += '      </table>' + "`n"
+            $html += '    </div>' + "`n"
           }
 
-          $html += @"
-            </div>
-          </body>
-          </html>
-"@
+          $html += '  </div>' + "`n"
+          $html += '</body>' + "`n"
+          $html += '</html>' + "`n"
 
           $html | Out-File -FilePath "${{ github.workspace }}/TestResults/test-report-${{ matrix.unityVersion }}.html" -Encoding UTF8
           Write-Host "HTML report generated"
