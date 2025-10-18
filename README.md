@@ -18,7 +18,7 @@ LogSmith is a clean-room Unity logging solution built from scratch, leveraging U
 - Message templating engine
 - 100% test coverage
 
-**LogSmith Pro** ($4.99 on Unity Asset Store) adds optional sink integrations:
+**LogSmith Pro** ($14.99 on Unity Asset Store) adds optional sink integrations:
 - HTTP/REST Sink (generic endpoint)
 - Sentry Sink (error tracking and monitoring)
 - Seq Sink (structured logging with CLEF format)
