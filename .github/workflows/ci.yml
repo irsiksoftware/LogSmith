@@ -587,7 +587,7 @@ jobs:
               $versionTotal += [int]$playXml.'test-run'.total
             }
 
-            $versionStatus = if ($versionPassed -eq $versionTotal) { "✓" } else { "✗" }
+            $versionStatus = if ($versionPassed -eq $versionTotal) { "[PASS]" } else { "[FAIL]" }
             $versionSummary += "$versionStatus Unity $version`: $versionPassed/$versionTotal passed$nl"
           }
 
