@@ -39,6 +39,15 @@ namespace IrsikSoftware.LogSmith
         }
 
         /// <summary>
+        /// Gets the log router for editor tools and diagnostics.
+        /// Returns null if not initialized.
+        /// </summary>
+        public static ILogRouter GetRouter()
+        {
+            return _initialized ? _router : null;
+        }
+
+        /// <summary>
         /// Initializes the logging system with default configuration.
         /// </summary>
         public static void Initialize()

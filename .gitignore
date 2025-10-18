@@ -87,4 +87,7 @@ build-log.txt
 compile-log.txt
 
 # Configuration files with credentials
-settings.ini
+settings.ini.idea/
+test-results/
+test-results-temp/
+EditMode-log.txt
