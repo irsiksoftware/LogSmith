@@ -372,7 +372,7 @@ jobs:
           $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
           $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           $nl = [Environment]::NewLine
-          $description = "**Total:** $totalTests | **Passed:** $totalPassed | **Failed:** $totalFailed$nl$nl[📊 View Full HTML Report]($reportUrl)"
+          $description = "**Total:** $totalTests | **Passed:** $totalPassed | **Failed:** $totalFailed$nl$nl[View Full HTML Report]($reportUrl)"
 
           $payload = @{
             embeds = @(
