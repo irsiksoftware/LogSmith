@@ -211,52 +211,58 @@ jobs:
           Write-Host "Generating HTML test report..."
 
           $shortSha = "${{ github.sha }}".Substring(0, 7)
+          $unityVersion = "${{ matrix.unityVersion }}"
+          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          $runNumber = "${{ github.run_number }}"
+          $branch = "${{ github.ref_name }}"
 
-          $html = @"
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>LogSmith Test Results - ${{ matrix.unityVersion }}</title>
-            <style>
-              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-              .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-              h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }
-              .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }
-              .tab { padding: 10px 20px; cursor: pointer; background: #f0f0f0; border: none; border-radius: 4px 4px 0 0; font-size: 16px; }
-              .tab.active { background: #4CAF50; color: white; }
-              .tab-content { display: none; padding: 20px 0; }
-              .tab-content.active { display: block; }
-              .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
-              .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
-              .stat-card.passed { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }
-              .stat-card.failed { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }
-              .stat-card.skipped { background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%); }
-              .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }
-              .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }
-              table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-              th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
-              td { padding: 10px 12px; border-bottom: 1px solid #eee; }
-              tr:hover { background: #f9f9f9; }
-              .pass { color: #4CAF50; font-weight: bold; }
-              .fail { color: #f44336; font-weight: bold; }
-              .skip { color: #ff9800; font-weight: bold; }
-              .duration { color: #666; font-size: 0.9em; }
-            </style>
-            <script>
-              function showTab(tabName) {
-                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-                document.getElementById(tabName).classList.add('active');
-                event.target.classList.add('active');
-              }
-            </script>
-          </head>
-          <body>
-            <div class="container">
-              <h1>LogSmith Test Results - Unity ${{ matrix.unityVersion }}</h1>
-              <p><strong>Run:</strong> <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">#${{ github.run_number }}</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> ${{ github.ref_name }}</p>
+          $htmlHeader = @"
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LogSmith Test Results - $unityVersion</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }
+    .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }
+    .tab { padding: 10px 20px; cursor: pointer; background: #f0f0f0; border: none; border-radius: 4px 4px 0 0; font-size: 16px; }
+    .tab.active { background: #4CAF50; color: white; }
+    .tab-content { display: none; padding: 20px 0; }
+    .tab-content.active { display: block; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+    .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+    .stat-card.passed { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }
+    .stat-card.failed { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }
+    .stat-card.skipped { background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%); }
+    .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }
+    .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
+    td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f9f9f9; }
+    .pass { color: #4CAF50; font-weight: bold; }
+    .fail { color: #f44336; font-weight: bold; }
+    .skip { color: #ff9800; font-weight: bold; }
+    .duration { color: #666; font-size: 0.9em; }
+  </style>
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>LogSmith Test Results - Unity $unityVersion</h1>
+    <p><strong>Run:</strong> <a href="$runUrl">#$runNumber</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> $branch</p>
 "@
+
+          $html = $htmlHeader
 
           # EditMode Tests
           if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
