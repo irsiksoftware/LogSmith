@@ -1,32 +1,108 @@
 # LogSmith - Asset Store Metadata
 
+> **Note:** This document covers **both** LogSmith packages:
+> - **LogSmith (Free)** - Core package, also open source on GitHub
+> - **LogSmith Pro ($14.99)** - Includes optional sinks for external services
+
 ## Package Information
 
-### Basic Details
+### LogSmith (Free)
+
+#### Basic Details
 - **Package Name**: LogSmith
 - **Publisher**: Irsik Software
 - **Version**: 1.0.0
+- **Price**: FREE
 - **Category**: Programming > Utilities
 - **Subcategory**: Logging & Diagnostics
+- **Source**: Also available on GitHub (Open Source, MIT License)
 
-### Title & Subtitle
-**Title**: LogSmith - Professional Unity Logging
+### LogSmith Pro ($14.99)
 
-**Subtitle**: Production-grade logging with native Unity backend, VContainer DI, runtime categories, and extensible sinks
+#### Basic Details
+- **Package Name**: LogSmith Pro - Optional Sinks
+- **Publisher**: Irsik Software
+- **Version**: 1.0.0
+- **Price**: $14.99
+- **Category**: Programming > Utilities
+- **Subcategory**: Logging & Diagnostics
+- **Dependencies**: Requires LogSmith (Free) - automatically included
 
-### Short Description (160 chars)
-Professional Unity logging built on com.unity.logging. VContainer DI, runtime categories, custom templates, debug overlay, 100% test coverage.
+### LogSmith (Free) - Titles & Descriptions
 
-### Full Description
+**Title**: LogSmith - Professional Unity Logging (Free & Open Source)
 
-LogSmith is a clean-room Unity logging solution designed for professional game development. Built from scratch to leverage Unity's native logging system (`com.unity.logging`), LogSmith provides advanced features while maintaining exceptional performance and compatibility.
+**Subtitle**: Production-grade logging with native Unity backend, VContainer DI, runtime categories, debug overlay, and extensible architecture
 
-**Key Features:**
+**Short Description (160 chars)**
+FREE professional Unity logging built on com.unity.logging. VContainer DI, runtime categories, custom templates, debug overlay, 100% test coverage. MIT license.
+
+### LogSmith Pro - Titles & Descriptions
+
+**Title**: LogSmith Pro - Optional Sinks (HTTP, Sentry, Seq, Elasticsearch)
+
+**Subtitle**: Enterprise logging integrations for LogSmith - Sentry error tracking, Seq structured logging, Elasticsearch, and generic HTTP endpoints
+
+**Short Description (160 chars)**
+Add Sentry, Seq, Elasticsearch, and HTTP sinks to LogSmith. Production-ready integrations with batching, auth, and ECS/CLEF format support. Requires LogSmith (free).
+
+### LogSmith (Free) - Full Description
+
+LogSmith is a FREE, open-source Unity logging solution designed for professional game development. Built from scratch to leverage Unity's native logging system (`com.unity.logging`), LogSmith provides advanced features while maintaining exceptional performance and compatibility.
+
+**100% Free & Open Source**
+- MIT License - use in any project, commercial or personal
+- Full source code available on GitHub
+- No limitations, no watermarks, no "lite" restrictions
+- Community-driven development
+
+### LogSmith Pro - Full Description
+
+LogSmith Pro extends the free LogSmith package with production-ready integrations for external logging services. Send your Unity logs to Sentry for error tracking, Seq for structured logging, Elasticsearch for analytics, or any HTTP endpoint.
+
+**What's Included in Pro:**
+
+**HTTP/REST Sink**
+- Send logs to any HTTP endpoint
+- Configurable batching and flush intervals
+- API key authentication support
+- JSON serialization with full context preservation
+
+**Sentry Sink**
+- Automatic error tracking and aggregation
+- Stack trace capture and formatting
+- Environment and release tagging
+- Configurable minimum log level (errors only, or all levels)
+- Native Sentry protocol support
+
+**Seq Sink**
+- Structured logging with CLEF (Compact Log Event Format)
+- Full Seq UI integration for querying and filtering
+- Rich metadata and context preservation
+- API key authentication
+
+**Elasticsearch Sink**
+- ECS (Elastic Common Schema) compatible
+- Bulk API for efficient indexing
+- Date-based index patterns
+- Full Kibana integration
+- Basic authentication support
+
+**All Pro Sinks Include:**
+- Async delivery via Unity coroutines
+- Thread-safe batch queuing
+- Automatic retry on network failures
+- Configurable batch sizes and intervals
+- Unit tested and production-ready
+
+---
+
+## LogSmith (Free) - Detailed Features
 
 **Native Unity Backend**
 - Built on Unity's official `com.unity.logging` package
-- Console and file sinks included out of the box
-- Extensible sink architecture for custom outputs (HTTP, database, cloud services)
+- Console and file sinks included
+- Extensible sink architecture (implement ILogSink for custom outputs)
 - Future-proof adapter layer allows backend swapping if needed
 
 **Dependency Injection Ready**

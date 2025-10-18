@@ -1,10 +1,31 @@
 # LogSmith
 
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+[![Unity](https://img.shields.io/badge/Unity-2022.3%2B-black)](https://unity.com)
 
 **A production-grade Unity logging package designed for the Unity Asset Store**
 
 LogSmith is a clean-room Unity logging solution built from scratch, leveraging Unity's native logging system (`com.unity.logging`) with advanced features for professional game development. Designed for Unity 6000.2 with broad compatibility back to Unity 2022.3 LTS.
+
+## Open Source & Freemium Model
+
+**LogSmith Core** (this repository) is **100% free and open source** under the MIT License. It includes:
+- Full logging functionality with Console and File sinks
+- In-game debug overlay with filtering
+- Runtime category management
+- VContainer DI integration + Static API fallback
+- Message templating engine
+- 100% test coverage
+
+**LogSmith Pro** ($14.99 on Unity Asset Store) adds optional sink integrations:
+- HTTP/REST Sink (generic endpoint)
+- Sentry Sink (error tracking and monitoring)
+- Seq Sink (structured logging with CLEF format)
+- Elasticsearch Sink (ECS-compatible bulk indexing)
+- Priority email support
+
+> **Why freemium?** The core logging functionality should be accessible to everyone. Pro sinks enable integration with enterprise logging infrastructure for teams that need it.
 
 ## Quickstart (Under 5 Minutes)
 
