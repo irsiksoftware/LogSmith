@@ -1,9 +1,9 @@
 {
   "name": "com.irsiksoftware.logsmith.sinks",
-  "displayName": "LogSmith Optional Sinks",
+  "displayName": "LogSmith Pro - Optional Sinks",
   "version": "1.0.0",
   "unity": "2022.3",
-  "description": "Optional sink implementations for LogSmith including HTTP/REST, Sentry, Seq, and Elasticsearch integrations. Enables logging to external services without modifying the core package.",
+  "description": "LogSmith Pro ($4.99) - Enterprise logging integrations: HTTP/REST, Sentry error tracking, Seq structured logging, Elasticsearch. Production-ready with batching, auth, retry logic. Requires LogSmith (Free).",
   "keywords": [
     "logging",
     "unity",

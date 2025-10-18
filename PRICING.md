@@ -31,8 +31,8 @@ LogSmith uses a freemium model to balance accessibility with sustainability:
 - Learning professional Unity development patterns
 - Contributing to open source
 
-### LogSmith Pro ($14.99)
-**Price:** $14.99 (one-time purchase)
+### LogSmith Pro ($4.99)
+**Price:** $4.99 (one-time purchase)
 **License:** Unity Asset Store EULA
 **Source:** Unity Asset Store only
 
@@ -81,7 +81,7 @@ Building and maintaining production-ready integrations with external services re
 - Keeping up with protocol changes
 - Providing support for integration issues
 
-The $14.99 price supports this ongoing work while keeping the core free for everyone.
+The $4.99 price supports this ongoing work while keeping the core free for everyone.
 
 ### Can I contribute to the open source version?
 **Yes!** LogSmith (Free) is open source on GitHub. Contributions are welcome via pull requests. See CONTRIBUTING.md for guidelines.
@@ -122,7 +122,7 @@ For teams needing custom licenses, priority support, or custom sink development,
 ## Asset Store Links
 
 - **LogSmith (Free)**: [Coming Soon - Unity Asset Store]
-- **LogSmith Pro ($14.99)**: [Coming Soon - Unity Asset Store]
+- **LogSmith Pro ($4.99)**: [Coming Soon - Unity Asset Store]
 - **GitHub (Open Source)**: https://github.com/DakotaIrsik/LogSmith
 
 ---
