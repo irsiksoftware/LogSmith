@@ -58,6 +58,7 @@ jobs:
         id: editmode-tests
         shell: powershell
         run: |
+          Write-Host "Running EditMode tests..."
           & "${{ steps.unity-path.outputs.unity_path }}" `
             -runTests `
             -batchmode `
@@ -70,6 +71,9 @@ jobs:
             -coverageResultsPath "${{ github.workspace }}/CodeCoverage" `
             -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
 
+          Write-Host "Checking test results directory..."
+          Get-ChildItem "${{ github.workspace }}/TestResults" -ErrorAction SilentlyContinue | Format-Table Name, Length
+
           echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
           echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $env:GITHUB_OUTPUT
 
@@ -77,6 +81,7 @@ jobs:
         id: playmode-tests
         shell: powershell
         run: |
+          Write-Host "Running PlayMode tests..."
           & "${{ steps.unity-path.outputs.unity_path }}" `
             -runTests `
             -batchmode `
@@ -86,7 +91,59 @@ jobs:
             -testResults "${{ github.workspace }}/TestResults/PlayMode-results.xml" `
             -logFile "${{ github.workspace }}/TestResults/PlayMode-log.txt"
 
+          Write-Host "Checking test results directory..."
+          Get-ChildItem "${{ github.workspace }}/TestResults" -ErrorAction SilentlyContinue | Format-Table Name, Length
+
           echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
+
+      - name: Generate test summary
+        if: always()
+        shell: powershell
+        run: |
+          Write-Host "Generating test result summary..."
+
+          $summary = @"
+          ## Test Results - ${{ matrix.unityVersion }}
+
+          ### EditMode Tests
+          "@
+
+          if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
+            [xml]$editResults = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
+            $testSuite = $editResults.'test-run'
+            $summary += @"
+          - **Total:** $($testSuite.total)
+          - **Passed:** $($testSuite.passed)
+          - **Failed:** $($testSuite.failed)
+          - **Skipped:** $($testSuite.skipped)
+          - **Duration:** $($testSuite.duration)s
+
+          "@
+          } else {
+            $summary += "XML results not found`n`n"
+          }
+
+          $summary += @"
+          ### PlayMode Tests
+          "@
+
+          if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
+            [xml]$playResults = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
+            $testSuite = $playResults.'test-run'
+            $summary += @"
+          - **Total:** $($testSuite.total)
+          - **Passed:** $($testSuite.passed)
+          - **Failed:** $($testSuite.failed)
+          - **Skipped:** $($testSuite.skipped)
+          - **Duration:** $($testSuite.duration)s
+
+          "@
+          } else {
+            $summary += "XML results not found`n`n"
+          }
+
+          $summary | Out-File -FilePath "${{ github.workspace }}/TestResults/test-summary-${{ matrix.unityVersion }}.md" -Encoding UTF8
+          Write-Host $summary
 
       - name: Upload EditMode test results
         if: always()
@@ -103,6 +160,15 @@ jobs:
         with:
           name: Test-Results-PlayMode-${{ matrix.unityVersion }}-Windows
           path: ${{ github.workspace }}/TestResults/PlayMode-*
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Upload test summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test-Summary-${{ matrix.unityVersion }}-Windows
+          path: ${{ github.workspace }}/TestResults/test-summary-*.md
           retention-days: 30
           if-no-files-found: warn
 
