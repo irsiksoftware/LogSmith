@@ -210,6 +210,8 @@ jobs:
         run: |
           Write-Host "Generating HTML test report..."
 
+          $shortSha = "${{ github.sha }}".Substring(0, 7)
+
           $html = @"
           <!DOCTYPE html>
           <html>
@@ -253,7 +255,7 @@ jobs:
           <body>
             <div class="container">
               <h1>LogSmith Test Results - Unity ${{ matrix.unityVersion }}</h1>
-              <p><strong>Run:</strong> <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">#${{ github.run_number }}</a> | <strong>Commit:</strong> ${{ github.sha  | substring(0, 7) }} | <strong>Branch:</strong> ${{ github.ref_name }}</p>
+              <p><strong>Run:</strong> <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">#${{ github.run_number }}</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> ${{ github.ref_name }}</p>
 "@
 
           # EditMode Tests
