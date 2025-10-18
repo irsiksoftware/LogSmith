@@ -20,7 +20,6 @@ namespace IrsikSoftware.LogSmith.Editor
         private IDisposable _logSubscription;
         private bool _autoScroll = true;
         private string _searchText = "";
-        private LogLevel _minLogLevel = LogLevel.Trace;
         private string _categoryFilter = "";
         private bool _isPaused = false;
         private List<LogEntry> _pausedBuffer = new List<LogEntry>();
