@@ -30,9 +30,30 @@ jobs:
           New-Item -ItemType Directory -Force -Path $LICENSE_DIR | Out-Null
 
           $LICENSE_FILE = "$LICENSE_DIR\UnityEntitlementLicense.xml"
-          [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.UNITY_LICENSE }}")) | Out-File -FilePath $LICENSE_FILE -Encoding UTF8 -NoNewline
 
-          Write-Host "Unity license installed at: $LICENSE_FILE"
+          # Add random delay to prevent parallel runner collision (0-3 seconds)
+          Start-Sleep -Milliseconds (Get-Random -Minimum 0 -Maximum 3000)
+
+          # Retry logic for file write (handles parallel runner race conditions)
+          $maxRetries = 5
+          $retryCount = 0
+          $success = $false
+
+          while (-not $success -and $retryCount -lt $maxRetries) {
+            try {
+              [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.UNITY_LICENSE }}")) | Out-File -FilePath $LICENSE_FILE -Encoding UTF8 -NoNewline
+              $success = $true
+              Write-Host "Unity license installed at: $LICENSE_FILE"
+            } catch {
+              $retryCount++
+              if ($retryCount -lt $maxRetries) {
+                Write-Host "License file locked, retrying in 1 second... (Attempt $retryCount/$maxRetries)"
+                Start-Sleep -Seconds 1
+              } else {
+                throw "Failed to write license file after $maxRetries attempts: $_"
+              }
+            }
+          }
 
       - name: Cache Unity Library
         uses: actions/cache@v4
