@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Test ${{ matrix.unityVersion }} on Windows
-    runs-on: [self-hosted, Windows]
+    runs-on: [self-hosted, unity-pool]
 
     strategy:
       fail-fast: false
@@ -383,7 +383,7 @@ jobs:
 
   consolidate-and-notify:
     name: Consolidate Results & Notify
-    runs-on: [self-hosted, Windows]
+    runs-on: [self-hosted, unity-pool]
     needs: test
     if: always()
 
