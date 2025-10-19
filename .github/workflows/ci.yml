@@ -616,11 +616,8 @@ jobs:
           $color = if ($overallFailed -eq 0) { 3066993 } else { 15158332 }
           $emoji = if ($overallFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
 
-          $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+          $reportUrl = "https://logsmith-unity.irsik.software/testresults/reports/run-${{ github.run_number }}.html"
           $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          $artifactName = "Test-Report-${{ github.run_number }}-${{ github.run_id }}"
-          $pagesUrl = "https://logsmith-unity.irsik.software/testresults/reports/run-${{ github.run_number }}.html"
-          $latestUrl = "https://logsmith-unity.irsik.software/testresults/latest.html"
           $nl = [Environment]::NewLine
 
           # Build version summary
@@ -674,7 +671,7 @@ jobs:
             $versionSummary += "$versionStatus Unity $version`: $versionMessage$nl"
           }
 
-          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View HTML Report]($latestUrl) | [This Run]($pagesUrl) | [Download: ``$artifactName``]($reportUrl)"
+          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View Test Results]($reportUrl)"
 
           $payload = @{
             embeds = @(
