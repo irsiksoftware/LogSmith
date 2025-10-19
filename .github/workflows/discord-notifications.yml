@@ -26,7 +26,7 @@ jobs:
           $payload = @{
             embeds = @(
               @{
-                title = "📝 New Commit to $repo"
+                title = "New Commit to $repo"
                 description = $commitMessage
                 url = $commitUrl
                 color = 5814783
@@ -69,7 +69,7 @@ jobs:
           $payload = @{
             embeds = @(
               @{
-                title = "🔔 Pull Request Opened"
+                title = "Pull Request Opened"
                 description = $prTitle
                 url = $prUrl
                 color = 3447003
@@ -119,7 +119,7 @@ jobs:
           $payload = @{
             embeds = @(
               @{
-                title = "✅ Pull Request Merged"
+                title = "Pull Request Merged"
                 description = $prTitle
                 url = $prUrl
                 color = 5763719
@@ -185,7 +185,7 @@ jobs:
           $payload = @{
             embeds = @(
               @{
-                title = "🚀 New Release: $releaseName"
+                title = "New Release: $releaseName"
                 description = $releaseBody
                 url = $releaseUrl
                 color = 3066993
