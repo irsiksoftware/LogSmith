@@ -10,7 +10,7 @@ on:
 jobs:
   notify-commit:
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
     steps:
       - name: Send Discord notification for commit
         env:
@@ -53,7 +53,7 @@ jobs:
 
   notify-pull-request:
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
     steps:
       - name: Send Discord notification for opened PR
         if: github.event.action == 'opened'
@@ -173,7 +173,7 @@ jobs:
 
   notify-release:
     if: github.event_name == 'release'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
     steps:
       - name: Send Discord notification for release
         env:
