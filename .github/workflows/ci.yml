@@ -560,7 +560,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Test-Report-Consolidated
+          name: Test-Report-${{ github.run_number }}-${{ github.run_id }}
           path: consolidated/test-report-all-versions.html
           retention-days: 30
 
@@ -585,6 +585,7 @@ jobs:
 
           $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
           $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          $artifactName = "Test-Report-${{ github.run_number }}-${{ github.run_id }}"
           $nl = [Environment]::NewLine
 
           # Build version summary
@@ -638,7 +639,7 @@ jobs:
             $versionSummary += "$versionStatus Unity $version`: $versionMessage$nl"
           }
 
-          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View Consolidated HTML Report (Artifacts Page)]($reportUrl)"
+          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[Download HTML Report: ``$artifactName``]($reportUrl)"
 
           $payload = @{
             embeds = @(
