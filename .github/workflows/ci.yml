@@ -569,13 +569,13 @@ jobs:
         shell: powershell
         run: |
           # Create directory structure for GitHub Pages
-          New-Item -ItemType Directory -Force -Path "gh-pages/tools/testresults/reports" | Out-Null
+          New-Item -ItemType Directory -Force -Path "gh-pages/testresults/reports" | Out-Null
 
           # Copy report to latest.html
-          Copy-Item "consolidated/test-report-all-versions.html" "gh-pages/tools/testresults/latest.html"
+          Copy-Item "consolidated/test-report-all-versions.html" "gh-pages/testresults/latest.html"
 
           # Copy report to versioned file
-          Copy-Item "consolidated/test-report-all-versions.html" "gh-pages/tools/testresults/reports/run-${{ github.run_number }}.html"
+          Copy-Item "consolidated/test-report-all-versions.html" "gh-pages/testresults/reports/run-${{ github.run_number }}.html"
 
           # Add .nojekyll to disable Jekyll processing
           New-Item -ItemType File -Path "gh-pages/.nojekyll" | Out-Null
@@ -613,8 +613,8 @@ jobs:
           $reportUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
           $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           $artifactName = "Test-Report-${{ github.run_number }}-${{ github.run_id }}"
-          $pagesUrl = "https://logsmith-unity.irsik.software/tools/testresults/reports/run-${{ github.run_number }}.html"
-          $latestUrl = "https://logsmith-unity.irsik.software/tools/testresults/latest.html"
+          $pagesUrl = "https://logsmith-unity.irsik.software/testresults/reports/run-${{ github.run_number }}.html"
+          $latestUrl = "https://logsmith-unity.irsik.software/testresults/latest.html"
           $nl = [Environment]::NewLine
 
           # Build version summary
