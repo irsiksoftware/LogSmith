@@ -617,7 +617,7 @@ jobs:
             $versionSummary += "$versionStatus Unity $version`: $versionMessage$nl"
           }
 
-          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[📊 View Consolidated HTML Report (Artifacts Page)]($reportUrl)"
+          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View Consolidated HTML Report (Artifacts Page)]($reportUrl)"
 
           $payload = @{
             embeds = @(
