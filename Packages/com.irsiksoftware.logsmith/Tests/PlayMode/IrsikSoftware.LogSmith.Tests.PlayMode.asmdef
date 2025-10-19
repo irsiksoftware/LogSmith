@@ -8,9 +8,7 @@
         "IrsikSoftware.LogSmith.BuiltIn",
         "IrsikSoftware.LogSmith.URP",
         "IrsikSoftware.LogSmith.HDRP",
-        "Unity.Logging",
         "Unity.Burst",
-        "Unity.Collections",
         "VContainer"
     ],
     "includePlatforms": [],
