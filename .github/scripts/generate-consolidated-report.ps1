@@ -106,10 +106,10 @@ foreach ($entry in $sortedTests) {
     foreach ($versionLabel in @("2022.3", "2023.2", "6000.0")) {
         if ($testData.ContainsKey($versionLabel)) {
             $vData = $testData[$versionLabel]
-            $icon = switch ($vData.Result) {
-                "Passed" { "✓" }
-                "Failed" { "✗" }
-                "Skipped" { "⊘" }
+            $text = switch ($vData.Result) {
+                "Passed" { "PASS" }
+                "Failed" { "FAIL" }
+                "Skipped" { "SKIP" }
                 default { "?" }
             }
             $cellClass = switch ($vData.Result) {
@@ -118,7 +118,7 @@ foreach ($entry in $sortedTests) {
                 "Skipped" { "version-skipped" }
                 default { "" }
             }
-            $testTableHtml += "  <td class='version-cell $cellClass' title='$($vData.Result)'>$icon</td>`n"
+            $testTableHtml += "  <td class='version-cell $cellClass'>$text</td>`n"
         } else {
             $testTableHtml += "  <td class='version-cell version-notrun'>-</td>`n"
         }
@@ -231,14 +231,15 @@ $html = @"
     .test-name { font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; }
     .version-cell {
       text-align: center;
-      font-size: 20px;
+      font-size: 11px;
       font-weight: bold;
       width: 100px;
+      padding: 8px 4px;
     }
-    .version-passed { color: #4CAF50; }
-    .version-failed { color: #f44336; }
-    .version-skipped { color: #ff9800; }
-    .version-notrun { color: #ccc; }
+    .version-passed { background: #4CAF50; color: white; }
+    .version-failed { background: #f44336; color: white; }
+    .version-skipped { background: #ff9800; color: white; }
+    .version-notrun { background: #e0e0e0; color: #999; }
     .test-passed { background: #f1f8f4; }
     .test-failed { background: #fff5f5; }
     .test-skipped { background: #fff8e1; }
