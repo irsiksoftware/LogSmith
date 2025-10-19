@@ -583,6 +583,9 @@ jobs:
           # Add .nojekyll to disable Jekyll processing
           New-Item -ItemType File -Path "gh-pages/.nojekyll" | Out-Null
 
+          # Create CNAME file for custom domain
+          "logsmith-unity.irsik.software" | Out-File -FilePath "gh-pages/CNAME" -Encoding ascii -NoNewline
+
           Write-Host "GitHub Pages directory prepared"
 
       - name: Deploy to GitHub Pages
