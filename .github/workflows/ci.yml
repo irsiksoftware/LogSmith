@@ -575,23 +575,49 @@ jobs:
 
             $versionPassed = 0
             $versionTotal = 0
+            $versionFailed = 0
+            $versionSkipped = 0
+            $editExists = Test-Path $editXmlPath
+            $playExists = Test-Path $playXmlPath
 
-            if (Test-Path $editXmlPath) {
+            if ($editExists) {
               [xml]$editXml = Get-Content $editXmlPath
               $versionPassed += [int]$editXml.'test-run'.passed
               $versionTotal += [int]$editXml.'test-run'.total
+              $versionFailed += [int]$editXml.'test-run'.failed
+              $versionSkipped += [int]$editXml.'test-run'.skipped
             }
-            if (Test-Path $playXmlPath) {
+            if ($playExists) {
               [xml]$playXml = Get-Content $playXmlPath
               $versionPassed += [int]$playXml.'test-run'.passed
               $versionTotal += [int]$playXml.'test-run'.total
+              $versionFailed += [int]$playXml.'test-run'.failed
+              $versionSkipped += [int]$playXml.'test-run'.skipped
             }
 
-            $versionStatus = if ($versionPassed -eq $versionTotal) { "[PASS]" } else { "[FAIL]" }
-            $versionSummary += "$versionStatus Unity $version`: $versionPassed/$versionTotal passed$nl"
+            # Determine status and message
+            if (-not $editExists) {
+              $versionStatus = "[CRASH]"
+              $versionMessage = "EditMode crashed - no results"
+            } elseif ($versionTotal -eq 0) {
+              $versionStatus = "[CRASH]"
+              $versionMessage = "No tests found"
+            } elseif ($versionFailed -gt 0) {
+              $versionStatus = "[FAIL]"
+              $versionMessage = "$versionPassed/$versionTotal passed, $versionFailed failed"
+            } else {
+              $versionStatus = "[PASS]"
+              if ($versionSkipped -gt 0) {
+                $versionMessage = "$versionPassed/$versionTotal passed, $versionSkipped skipped"
+              } else {
+                $versionMessage = "$versionPassed/$versionTotal passed"
+              }
+            }
+
+            $versionSummary += "$versionStatus Unity $version`: $versionMessage$nl"
           }
 
-          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View Consolidated HTML Report]($reportUrl)"
+          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[📊 View Consolidated HTML Report (Artifacts Page)]($reportUrl)"
 
           $payload = @{
             embeds = @(
