@@ -86,7 +86,7 @@ jobs:
                   }
                   @{
                     name = "Status"
-                    value = "📝 Ready for Review"
+                    value = "Ready for Review"
                     inline = $true
                   }
                 )
@@ -151,7 +151,7 @@ jobs:
                   }
                   @{
                     name = "Status"
-                    value = "🎉 Successfully Merged"
+                    value = "Successfully Merged"
                     inline = $true
                   }
                 )
