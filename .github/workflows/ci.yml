@@ -23,6 +23,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Configure Git safe directory
+        shell: powershell
+        run: |
+          git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
+          Write-Host "Added $env:GITHUB_WORKSPACE to Git safe.directory list"
+
       - name: Setup Unity License
         shell: powershell
         run: |
