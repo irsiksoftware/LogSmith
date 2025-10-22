@@ -10,6 +10,7 @@ jobs:
   test:
     name: Test ${{ matrix.unityVersion }} on Windows
     runs-on: [self-hosted, Windows]
+    timeout-minutes: 5
 
     strategy:
       fail-fast: false
@@ -125,6 +126,7 @@ jobs:
   coverage-summary:
     name: Coverage Gate
     runs-on: [self-hosted, Windows]
+    timeout-minutes: 5
     needs: test
     if: always()
 

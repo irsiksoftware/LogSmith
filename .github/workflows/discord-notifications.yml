@@ -10,7 +10,8 @@ on:
 jobs:
   notify-commit:
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, windows]
+    timeout-minutes: 5
     steps:
       - name: Send Discord notification for commit
         env:
@@ -52,7 +53,8 @@ jobs:
 
   notify-release:
     if: github.event_name == 'release'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, windows]
+    timeout-minutes: 5
     steps:
       - name: Send Discord notification for release
         env:
