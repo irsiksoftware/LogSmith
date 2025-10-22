@@ -54,9 +54,6 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         private void Initialize()
         {
-            // Initialize Unity.Logging backend adapter
-            Adapters.NativeUnityLoggerAdapter.Initialize();
-
             // Configure and register console sink
             if (_settings.enableConsoleSink)
             {

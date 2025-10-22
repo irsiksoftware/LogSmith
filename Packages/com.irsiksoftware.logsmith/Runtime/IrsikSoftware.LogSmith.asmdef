@@ -2,9 +2,7 @@
     "name": "IrsikSoftware.LogSmith",
     "rootNamespace": "IrsikSoftware.LogSmith",
     "references": [
-        "Unity.Logging",
-        "Unity.Burst",
-        "Unity.Collections"
+        "Unity.Burst"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

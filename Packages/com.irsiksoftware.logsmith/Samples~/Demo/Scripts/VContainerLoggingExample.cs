@@ -22,22 +22,19 @@ namespace IrsikSoftware.LogSmith.Samples
 
         void Start()
         {
-            if (useDependencyInjection && LogSmith.IsUsingDependencyInjection)
+            // If logger was injected by VContainer, use it
+            if (_injectedLogger != null && useDependencyInjection)
             {
-                // Logger was injected by VContainer
-                if (_injectedLogger != null)
-                {
-                    _injectedLogger.Info("Using injected logger from VContainer!");
-                    _injectedLogger.Debug("Dependency injection is working correctly");
-                }
-                else
-                {
-                    Debug.LogWarning("DI enabled but logger not injected. Make sure LoggingLifetimeScope is in the scene.");
-                    UseFallbackLogger();
-                }
+                _injectedLogger.Info("Using injected logger from VContainer!");
+                _injectedLogger.Debug("Dependency injection is working correctly");
             }
             else
             {
+                // Fall back to static API if DI not available or disabled
+                if (_injectedLogger == null && useDependencyInjection)
+                {
+                    Debug.LogWarning("DI enabled but logger not injected. Make sure LoggingLifetimeScope is in the scene.");
+                }
                 UseFallbackLogger();
             }
         }
@@ -62,15 +59,16 @@ namespace IrsikSoftware.LogSmith.Samples
         [ContextMenu("Check DI Status")]
         public void CheckDIStatus()
         {
-            if (LogSmith.IsUsingDependencyInjection)
+            if (_injectedLogger != null)
             {
-                Debug.Log("✓ LogSmith is using VContainer DI");
-                if (_injectedLogger != null)
-                    _injectedLogger.Info("DI check: Logger is properly injected");
+                Debug.Log("✓ LogSmith logger was injected via VContainer DI");
+                _injectedLogger.Info("DI check: Logger is properly injected");
             }
             else
             {
-                Debug.Log("✗ LogSmith is using static fallback (no DI)");
+                Debug.Log("✗ Logger not injected - using static fallback API");
+                var fallbackLogger = LogSmith.CreateLogger("VContainerDemo");
+                fallbackLogger.Info("DI check: Using static API");
             }
         }
     }

@@ -5,9 +5,7 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "IrsikSoftware.LogSmith",
-        "Unity.Logging",
         "Unity.Burst",
-        "Unity.Collections",
         "VContainer"
     ],
     "includePlatforms": [

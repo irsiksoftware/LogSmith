@@ -1,0 +1,472 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LogSmith Test Results - 6000.0.26f1</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }
+    .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }
+    .tab { padding: 10px 20px; cursor: pointer; background: #f0f0f0; border: none; border-radius: 4px 4px 0 0; font-size: 16px; }
+    .tab.active { background: #4CAF50; color: white; }
+    .tab-content { display: none; padding: 20px 0; }
+    .tab-content.active { display: block; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+    .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+    .stat-card.passed { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }
+    .stat-card.failed { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }
+    .stat-card.skipped { background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%); }
+    .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }
+    .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
+    td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f9f9f9; }
+    .pass { color: #4CAF50; font-weight: bold; }
+    .fail { color: #f44336; font-weight: bold; }
+    .skip { color: #ff9800; font-weight: bold; }
+    .duration { color: #666; font-size: 0.9em; }
+  </style>
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>LogSmith Test Results - Unity 6000.0.26f1</h1>
+    <p><strong>Run:</strong> <a href='https://github.com/irsiksoftware/LogSmith/actions/runs/18618607622'>#146</a> | <strong>Commit:</strong> 6d79d22 | <strong>Branch:</strong> main</p>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('editmode')">EditMode Tests</button>
+      <button class="tab" onclick="showTab('playmode')">PlayMode Tests</button>
+    </div>
+    <div id="editmode" class="tab-content active">
+      <div class="summary">
+        <div class='stat-card'><h3>Total Tests</h3><div class='value'>296</div></div>
+        <div class='stat-card passed'><h3>Passed</h3><div class='value'>292</div></div>
+        <div class='stat-card failed'><h3>Failed</h3><div class='value'>1</div></div>
+        <div class='stat-card skipped'><h3>Skipped</h3><div class='value'>3</div></div>
+        <div class='stat-card'><h3>Duration</h3><div class='value'>0.83s</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>
+        <tbody>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.GetCategories_ReturnsAllRegisteredCategories</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.GetColor_ReturnsDefaultForUnregisteredCategory</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.GetMetadata_ReturnsCompleteMetadata</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.GetMetadata_ReturnsDefaultForUnregisteredCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.GetMinimumLevel_ReturnsDefaultForUnregisteredCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.HasCategory_ReturnsFalseForNullOrEmpty</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.IsEnabled_ReturnsTrueForUnregisteredCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.RegisterCategory_SimpleOverload_RegistersWithDefaultSettings</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.RegisterCategory_ThrowsForNullOrEmpty</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.RegisterCategory_WithMetadata_RegistersAllProperties</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.RenameCategory_PreservesMetadata</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.SetColor_UpdatesColor</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.SetEnabled_UpdatesEnabledState</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.SetMinimumLevel_AutoRegistersNewCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.SetMinimumLevel_UpdatesExistingCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.ThreadSafety_ConcurrentAccess_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0.009s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.CategoryRegistryTests.UnregisterCategory_RemovesCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.CircularBuffer_AddsItemsCorrectly</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.CircularBuffer_ClearsCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.CircularBuffer_HandlesEmptyBuffer</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.CircularBuffer_HandlesLogMessages</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.CircularBuffer_MaintainsOrderUnderLoad</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.CircularBuffer_OverwritesOldestWhenFull</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.DebugOverlayTests.LoggingSettings_OverlayDefaultsAreCorrect</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_CategoryFilterTakesPrecedenceOverRegistry</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_DisabledCategory_FiltersOutMessage</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_DynamicallyChangeMinimumLevel_FiltersAccordingly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_DynamicallyDisableCategory_FiltersSubsequentMessages</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_EnabledCategory_AllowsMessage</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_EnabledStateCheckHappensFirmst_BeforeMinimumLevel</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_RespectsRegistryMinimumLevel</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_UnregisteredCategory_UsesGlobalMinimum</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterCategoryIntegrationTests.Route_WithoutCategoryRegistry_WorksNormally</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.RegisterSink_CompletesUnder50Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_ConcurrentAccess_MaintainsThreadSafety</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_FilteredOut_CompletesUnder100Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_HighThroughput_MaintainsPerformance</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_MultipleSinks_CompletesUnder500Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_SingleSink_CompletesUnder200Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_WithCategoryFilter_CompletesUnder250Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Route_WithGlobalMinimumLevel_CompletesUnder200Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterPerformanceTests.Subscribe_WithMainThreadDispatch_MeetsPerformanceTarget</td><td class='pass'>Passed</td><td class='duration'>0.008s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.ClearCategoryFilter_NullOrEmpty_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.ClearCategoryFilter_RemovesFilter</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.RegisterSink_AddsSinkToRouter</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.RegisterSink_SameSinkTwice_OnlyAddsOnce</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.RegisterSink_ThrowsOnNull</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Route_MultipleSinks_PreservesRegistrationOrder</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Route_MultipleSinks_RoutesToAll</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Route_NoSinksRegistered_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Route_NoSubscribers_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Route_OneSinkFails_OtherSinksStillReceiveMessages</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.SetCategoryFilter_DifferentCategories_IndependentFiltering</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.SetCategoryFilter_FiltersSpecificCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.SetCategoryFilter_ThrowsOnNullCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.SetGlobalMinimumLevel_DefaultIsTrace_AllowsAllLevels</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.SetGlobalMinimumLevel_FiltersLowerLevels</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_Dispose_StopsReceivingMessages</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_DisposeMultipleTimes_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_FailingSubscriber_DoesNotBlockOthers</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_FilteredMessage_SubscriberDoesNotReceive</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_MultipleSubscribers_AllReceiveMessages</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_ReceivesMessages</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.Subscribe_ThrowsOnNullHandler</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.ThreadSafety_ConcurrentRouting_AllMessagesProcessed</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.ThreadSafety_ConcurrentSinkRegistration_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.UnregisterSink_NonExistentSink_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.UnregisterSink_RemovesSink</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.LogRouterTests.UnregisterSink_ThrowsOnNull</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_AlternatingFormats_CompletesUnder2Milliseconds</td><td class='pass'>Passed</td><td class='duration'>0.007s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_ComplexTemplate_CompletesUnder2Milliseconds</td><td class='pass'>Passed</td><td class='duration'>0.024s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_ConcurrentAccess_MaintainsPerformance</td><td class='pass'>Passed</td><td class='duration'>0.014s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_JsonFormat_CompletesUnder2Milliseconds</td><td class='pass'>Passed</td><td class='duration'>0.01s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_JsonWithLargeContext_CompletesUnder3Milliseconds</td><td class='pass'>Passed</td><td class='duration'>0.028s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_LargeContext_CompletesUnder2Milliseconds</td><td class='pass'>Passed</td><td class='duration'>0.007s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_MalformedTokens_DoesNotDegradePerformance</td><td class='pass'>Passed</td><td class='duration'>0.006s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_NoContext_FasterThanWithContext</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_SimpleTemplate_CompletesUnder1Millisecond</td><td class='pass'>Passed</td><td class='duration'>0.007s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.Format_WithContextTokens_CompletesUnder1Millisecond</td><td class='pass'>Passed</td><td class='duration'>0.006s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.GetCategoryTemplate_RetrieveTemplate_CompletesUnder50Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEnginePerformanceTests.SetCategoryTemplate_UpdateTemplate_CompletesUnder100Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_AllStandardTokens_ReplacedCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_CaseSensitiveTokens_HandledCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_ComplexTemplate_AllTokensReplaced</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_ContextKeyAsToken_ResolvesFromDictionary</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_ContextToken_FormatsAllKeyValuePairs</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_JsonEscaping_HandlesSpecialCharacters</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_JsonFormat_ProducesValidJson</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_JsonWithContext_IncludesContextObject</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_MalformedToken_ReturnsTokenAsIs</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_MemoryToken_ReturnsNumericValue</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_MultipleCategories_MaintainsSeparateTemplates</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_NoTemplate_UsesDefault</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_OptionalFields_OmittedWhenEmpty</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_StackToken_ReturnsStackTrace</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_ThreadToken_CombinesNameAndId</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_ThreadTokenNoName_ShowsIdOnly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_TimestampWithCustomFormat_FormatsCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.Format_TimestampWithoutFormat_UsesISO8601</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.GetCategoryTemplate_ReturnsDefaultForUnsetCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.SetCategoryTemplate_EmptyString_ThrowsArgumentNullException</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.SetCategoryTemplate_ThrowsOnNullCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.MessageTemplateEngineTests.SetCategoryTemplate_ThrowsOnNullTemplate</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Trace,Trace)</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Trace,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Trace,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Trace,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Trace,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Trace,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Debug,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Debug,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Debug,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Debug,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Debug,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Debug,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Info,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Info,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Info,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Info,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Info,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Info,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Warn,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Warn,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Warn,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Warn,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Warn,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Warn,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Error,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Error,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Error,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Error,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Error,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Error,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Critical,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Critical,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Critical,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Critical,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Critical,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.CategoryMinLevel_Matrix_FiltersCorrectly(Critical,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.ClearCategoryFilter_FallsBackToRegistryMinimum</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.DisabledCategory_Matrix_BlocksAllLevels(Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.DisabledCategory_Matrix_BlocksAllLevels(Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.DisabledCategory_Matrix_BlocksAllLevels(Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.DisabledCategory_Matrix_BlocksAllLevels(Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.DisabledCategory_Matrix_BlocksAllLevels(Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.DisabledCategory_Matrix_BlocksAllLevels(Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.FullPrecedenceChain_GlobalMinimumWhenNoRegistryOrFilter</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.FullPrecedenceChain_RegistryMinimumWhenNoRouterFilter</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.FullPrecedenceChain_RouterFilterOverridesRegistry</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Trace,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Trace,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Trace,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Trace,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Trace,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Trace,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Debug,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Debug,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Debug,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Debug,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Debug,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Debug,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Info,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Info,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Info,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Info,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Info,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Info,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Warn,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Warn,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Warn,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Warn,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Warn,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Warn,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Error,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Error,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Error,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Error,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Error,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Error,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Critical,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Critical,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Critical,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Critical,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Critical,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.GlobalMinLevel_Matrix_FiltersCorrectly(Critical,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Trace,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Trace,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Trace,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Trace,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Trace,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Trace,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Debug,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Debug,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Debug,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Debug,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Debug,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Debug,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Info,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Info,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Info,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Info,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Info,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Info,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Warn,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Warn,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Warn,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Warn,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Warn,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Warn,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Error,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Error,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Error,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Error,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Error,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Error,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Critical,Trace)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Critical,Debug)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Critical,Info)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Critical,Warn)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Critical,Error)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PerCategoryMinLevelMatrixTests.RouterCategoryFilter_Matrix_FiltersCorrectly(Critical,Critical)</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlatformCapabilitiesTests.HasWritablePersistentDataPath_IsConsistentAcrossCalls</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlatformCapabilitiesTests.HasWritablePersistentDataPath_ReturnsTrue_OnSupportedPlatforms</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlatformCapabilitiesTests.HasWritablePersistentDataPath_ReturnsValidValue</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlatformCapabilitiesTests.PlatformName_IsConsistentAcrossCalls</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlatformCapabilitiesTests.PlatformName_ReturnsNonEmptyString</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.CategoryRegistry_CanRegisterAndUnregisterCategories</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.CategoryRegistry_CanRenameCategory</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.CategoryRegistry_CanSetAndGetMinimumLevel</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.CategoryRegistry_ReturnsAllCategories</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.FileSink_CanBeDisposed</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.FileSink_CanWriteToFile</td><td class='pass'>Passed</td><td class='duration'>0.02s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.LogConfigProvider_CanSubscribeToConfigChanges</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.LogConfigProvider_NotifiesSubscribersOnReload</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.LogConfigProvider_ReturnsDefaultConfig</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.Logger_CanCreateCategoryLogger</td><td class='pass'>Passed</td><td class='duration'>0.004s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.Logger_CanLog_AllLevels</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.Logger_WithCategory_CreatesNewLogger</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.LogSmith_Initializes_Successfully</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.MessageTemplateEngine_CanSetCategoryTemplate</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.MessageTemplateEngine_EscapesJsonSpecialCharacters</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.MessageTemplateEngine_FormatsJsonCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.MessageTemplateEngine_FormatsTextCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.Router_CanRegisterAndUnregisterSinks</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.BasicLoggingTests.Router_CanSubscribeToLogEvents</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.Constructor_ThrowsOnNullSettings</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.GetConfig_ConvertsCategoryMinLevelOverrides</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.GetConfig_ConvertsScriptableObjectSettings</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.GetConfig_IgnoresEmptyCategoryNames</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.GetConfig_ReturnsConfigWithDefaultSettings</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.SettingsChanged_DoesNotTriggerWhenLiveReloadDisabled</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.SettingsChanged_TriggersReloadWhenLiveReloadEnabled</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.Subscribe_Dispose_StopsNotifications</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.Subscribe_NotifiesImmediatelyWithCurrentConfig</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.ScriptableObjectConfigProviderTests.Subscribe_NotifiesOnReload</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_AppliesPerCategoryMinLevels_FromSettings</td><td class='pass'>Passed</td><td class='duration'>0.007s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_DefaultFormat_IsText</td><td class='pass'>Passed</td><td class='duration'>0.015s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_DisablesConsoleSink_WhenConfigured</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_Dispose_UnregistersSinks</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_DoubleDispose_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_EnablesConsoleSink_WhenConfigured</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_EnablesFileSink_WhenConfigured</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_Flush_FlushesAllSinks</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_IgnoresEmptyOrNullCategoryNames_InOverrides</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_InitializesWithDefaultSettings</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_RegistersSinks_WithRouter</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_ReloadSettings_UpdatesMinimumLevel</td><td class='pass'>Passed</td><td class='duration'>0.004s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_ReloadSettings_UpdatesPerCategoryMinLevels</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_SetsGlobalMinimumLevel</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_SwitchFormat_ChangesFileSinkFormat</td><td class='pass'>Passed</td><td class='duration'>0.015s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.Bootstrap_WithRelativePath_UsesApplicationDataPath</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.FileSink_RespectsRetentionCount</td><td class='pass'>Passed</td><td class='duration'>0.022s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.FileSink_RotatesLog_WhenSizeExceeds</td><td class='pass'>Passed</td><td class='duration'>0.131s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.LogSmith_ReloadSettings_CallsBootstrapReload</td><td class='pass'>Passed</td><td class='duration'>0.004s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Runtime.UnityLoggingBootstrapTests.LogSmith_SwitchFormat_CallsBootstrapSwitchFormat</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.TestPlaceholder.PlaceholderTest_ShouldPass</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.UnityLoggingBootstrapPlatformTests.Bootstrap_DisablesFileSink_WhenPlatformDoesNotSupportFileIO</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.UnityLoggingBootstrapPlatformTests.Bootstrap_EnablesFileSink_WhenPlatformSupportsFileIO</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.UnityLoggingBootstrapPlatformTests.Bootstrap_WarnsUser_WhenFileSinkRequestedOnUnsupportedPlatform</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LiveLogConsoleWindowTests.LiveLogConsoleWindow_CanBeInstantiated</td><td class='pass'>Passed</td><td class='duration'>0.008s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LiveLogConsoleWindowTests.LiveLogConsoleWindow_MenuItemExists</td><td class='fail'>Failed</td><td class='duration'>0.133s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.CategoryDefinition_DefaultValuesAreReasonable</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.CategoryDefinition_SerializesCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.CategoryTemplateOverride_SerializesCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_CanAddCategories</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_CanAddTemplateOverrides</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_CanEnableVisualDebug</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_CanStoreMixedConfiguration</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_DefaultsAreCorrect</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_SettingsChangedEventFires</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.LoggingSettings_VisualDebugDefaultsCorrectly</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.SinksTab_CanBeInstantiated</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.SinksTab_CanDrawWithoutErrors</td><td class='skip'>Skipped</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.SinksTab_ShowsFileSinkPlatformWarnings</td><td class='skip'>Skipped</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.VisualDebugTab_CanBeInstantiated</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.Editor.LogSmithEditorWindowTests.VisualDebugTab_CanDrawWithoutErrors</td><td class='skip'>Skipped</td><td class='duration'>0s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="playmode" class="tab-content">
+      <div class="summary">
+        <div class='stat-card'><h3>Total Tests</h3><div class='value'>97</div></div>
+        <div class='stat-card passed'><h3>Passed</h3><div class='value'>97</div></div>
+        <div class='stat-card failed'><h3>Failed</h3><div class='value'>0</div></div>
+        <div class='stat-card skipped'><h3>Skipped</h3><div class='value'>0</div></div>
+        <div class='stat-card'><h3>Duration</h3><div class='value'>28.79s</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>
+        <tbody>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Cleanup_RemovesRenderer</td><td class='pass'>Passed</td><td class='duration'>0.017s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Initialize_CreatesVisualDebugRenderer</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Initialize_DisablesRendererByDefault</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.Initialize_EnablesRendererWhenRequested</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.IsActive_ReturnsTrueWhenNoOtherPipelinesAvailable</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanClear</td><td class='pass'>Passed</td><td class='duration'>0.006s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanDrawLine</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanDrawQuad</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_CanToggleEnabled</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.BuiltInRenderPipelineAdapterTests.VisualDebugRenderer_ExpiredShapesAreRemoved</td><td class='pass'>Passed</td><td class='duration'>0.155s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Dispose_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_DisposedSink_DoesNotWriteOrThrow</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Flush_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_JsonFormat_OutputsValidStructure</td><td class='pass'>Passed</td><td class='duration'>0.006s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_TextFormat_ContainsMetadata</td><td class='pass'>Passed</td><td class='duration'>0.007s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_WithContext_IncludesContextData</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_CriticalLevel_UsesErrorType</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_ErrorLevel_UsesErrorType</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_InfoLevel_UsesLogType</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_MultipleMessages_AllCaptured</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_OutputsToUnityConsole</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ConsoleSinkIntegrationTests.ConsoleSink_Write_WarnLevel_UsesWarningType</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.CategorySwitching_SelectingCategory_ShowsOnlyThatCategory</td><td class='pass'>Passed</td><td class='duration'>0.061s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.CircularBuffer_ExceedingCapacity_MaintainsLimit</td><td class='pass'>Passed</td><td class='duration'>0.104s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.ClearBuffer_AfterLogging_RemovesAllMessages</td><td class='pass'>Passed</td><td class='duration'>0.052s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.CombinedFilters_LevelCategoryAndSearch_AllApplied</td><td class='pass'>Passed</td><td class='duration'>0.052s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.FilterToggle_ChangingMinLevel_FiltersCorrectly</td><td class='pass'>Passed</td><td class='duration'>0.052s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.GCAllocation_RepeatedUpdates_NoSignificantGCSpikes</td><td class='pass'>Passed</td><td class='duration'>0.412s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.SearchFilter_EnteringSearchText_FiltersMessages</td><td class='pass'>Passed</td><td class='duration'>0.052s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.ThrottledRefresh_HighFrequencyLogs_ThrottlesUpdates</td><td class='pass'>Passed</td><td class='duration'>0.052s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.DebugOverlayUITests.VisibilityToggle_F1Key_TogglesOverlay</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_ConcurrentWrites_ThreadSafe</td><td class='pass'>Passed</td><td class='duration'>0.047s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_DeterministicOutput_SameInputProducesSameFormat</td><td class='pass'>Passed</td><td class='duration'>0.019s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_DisposedSink_DoesNotWriteOrThrow</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_JsonOutput_IsDeterministic</td><td class='pass'>Passed</td><td class='duration'>0.018s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Retention_DeletesOldestFiles</td><td class='pass'>Passed</td><td class='duration'>5.979s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Retention_KeepsCurrentFileAndRecentArchives</td><td class='pass'>Passed</td><td class='duration'>4.962s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Retention_ZeroRetention_KeepsAllFiles</td><td class='pass'>Passed</td><td class='duration'>2.977s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Rotation_ArchivedFileName_ContainsTimestamp</td><td class='pass'>Passed</td><td class='duration'>0.974s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Rotation_PreservesAllMessages</td><td class='pass'>Passed</td><td class='duration'>1.098s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Rotation_TriggersWhenFileSizeExceeded</td><td class='pass'>Passed</td><td class='duration'>1.019s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_CreatesFile</td><td class='pass'>Passed</td><td class='duration'>0.015s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_JsonFormat_ProducesValidJson</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_MultipleMessages_AppendsToFile</td><td class='pass'>Passed</td><td class='duration'>0.016s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.FileSinkIntegrationTests.FileSink_Write_TextFormat_ProducesReadableOutput</td><td class='pass'>Passed</td><td class='duration'>0.015s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Cleanup_RemovesRenderer</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Initialize_CreatesVisualDebugRenderer_WhenHDRPAvailable</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Initialize_DisablesRendererByDefault</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.Initialize_EnablesRendererWhenRequested</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.IsAvailable_ReturnsExpectedValue</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanClear_WhenHDRPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanDrawLine_WhenHDRPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanDrawQuad_WhenHDRPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.HDRPAdapterTests.VisualDebugRenderer_CanToggleEnabled_WhenHDRPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsCallerInfo</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsFrameInfo</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsRequiredFields</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ContainsThreadInfo</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_EmptyContext_ValidStructure</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_LevelField_CorrectValues</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_NewlineCharacters_ProperlyEscaped</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_SchemaStability_AllLogLevels</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_SchemaStability_DifferentCategories</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_Snapshot_BasicMessage</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_Snapshot_WithContext</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_SpecialCharacters_ProperlyEscaped</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_TimestampFormat_ISO8601</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_ValidJsonStructure</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_WithContext_IncludesContextObject</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.JsonSchemaSnapshotTests.JsonOutput_WithoutContext_ValidStructure</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_AcrossMultipleFrames_SustainedPerformance</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_HighThroughput_MaintainsFrameBudget</td><td class='pass'>Passed</td><td class='duration'>0.003s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_MultipleSinks_MeetsPerformanceTarget</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_SingleSink_CompletesUnder200Microseconds</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.LogRouterPlayModePerformanceTests.RuntimeRouting_WithFiltering_FastRejection</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Cleanup_RemovesActiveRenderer</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.DetectedPipeline_MatchesCurrentProject</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_ActivatesAdapter_WhenAvailable</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_DetectsPipeline</td><td class='pass'>Passed</td><td class='duration'>0.002s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_LogsInfoMessage</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_WithEnabledFalse_DisablesRenderer</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.Initialize_WithEnabledTrue_EnablesRenderer</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.RenderPipelineDetector_DetectPipeline_DoesNotThrow</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.RenderPipelineAdapterServiceTests.RenderPipelineDetector_GetPipelineName_ReturnsValidNames</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.BoundedQueue_DropsMessagesWhenFull</td><td class='pass'>Passed</td><td class='duration'>10.393s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.ConcurrentSubscribeAndUnsubscribe_NoDataRaces</td><td class='pass'>Passed</td><td class='duration'>0.079s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.MultiThreadedLogging_NoDataRaces</td><td class='pass'>Passed</td><td class='duration'>0.006s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.ThreadSafetyStressTests.SubscribersReceiveOnMainThread</td><td class='pass'>Passed</td><td class='duration'>0.005s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Cleanup_RemovesRenderer</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_CreatesVisualDebugRenderer_WhenURPAvailable</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_DisablesRendererByDefault</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.Initialize_EnablesRendererWhenRequested</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.IsAvailable_ReturnsExpectedValue</td><td class='pass'>Passed</td><td class='duration'>0.001s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanClear_WhenURPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanDrawLine_WhenURPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanDrawQuad_WhenURPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+          <tr><td>IrsikSoftware.LogSmith.Tests.PlayMode.URPAdapterTests.VisualDebugRenderer_CanToggleEnabled_WhenURPAvailable</td><td class='pass'>Passed</td><td class='duration'>0s</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
+

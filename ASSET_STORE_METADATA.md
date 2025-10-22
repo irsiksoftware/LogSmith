@@ -385,6 +385,7 @@ All dependencies are official Unity packages or properly licensed:
 
 ## Release Checklist
 
+### LogSmith (Free) Checklist
 - [ ] All acceptance criteria met for issue #4
 - [ ] .unitypackage exports without missing references
 - [ ] All tests pass on supported Unity versions
@@ -393,12 +394,37 @@ All dependencies are official Unity packages or properly licensed:
 - [ ] Screenshots captured at 1920x1080
 - [ ] Video recorded and edited (30-60s)
 - [ ] Package icon created (512x512)
-- [ ] Metadata reviewed and proofread
+- [ ] Metadata reviewed and proofread for Free tier
 - [ ] Semantic version number assigned (1.0.0)
 - [ ] CHANGELOG.md updated with release notes
-- [ ] License file included
-- [ ] Unity Asset Store submission form completed
+- [ ] MIT License file included in package
+- [ ] README.md clarifies open source status
+- [ ] PRICING.md included explaining freemium model
+- [ ] Unity Asset Store submission form completed (Free tier)
+- [ ] GitHub repository is public and up-to-date
 - [ ] Backup of submission materials archived
+
+### LogSmith Pro Checklist
+- [ ] All Pro sinks tested (HTTP, Sentry, Seq, Elasticsearch)
+- [ ] Pro package .unitypackage exports without missing references
+- [ ] Dependency on LogSmith (Free) correctly configured
+- [ ] Pro-specific documentation reviewed
+- [ ] Pro sink samples tested on all platforms
+- [ ] Pro package icon created (512x512) with "Pro" branding
+- [ ] Metadata reviewed and proofread for Pro tier
+- [ ] Semantic version number assigned (1.0.0)
+- [ ] Asset Store EULA license file included
+- [ ] Pro package description emphasizes it requires Free tier
+- [ ] Unity Asset Store submission form completed (Pro tier, $14.99)
+- [ ] Backup of Pro submission materials archived
+
+### Cross-Package Validation
+- [ ] Free package works standalone without Pro
+- [ ] Pro package correctly requires and integrates with Free
+- [ ] No circular dependencies between packages
+- [ ] Both packages use consistent version numbering
+- [ ] PRICING.md clearly explains what's in each tier
+- [ ] Asset Store listings clearly distinguish Free vs Pro
 
 ## Contact Information
 

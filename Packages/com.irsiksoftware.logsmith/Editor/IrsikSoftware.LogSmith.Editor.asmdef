@@ -3,9 +3,7 @@
     "rootNamespace": "IrsikSoftware.LogSmith.Editor",
     "references": [
         "IrsikSoftware.LogSmith",
-        "Unity.Logging",
-        "Unity.Burst",
-        "Unity.Collections"
+        "Unity.Burst"
     ],
     "includePlatforms": [
         "Editor"

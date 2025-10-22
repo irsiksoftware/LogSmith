@@ -131,27 +131,38 @@ namespace IrsikSoftware.LogSmith.Samples
         public void TakeDamage(int amount)
         {
             _currentHealth -= amount;
+            _totalDamageTaken += amount;
 
             if (_currentHealth <= 0)
             {
                 _currentHealth = 0;
+                _isDead = true;
                 _playerLogger.Error($"{playerName} has died!");
             }
-            else if (_currentHealth < 30)
+            else if (_currentHealth <= criticalHealthThreshold)
             {
-                _playerLogger.Warn($"{playerName} health critical: {_currentHealth}/{startingHealth}");
+                if (logHealthChanges)
+                    _playerLogger.Warn($"{playerName} health critical: {_currentHealth}/{maxHealth}");
             }
             else
             {
-                _playerLogger.Info($"{playerName} took {amount} damage (health: {_currentHealth}/{startingHealth})");
+                if (logHealthChanges)
+                    _playerLogger.Info($"{playerName} took {amount} damage (health: {_currentHealth}/{maxHealth})");
             }
         }
 
         [ContextMenu("Heal")]
         public void Heal(int amount)
         {
-            _currentHealth = Mathf.Min(_currentHealth + amount, startingHealth);
-            _playerLogger.Info($"{playerName} healed for {amount} (health: {_currentHealth}/{startingHealth})");
+            int oldHealth = _currentHealth;
+            _currentHealth = Mathf.Min(_currentHealth + amount, maxHealth);
+            int actualHealing = _currentHealth - oldHealth;
+
+            if (_isDead && _currentHealth > 0)
+                _isDead = false;
+
+            if (logHealthChanges && actualHealing > 0)
+                _playerLogger.Info($"{playerName} healed for {actualHealing} (health: {_currentHealth}/{maxHealth})");
         }
 
         [ContextMenu("Fire Weapon")]
@@ -159,20 +170,27 @@ namespace IrsikSoftware.LogSmith.Samples
         {
             if (_currentAmmo <= 0)
             {
-                _playerLogger.Warn($"{playerName} out of ammo!");
+                if (logCombatActions)
+                    _playerLogger.Warn($"{playerName} out of ammo!");
                 return;
             }
 
             _currentAmmo--;
-            _playerLogger.Debug($"{playerName} fired weapon (ammo: {_currentAmmo}/{startingAmmo})");
+            _totalShotsFired++;
 
-            if (_currentAmmo <= 5)
-                _playerLogger.Warn($"{playerName} low on ammo: {_currentAmmo} remaining");
+            if (logCombatActions)
+            {
+                _playerLogger.Debug($"{playerName} fired weapon (ammo: {_currentAmmo}/{maxAmmo})");
+
+                if (_currentAmmo <= lowAmmoThreshold)
+                    _playerLogger.Warn($"{playerName} low on ammo: {_currentAmmo} remaining");
+            }
         }
 
         [ContextMenu("Collect Item")]
         public void CollectItem(string itemName)
         {
+            _totalItemsCollected++;
             _playerLogger.Info($"{playerName} collected: {itemName}");
         }
 
@@ -180,7 +198,8 @@ namespace IrsikSoftware.LogSmith.Samples
         public void AddScore(int points)
         {
             _score += points;
-            _playerLogger.Info($"{playerName} scored {points} points (total: {_score})");
+            if (logScoreChanges)
+                _playerLogger.Info($"{playerName} scored {points} points (total: {_score})");
         }
 
         [ContextMenu("Show Player Stats")]
