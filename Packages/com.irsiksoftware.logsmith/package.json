@@ -3,7 +3,7 @@
   "displayName": "LogSmith",
   "version": "1.0.0",
   "unity": "2022.3",
-  "description": "A production-grade Unity logging package leveraging Unity's native logging system with advanced features for professional game development.",
+  "description": "FREE & open source production-grade Unity logging. Console/File sinks, debug overlay, VContainer DI, runtime categories, message templates. 100% test coverage. MIT License.",
   "keywords": [
     "logging",
     "unity",
@@ -21,9 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "com.unity.logging": "1.0.0",
-    "com.unity.burst": "1.8.0",
-    "com.unity.collections": "2.1.0"
+    "com.unity.burst": "1.8.0"
   },
   "samples": [
     {

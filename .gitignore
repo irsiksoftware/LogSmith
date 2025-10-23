@@ -83,6 +83,8 @@ mono_crash.*
 /CodeCoverage/
 /TestOutputs/
 /TempTestResults/
+TestResults_*.xml
+TestResults_*.xml.meta
 build-log.txt
 compile-log.txt
 

@@ -21,9 +21,6 @@ namespace IrsikSoftware.LogSmith.DI
             // Use default settings if none provided
             var config = settings != null ? settings : LoggingSettings.CreateDefault();
 
-            // Initialize Unity backend adapter
-            Adapters.NativeUnityLoggerAdapter.Initialize();
-
             // Register core services as singletons
             builder.Register<ILogRouter, LogRouter>(Lifetime.Singleton);
             builder.Register<ICategoryRegistry, CategoryRegistry>(Lifetime.Singleton);
