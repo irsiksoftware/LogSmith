@@ -49,7 +49,9 @@ namespace IrsikSoftware.LogSmith.Core
                 return PipelineType.HDRP;
             }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.LogWarning($"[RenderPipelineDetector] Unknown render pipeline: {pipelineName}");
+#endif
             return PipelineType.Unknown;
         }
 

@@ -67,8 +67,10 @@ namespace IrsikSoftware.LogSmith.Core
                 // Check if platform supports file I/O
                 if (!_platformCapabilities.HasWritablePersistentDataPath)
                 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     Debug.LogWarning($"[LogSmith] File sink is not supported on {_platformCapabilities.PlatformName}. " +
                                    "File logging will be disabled. Supported platforms: Windows, macOS, Linux, iOS, Android, PlayStation, Xbox.");
+#endif
                 }
                 else
                 {
@@ -109,7 +111,9 @@ namespace IrsikSoftware.LogSmith.Core
                 ? (_fileSink != null ? "Enabled" : $"Disabled (unsupported on {_platformCapabilities.PlatformName})")
                 : "Disabled";
             var overlayStatus = _settings.enableDebugOverlay ? "Enabled (F1 to toggle)" : "Disabled";
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {fileStatus}, Overlay: {overlayStatus}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
+#endif
         }
 
         /// <summary>
@@ -120,11 +124,15 @@ namespace IrsikSoftware.LogSmith.Core
         {
             if (!_liveReloadEnabled)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning("[LogSmith] Live reload is disabled in settings");
+#endif
                 return;
             }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("[LogSmith] Reloading logging settings...");
+#endif
 
             // Update global minimum log level
             _router.SetGlobalMinimumLevel(_settings.minimumLogLevel);
@@ -140,7 +148,9 @@ namespace IrsikSoftware.LogSmith.Core
                     : MessageFormat.Json;
             }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[LogSmith] Settings reloaded - MinLevel: {_settings.minimumLogLevel}, Format: {_settings.defaultFormatMode}");
+#endif
         }
 
         /// <summary>
@@ -151,12 +161,16 @@ namespace IrsikSoftware.LogSmith.Core
         {
             if (_fileSink == null)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning("[LogSmith] Cannot switch format: File sink is not enabled");
+#endif
                 return;
             }
 
             _fileSink.CurrentFormat = format;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[LogSmith] File sink format switched to: {format}");
+#endif
         }
 
         /// <summary>
@@ -186,7 +200,9 @@ namespace IrsikSoftware.LogSmith.Core
             var overlayObject = new GameObject("[LogSmith] DebugOverlay");
             _debugOverlay = overlayObject.AddComponent<DebugOverlayController>();
             _debugOverlay.Initialize(_router);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("[LogSmith] Debug Overlay initialized - Press F1 to toggle");
+#endif
         }
 
         /// <summary>
@@ -244,7 +260,9 @@ namespace IrsikSoftware.LogSmith.Core
                 _debugOverlay = null;
             }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("[LogSmith] UnityLoggingBootstrap disposed");
+#endif
         }
     }
 }

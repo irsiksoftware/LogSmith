@@ -41,7 +41,9 @@ namespace IrsikSoftware.LogSmith.Core
         {
             if (_logRouter != null)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning("[DebugOverlay] Already initialized");
+#endif
                 return;
             }
 

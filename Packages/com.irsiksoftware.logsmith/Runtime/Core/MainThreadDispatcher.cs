@@ -62,8 +62,10 @@ namespace IrsikSoftware.LogSmith.Core
                 _droppedMessageCount++;
                 if (_droppedMessageCount % 100 == 1) // Log every 100 drops to avoid spam
                 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     Debug.LogWarning($"[LogSmith] Main thread queue full ({MaxQueueSize}), dropping messages. " +
                                    $"Total dropped: {_droppedMessageCount}. Consider reducing logging frequency.");
+#endif
                 }
                 return;
             }
@@ -96,7 +98,9 @@ namespace IrsikSoftware.LogSmith.Core
                 }
                 catch (Exception ex)
                 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     Debug.LogError($"[LogSmith] Main thread action failed: {ex.Message}\n{ex.StackTrace}");
+#endif
                 }
             }
         }
