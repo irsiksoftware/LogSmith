@@ -53,15 +53,18 @@ public class GameManager : MonoBehaviour
 
 ```csharp
 using IrsikSoftware.LogSmith;
+using IrsikSoftware.LogSmith.DI;
 using VContainer;
 using VContainer.Unity;
 
 public class GameLifetimeScope : LifetimeScope
 {
+    [SerializeField] private LoggingSettings _loggingSettings;
+
     protected override void Configure(IContainerBuilder builder)
     {
-        // Register LogSmith (automatic)
-        builder.RegisterLogSmith();
+        // Register LogSmith with settings
+        builder.AddLogSmithLogging(_loggingSettings);
 
         // Your other registrations...
         builder.RegisterEntryPoint<GameManager>();
@@ -85,6 +88,14 @@ public class GameManager : IStartable
 }
 ```
 
+**Important:** The `AddLogSmithLogging()` extension method is provided in the **VContainer Integration** sample.
+To use it:
+1. Import the "VContainer Integration" sample via Package Manager
+2. Copy `ContainerBuilderExtensions.cs` to your project or use the sample directly
+3. Add `using IrsikSoftware.LogSmith.DI;` to access the extension method
+
+Alternatively, you can use the `LoggingLifetimeScope` component (see detailed setup below) or manually register LogSmith services (see "Manual Registration" section).
+
 ### Configuration
 
 1. **Create Settings**: Right-click in Project → Create → LogSmith → Logging Settings
@@ -105,6 +116,23 @@ Check `Packages/com.irsiksoftware.logsmith/Samples~/` for:
 - **VContainerIntegration**: Full DI setup
 - **CustomTemplates**: Message format customization
 - **CustomSinks**: Extending with HTTP, database, or cloud sinks
+
+### VContainer Integration Troubleshooting
+
+**Error: 'RegisterLogSmith' does not exist**
+- Use `builder.AddLogSmithLogging(settings)` instead
+- Import the VContainer Integration sample first
+- Add `using IrsikSoftware.LogSmith.DI;`
+
+**Error: 'AddLogSmithLogging' does not exist**
+- Import the "VContainer Integration" sample via Package Manager
+- Copy `Samples~/VContainerIntegration/Runtime/ContainerBuilderExtensions.cs` to your Runtime folder
+- Verify `using IrsikSoftware.LogSmith.DI;` is present
+
+**Missing LoggingSettings Parameter**
+- The `AddLogSmithLogging()` method accepts an optional `LoggingSettings` parameter
+- Create settings: Right-click in Project → Create → LogSmith → Logging Settings
+- Pass to method: `builder.AddLogSmithLogging(yourSettings);`
 
 ## Key Goals for LogSmith v1.0
 
@@ -317,6 +345,8 @@ protected override void Configure(IContainerBuilder builder)
     builder.RegisterEntryPoint<MyGameSystem>();
 }
 ```
+
+> **Note:** This shows manual registration using the `AddLogSmithLogging()` extension method from the VContainer Integration sample. Make sure you've imported the sample first (see quickstart section above).
 
 ### Checking DI Status
 
