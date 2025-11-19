@@ -12,9 +12,7 @@ namespace IrsikSoftware.LogSmith.Core
     {
         private readonly string _filePath;
         private readonly object _lock = new object();
-        private readonly bool _enableRotation;
-        private readonly long _maxFileSizeBytes;
-        private readonly int _retentionCount;
+        private readonly FileRotationService _rotationService;
         private readonly IMessageTemplateEngine _templateEngine;
 
         private StreamWriter _writer;
@@ -51,9 +49,9 @@ namespace IrsikSoftware.LogSmith.Core
 
             _filePath = filePath;
             _templateEngine = templateEngine ?? new MessageTemplateEngine();
-            _enableRotation = enableRotation;
-            _maxFileSizeBytes = maxFileSizeMB * 1024L * 1024L; // Convert MB to bytes
-            _retentionCount = retentionCount;
+            _rotationService = enableRotation
+                ? new FileRotationService(maxFileSizeMB * 1024L * 1024L, retentionCount)
+                : null;
 
             InitializeWriter();
         }
@@ -67,9 +65,18 @@ namespace IrsikSoftware.LogSmith.Core
                 try
                 {
                     // Check if rotation is needed before writing
-                    if (_enableRotation && ShouldRotate())
+                    if (_rotationService != null && _rotationService.ShouldRotate(_filePath))
                     {
-                        RotateLogFile();
+                        // Close current writer before rotation
+                        _writer?.Flush();
+                        _writer?.Dispose();
+                        _writer = null;
+
+                        // Perform rotation (move file and cleanup)
+                        _rotationService.RotateFile(_filePath);
+
+                        // Reinitialize writer with fresh file
+                        InitializeWriter();
                     }
 
                     if (_writer == null)
@@ -123,106 +130,6 @@ namespace IrsikSoftware.LogSmith.Core
                 {
                     UnityEngine.Debug.LogError($"[LogSmith] FileSink dispose failed: {ex.Message}");
                 }
-            }
-        }
-
-        private bool ShouldRotate()
-        {
-            try
-            {
-                if (!File.Exists(_filePath))
-                {
-                    return false;
-                }
-
-                var fileInfo = new FileInfo(_filePath);
-                return fileInfo.Length >= _maxFileSizeBytes;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private void RotateLogFile()
-        {
-            try
-            {
-                // Close current writer
-                _writer?.Flush();
-                _writer?.Dispose();
-                _writer = null;
-
-                // Generate archived file name with timestamp (including milliseconds to avoid collisions)
-                var timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff");
-                var directory = Path.GetDirectoryName(_filePath);
-                var fileName = Path.GetFileNameWithoutExtension(_filePath);
-                var extension = Path.GetExtension(_filePath);
-                var archivedFileName = $"{fileName}_{timestamp}{extension}";
-                var archivedFilePath = Path.Combine(directory, archivedFileName);
-
-                // If archived file already exists (unlikely with milliseconds, but handle it)
-                int counter = 1;
-                while (File.Exists(archivedFilePath))
-                {
-                    archivedFileName = $"{fileName}_{timestamp}_{counter}{extension}";
-                    archivedFilePath = Path.Combine(directory, archivedFileName);
-                    counter++;
-                }
-
-                // Move current log to archived file
-                if (File.Exists(_filePath))
-                {
-                    File.Move(_filePath, archivedFilePath);
-                }
-
-                // Clean up old archived files based on retention policy
-                if (_retentionCount > 0)
-                {
-                    CleanupOldLogFiles(directory, fileName, extension);
-                }
-
-                // Reinitialize writer with fresh file
-                InitializeWriter();
-            }
-            catch (Exception ex)
-            {
-                UnityEngine.Debug.LogError($"[LogSmith] FileSink rotation failed: {ex.Message}");
-            }
-        }
-
-        private void CleanupOldLogFiles(string directory, string baseFileName, string extension)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory))
-                {
-                    return;
-                }
-
-                // Find all archived log files matching the pattern
-                var searchPattern = $"{baseFileName}_*{extension}";
-                var archivedFiles = Directory.GetFiles(directory, searchPattern)
-                    .Select(f => new FileInfo(f))
-                    .OrderByDescending(f => f.LastWriteTime)
-                    .ToList();
-
-                // Delete files beyond retention count
-                for (int i = _retentionCount; i < archivedFiles.Count; i++)
-                {
-                    try
-                    {
-                        archivedFiles[i].Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        UnityEngine.Debug.LogWarning($"[LogSmith] Failed to delete old log file {archivedFiles[i].Name}: {ex.Message}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                UnityEngine.Debug.LogError($"[LogSmith] Cleanup of old log files failed: {ex.Message}");
             }
         }
 
