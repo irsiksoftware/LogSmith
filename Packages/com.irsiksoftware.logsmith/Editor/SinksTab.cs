@@ -8,8 +8,10 @@ namespace IrsikSoftware.LogSmith.Editor
     /// Sinks tab for the LogSmith Editor Window.
     /// Allows configuring console and file sinks.
     /// </summary>
-    public class SinksTab
+    public class SinksTab : IEditorTab
     {
+        public string TabName => "Sinks";
+
         private IPlatformCapabilities _platformCapabilities;
 
         public SinksTab()
