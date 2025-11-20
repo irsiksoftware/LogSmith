@@ -1,0 +1,199 @@
+# Unity .gitattributes
+# Ensures consistent line endings, proper diff handling, and merge strategies for Unity assets
+
+# Auto-detect text files and normalize line endings to LF on checkin
+* text=auto
+
+#
+# Source Code Files (Force LF)
+#
+
+*.cs text eol=lf diff=csharp
+*.shader text eol=lf
+*.hlsl text eol=lf
+*.cginc text eol=lf
+*.compute text eol=lf
+*.cg text eol=lf
+
+#
+# Unity YAML Files (Mergeable with Unity Smart Merge)
+#
+
+*.meta text eol=lf merge=unityyamlmerge
+*.anim text eol=lf merge=unityyamlmerge
+*.controller text eol=lf merge=unityyamlmerge
+*.mat text eol=lf merge=unityyamlmerge
+*.physicMaterial text eol=lf merge=unityyamlmerge
+*.physicsMaterial2D text eol=lf merge=unityyamlmerge
+*.playable text eol=lf merge=unityyamlmerge
+
+#
+# Unity Binary Files (No Diff/Merge)
+#
+
+*.asset binary
+*.prefab binary
+*.unity binary
+*.cubemap binary
+*.flare binary
+*.mask binary
+*.overrideController binary
+*.spriteatlas binary
+*.terrainlayer binary
+
+#
+# Image Files
+#
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.tga binary
+*.tiff binary
+*.tif binary
+*.iff binary
+*.pict binary
+*.dds binary
+*.xcf binary
+*.psd binary
+*.psb binary
+*.exr binary
+*.hdr binary
+
+#
+# 3D Model Files
+#
+
+*.fbx binary
+*.obj binary
+*.max binary
+*.blend binary
+*.dae binary
+*.mb binary
+*.ma binary
+*.3ds binary
+*.dfx binary
+*.c4d binary
+*.lwo binary
+*.lws binary
+*.lxo binary
+
+#
+# Audio Files
+#
+
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.aif binary
+*.aiff binary
+*.mod binary
+*.it binary
+*.s3m binary
+*.xm binary
+
+#
+# Video Files
+#
+
+*.mov binary
+*.avi binary
+*.asf binary
+*.mpg binary
+*.mpeg binary
+*.mp4 binary
+*.flv binary
+*.ogv binary
+*.wmv binary
+
+#
+# Fonts
+#
+
+*.ttf binary
+*.otf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+
+#
+# Archives and Compressed Files
+#
+
+*.zip binary
+*.7z binary
+*.gz binary
+*.rar binary
+*.tar binary
+
+#
+# Unity Package Files
+#
+
+*.unitypackage binary
+
+#
+# Native Libraries
+#
+
+*.dll binary
+*.so binary
+*.dylib binary
+*.a binary
+*.bundle binary
+
+#
+# Documentation and Config Files (Force LF)
+#
+
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.cfg text eol=lf
+*.config text eol=lf
+*.ini text eol=lf
+
+#
+# Project Files (Force LF)
+#
+
+*.sln text eol=lf
+*.csproj text eol=lf
+*.unityproj text eol=lf
+*.booproj text eol=lf
+*.svd text eol=lf
+*.plist text eol=lf
+*.properties text eol=lf
+
+#
+# Scripts (Force LF except PowerShell)
+#
+
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+#
+# Build Output (Binary)
+#
+
+*.apk binary
+*.ipa binary
+*.app binary
+*.exe binary
+*.symbols.zip binary
+
+#
+# Special Unity Files
+#
+
+.collabignore text eol=lf
+.editorconfig text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
