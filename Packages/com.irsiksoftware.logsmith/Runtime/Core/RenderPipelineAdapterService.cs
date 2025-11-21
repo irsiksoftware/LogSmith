@@ -59,7 +59,9 @@ namespace IrsikSoftware.LogSmith.Core
             Type adapterType = Type.GetType(typeName);
             if (adapterType == null)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning($"[RenderPipelineAdapterService] {pipelineName} detected but adapter type not found: {typeName}");
+#endif
                 FallbackToNoOp(pipelineName);
                 return;
             }
@@ -79,7 +81,9 @@ namespace IrsikSoftware.LogSmith.Core
 
             if (!isAvailable)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning($"[RenderPipelineAdapterService] {pipelineName} detected but adapter not available");
+#endif
                 FallbackToNoOp(pipelineName);
                 return;
             }
@@ -101,11 +105,15 @@ namespace IrsikSoftware.LogSmith.Core
                     _activeRenderer = rendererProp.GetValue(_activeAdapter) as IVisualDebugRenderer;
                 }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.Log($"[RenderPipelineAdapterService] Activated adapter for {pipelineName}");
+#endif
             }
             catch (Exception ex)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogError($"[RenderPipelineAdapterService] Failed to activate adapter for {pipelineName}: {ex.Message}");
+#endif
                 FallbackToNoOp(pipelineName);
             }
         }
@@ -127,7 +135,9 @@ namespace IrsikSoftware.LogSmith.Core
                     }
                     catch (Exception ex)
                     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                         Debug.LogError($"[RenderPipelineAdapterService] Error during cleanup: {ex.Message}");
+#endif
                     }
                 }
 
@@ -138,7 +148,9 @@ namespace IrsikSoftware.LogSmith.Core
 
         private void FallbackToNoOp(string pipelineName)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[RenderPipelineAdapterService] No adapter available for {pipelineName}, using No-Op fallback");
+#endif
             _activeRenderer = null;
             _activeAdapter = null;
         }
