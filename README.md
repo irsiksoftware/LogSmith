@@ -407,4 +407,11 @@ The only exception is the initial README update marking an issue as "In Progress
 
 ## License
 
-*License information will be added during release preparation.*
+LogSmith is licensed under the **MIT License**. See [LICENSE](Packages/com.irsiksoftware.logsmith/LICENSE) for full details.
+
+### Free vs Pro
+
+- **LogSmith Free** (this repository): 100% open source under MIT License
+- **LogSmith Pro** (Unity Asset Store): Proprietary, covered by Unity Asset Store EULA
+
+For pricing details, see [PRICING.md](PRICING.md).
