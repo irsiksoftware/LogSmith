@@ -8,8 +8,10 @@ namespace IrsikSoftware.LogSmith.Editor
     /// Templates tab for the LogSmith Editor Window.
     /// Allows configuring default and per-category message templates with live preview.
     /// </summary>
-    public class TemplatesTab
+    public class TemplatesTab : IEditorTab
     {
+        public string TabName => "Templates";
+
         private IMessageTemplateEngine _templateEngine;
         private LogMessage _previewMessage;
         private bool _showTokenReference = true;

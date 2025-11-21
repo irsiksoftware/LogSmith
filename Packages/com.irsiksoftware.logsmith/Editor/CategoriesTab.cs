@@ -7,8 +7,10 @@ namespace IrsikSoftware.LogSmith.Editor
     /// Categories tab for the LogSmith Editor Window.
     /// Allows adding, removing, renaming categories and setting their properties.
     /// </summary>
-    public class CategoriesTab
+    public class CategoriesTab : IEditorTab
     {
+        public string TabName => "Categories";
+
         private string _newCategoryName = "";
         private int _categoryToRemove = -1;
 

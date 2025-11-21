@@ -1,6 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using System;
+using System.Linq;
 
 namespace IrsikSoftware.LogSmith.Editor
 {
@@ -9,24 +9,14 @@ namespace IrsikSoftware.LogSmith.Editor
     /// </summary>
     public class LogSmithEditorWindow : EditorWindow
     {
-        private enum Tab
-        {
-            Categories,
-            Sinks,
-            Templates,
-            VisualDebug
-        }
-
-        private Tab _currentTab = Tab.Categories;
         private LoggingSettings _settings;
         private SerializedObject _serializedSettings;
         private Vector2 _scrollPosition;
 
-        // Tab drawers
-        private CategoriesTab _categoriesTab;
-        private SinksTab _sinksTab;
-        private TemplatesTab _templatesTab;
-        private VisualDebugTab _visualDebugTab;
+        // Tab management
+        private IEditorTab[] _tabs;
+        private string[] _tabNames;
+        private int _selectedTab;
 
         [MenuItem("Window/LogSmith/Settings", priority = 2000)]
         public static void ShowWindow()
@@ -46,10 +36,20 @@ namespace IrsikSoftware.LogSmith.Editor
             }
 
             // Initialize tabs
-            _categoriesTab = new CategoriesTab();
-            _sinksTab = new SinksTab();
-            _templatesTab = new TemplatesTab();
-            _visualDebugTab = new VisualDebugTab();
+            _tabs = new IEditorTab[]
+            {
+                new CategoriesTab(),
+                new SinksTab(),
+                new TemplatesTab(),
+                new VisualDebugTab()
+            };
+            _tabNames = _tabs.Select(t => t.TabName).ToArray();
+
+            // Activate the first tab
+            if (_tabs.Length > 0)
+            {
+                _tabs[_selectedTab].OnTabEnabled();
+            }
         }
 
         private void OnGUI()
@@ -83,14 +83,14 @@ namespace IrsikSoftware.LogSmith.Editor
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 
-            if (GUILayout.Toggle(_currentTab == Tab.Categories, "Categories", EditorStyles.toolbarButton))
-                _currentTab = Tab.Categories;
-            if (GUILayout.Toggle(_currentTab == Tab.Sinks, "Sinks", EditorStyles.toolbarButton))
-                _currentTab = Tab.Sinks;
-            if (GUILayout.Toggle(_currentTab == Tab.Templates, "Templates", EditorStyles.toolbarButton))
-                _currentTab = Tab.Templates;
-            if (GUILayout.Toggle(_currentTab == Tab.VisualDebug, "Visual Debug", EditorStyles.toolbarButton))
-                _currentTab = Tab.VisualDebug;
+            // Tab selector with lifecycle management
+            int newTab = GUILayout.Toolbar(_selectedTab, _tabNames, EditorStyles.toolbarButton);
+            if (newTab != _selectedTab)
+            {
+                _tabs[_selectedTab].OnTabDisabled();
+                _selectedTab = newTab;
+                _tabs[_selectedTab].OnTabEnabled();
+            }
 
             GUILayout.FlexibleSpace();
 
@@ -104,20 +104,9 @@ namespace IrsikSoftware.LogSmith.Editor
 
         private void DrawCurrentTab()
         {
-            switch (_currentTab)
+            if (_tabs != null && _selectedTab >= 0 && _selectedTab < _tabs.Length)
             {
-                case Tab.Categories:
-                    _categoriesTab.Draw(_serializedSettings, _settings);
-                    break;
-                case Tab.Sinks:
-                    _sinksTab.Draw(_serializedSettings, _settings);
-                    break;
-                case Tab.Templates:
-                    _templatesTab.Draw(_serializedSettings, _settings);
-                    break;
-                case Tab.VisualDebug:
-                    _visualDebugTab.Draw(_serializedSettings, _settings);
-                    break;
+                _tabs[_selectedTab].Draw(_serializedSettings, _settings);
             }
         }
 

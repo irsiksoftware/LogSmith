@@ -8,8 +8,10 @@ namespace IrsikSoftware.LogSmith.Editor
     /// Visual Debug tab for the LogSmith Editor Window.
     /// Allows configuring visual debug rendering with render pipeline adapter warnings.
     /// </summary>
-    public class VisualDebugTab
+    public class VisualDebugTab : IEditorTab
     {
+        public string TabName => "Visual Debug";
+
         public void Draw(SerializedObject serializedSettings, LoggingSettings settings)
         {
             EditorGUILayout.Space(10);
