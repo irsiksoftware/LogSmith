@@ -209,7 +209,7 @@ Issues should be completed in this dependency-based sequence:
 
 ### Phase 10: Post-Release Extensions
 40. [#31](../../issues/31) Optional sinks pack (HTTP, Sentry, Seq, etc.)
-41. [#32](../../issues/32) In-editor live log console
+41. [#32](../../issues/32) In-editor live log console ✅
 
 ## Cross-Cutting Requirements
 
