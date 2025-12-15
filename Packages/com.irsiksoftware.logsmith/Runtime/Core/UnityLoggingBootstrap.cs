@@ -18,6 +18,7 @@ namespace IrsikSoftware.LogSmith.Core
         private ConsoleSink _consoleSink;
         private FileSink _fileSink;
         private DebugOverlayController _debugOverlay;
+        private UnityLogInterceptor _logInterceptor;
         private bool _disposed;
         private bool _liveReloadEnabled;
 
@@ -107,12 +108,20 @@ namespace IrsikSoftware.LogSmith.Core
                 InitializeDebugOverlay();
             }
 
+            // Initialize log interceptor for automatic [Category] - Message routing
+            if (_settings.enableLogInterception)
+            {
+                _logInterceptor = new UnityLogInterceptor(_router);
+                _logInterceptor.Enable();
+            }
+
             var fileStatus = _settings.enableFileSink
                 ? (_fileSink != null ? "Enabled" : $"Disabled (unsupported on {_platformCapabilities.PlatformName})")
                 : "Disabled";
             var overlayStatus = _settings.enableDebugOverlay ? "Enabled (F1 to toggle)" : "Disabled";
+            var interceptorStatus = _settings.enableLogInterception ? "Enabled" : "Disabled";
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {fileStatus}, Overlay: {overlayStatus}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
+            Debug.Log($"[LogSmith] UnityLoggingBootstrap initialized - Console: {_settings.enableConsoleSink}, File: {fileStatus}, Overlay: {overlayStatus}, Interceptor: {interceptorStatus}, Rotation: {_settings.enableLogRotation}, Format: {_settings.defaultFormatMode}");
 #endif
         }
 
@@ -258,6 +267,12 @@ namespace IrsikSoftware.LogSmith.Core
             {
                 UnityEngine.Object.Destroy(_debugOverlay.gameObject);
                 _debugOverlay = null;
+            }
+
+            if (_logInterceptor != null)
+            {
+                _logInterceptor.Dispose();
+                _logInterceptor = null;
             }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
