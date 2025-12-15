@@ -21,7 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "com.unity.burst": "1.8.0"
+    "com.unity.burst": "1.8.0",
+    "com.unity.logging": "1.0.0"
   },
   "samples": [
     {
