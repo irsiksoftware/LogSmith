@@ -1,13 +1,15 @@
+using Unity.Logging;
+
 namespace IrsikSoftware.LogSmith.Adapters
 {
     /// <summary>
-    /// Adapter for Unity's Debug logging system (UnityEngine.Debug).
+    /// Adapter for Unity's native logging system (com.unity.logging).
     /// All backend-specific calls should be isolated within this class.
     /// </summary>
     internal static class NativeUnityLoggerAdapter
     {
         /// <summary>
-        /// Writes a log message at the specified level using Unity's Debug logging.
+        /// Writes a log message at the specified level using Unity.Logging.
         /// </summary>
         public static void Write(LogLevel level, string category, string message)
         {
@@ -17,19 +19,19 @@ namespace IrsikSoftware.LogSmith.Adapters
             {
                 case LogLevel.Trace:
                 case LogLevel.Debug:
-                    UnityEngine.Debug.Log(formattedMessage);
+                    Log.Debug(formattedMessage);
                     break;
                 case LogLevel.Info:
-                    UnityEngine.Debug.Log(formattedMessage);
+                    Log.Info(formattedMessage);
                     break;
                 case LogLevel.Warn:
-                    UnityEngine.Debug.LogWarning(formattedMessage);
+                    Log.Warning(formattedMessage);
                     break;
                 case LogLevel.Error:
-                    UnityEngine.Debug.LogError(formattedMessage);
+                    Log.Error(formattedMessage);
                     break;
                 case LogLevel.Critical:
-                    UnityEngine.Debug.LogError($"[CRITICAL] {formattedMessage}");
+                    Log.Error($"[CRITICAL] {formattedMessage}");
                     break;
             }
         }
