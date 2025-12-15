@@ -73,6 +73,10 @@ namespace IrsikSoftware.LogSmith
         [Tooltip("Enable visual debug shape rendering (lines, quads) using render pipeline adapters")]
         public bool enableVisualDebug = false;
 
+        [Header("Log Interception")]
+        [Tooltip("Enable automatic interception and routing of Debug.Log messages with [Category] - Message syntax")]
+        public bool enableLogInterception = true;
+
         [Header("Live Reload")]
         [Tooltip("Enable automatic reload of settings changes at runtime")]
         public bool enableLiveReload = true;
@@ -96,6 +100,7 @@ namespace IrsikSoftware.LogSmith
             settings.enableDebugOverlay = false;
             settings.overlayMaxLogCount = 500;
             settings.enableVisualDebug = false;
+            settings.enableLogInterception = true;
             settings.enableLiveReload = true;
             return settings;
         }
