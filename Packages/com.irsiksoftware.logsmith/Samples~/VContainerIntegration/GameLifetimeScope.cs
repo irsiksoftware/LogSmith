@@ -1,7 +1,7 @@
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using IrsikSoftware.LogSmith;
+using IrsikSoftware.LogSmith.DI;
 
 namespace IrsikSoftware.LogSmith.Samples
 {
