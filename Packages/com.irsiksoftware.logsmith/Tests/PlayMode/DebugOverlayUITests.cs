@@ -374,6 +374,186 @@ namespace IrsikSoftware.LogSmith.Tests.PlayMode
             Assert.IsTrue(newVisibility, "Overlay should be visible after second toggle");
         }
 
+        #region Runtime Category Management Tests (Issue #148)
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_SetMinimumLevel_UpdatesRegistryLevel()
+        {
+            // Arrange - Initialize with CategoryRegistry
+            var registry = new CategoryRegistry();
+            _overlay.InitializeCategoryRegistry(registry);
+
+            var logger = new LogSmithLogger(_router, "NetworkCategory");
+            logger.Info("Test message");
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            // Act - Change minimum level for NetworkCategory via overlay
+            _overlay.SetCategoryMinimumLevel("NetworkCategory", LogLevel.Warn);
+
+            // Assert - Registry should reflect the change
+            Assert.AreEqual(LogLevel.Warn, registry.GetMinimumLevel("NetworkCategory"),
+                "CategoryRegistry should have updated minimum level");
+        }
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_DisableCategory_UpdatesRegistryEnabled()
+        {
+            // Arrange - Initialize with CategoryRegistry
+            var registry = new CategoryRegistry();
+            _overlay.InitializeCategoryRegistry(registry);
+
+            var logger = new LogSmithLogger(_router, "AudioCategory");
+            logger.Info("Test message");
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            // Verify category is initially enabled
+            Assert.IsTrue(registry.IsEnabled("AudioCategory"), "Category should start enabled");
+
+            // Act - Disable category via overlay
+            _overlay.SetCategoryEnabled("AudioCategory", false);
+
+            // Assert - Registry should reflect the change
+            Assert.IsFalse(registry.IsEnabled("AudioCategory"),
+                "CategoryRegistry should have disabled the category");
+        }
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_EnableCategory_UpdatesRegistryEnabled()
+        {
+            // Arrange - Initialize with CategoryRegistry and pre-disable a category
+            var registry = new CategoryRegistry();
+            registry.RegisterCategory("PhysicsCategory", LogLevel.Info);
+            registry.SetEnabled("PhysicsCategory", false);
+            _overlay.InitializeCategoryRegistry(registry);
+
+            var logger = new LogSmithLogger(_router, "PhysicsCategory");
+            logger.Info("Test message");
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            // Verify category is initially disabled
+            Assert.IsFalse(registry.IsEnabled("PhysicsCategory"), "Category should start disabled");
+
+            // Act - Enable category via overlay
+            _overlay.SetCategoryEnabled("PhysicsCategory", true);
+
+            // Assert - Registry should reflect the change
+            Assert.IsTrue(registry.IsEnabled("PhysicsCategory"),
+                "CategoryRegistry should have enabled the category");
+        }
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_GetCategoryMetadata_ReturnsCorrectMetadata()
+        {
+            // Arrange
+            var registry = new CategoryRegistry();
+            registry.RegisterCategory("UICategory", LogLevel.Debug);
+            registry.SetEnabled("UICategory", true);
+            _overlay.InitializeCategoryRegistry(registry);
+
+            var logger = new LogSmithLogger(_router, "UICategory");
+            logger.Info("Test message");
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            // Act - Get metadata from overlay
+            var metadata = _overlay.GetCategoryMetadata("UICategory");
+
+            // Assert
+            Assert.AreEqual("UICategory", metadata.Name);
+            Assert.AreEqual(LogLevel.Debug, metadata.MinimumLevel);
+            Assert.IsTrue(metadata.Enabled);
+        }
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_GetManagedCategories_ReturnsVisibleCategories()
+        {
+            // Arrange
+            var registry = new CategoryRegistry();
+            _overlay.InitializeCategoryRegistry(registry);
+
+            var logger1 = new LogSmithLogger(_router, "CategoryAlpha");
+            var logger2 = new LogSmithLogger(_router, "CategoryBeta");
+            var logger3 = new LogSmithLogger(_router, "CategoryGamma");
+
+            logger1.Info("Alpha message");
+            logger2.Info("Beta message");
+            logger3.Info("Gamma message");
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            // Act - Get managed categories
+            var categories = _overlay.GetManagedCategories();
+
+            // Assert - Should return all categories that have been seen
+            Assert.GreaterOrEqual(categories.Count, 3, "Should have at least 3 categories");
+            Assert.Contains("CategoryAlpha", (System.Collections.ICollection)categories);
+            Assert.Contains("CategoryBeta", (System.Collections.ICollection)categories);
+            Assert.Contains("CategoryGamma", (System.Collections.ICollection)categories);
+        }
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_ToggleManagementPanel_ShowsHidesCategoryControls()
+        {
+            // Arrange
+            var registry = new CategoryRegistry();
+            _overlay.InitializeCategoryRegistry(registry);
+
+            yield return null;
+
+            // Act & Assert - Management panel starts hidden
+            Assert.IsFalse(_overlay.IsCategoryManagementPanelVisible,
+                "Category management panel should start hidden");
+
+            // Toggle on
+            _overlay.ToggleCategoryManagementPanel();
+            Assert.IsTrue(_overlay.IsCategoryManagementPanelVisible,
+                "Category management panel should be visible after toggle");
+
+            // Toggle off
+            _overlay.ToggleCategoryManagementPanel();
+            Assert.IsFalse(_overlay.IsCategoryManagementPanelVisible,
+                "Category management panel should be hidden after second toggle");
+        }
+
+        [UnityTest]
+        public IEnumerator CategoryManagement_ChangeLevelMultipleCategories_AllUpdateCorrectly()
+        {
+            // Arrange
+            var registry = new CategoryRegistry();
+            _overlay.InitializeCategoryRegistry(registry);
+
+            var loggerA = new LogSmithLogger(_router, "SystemA");
+            var loggerB = new LogSmithLogger(_router, "SystemB");
+            var loggerC = new LogSmithLogger(_router, "SystemC");
+
+            loggerA.Info("A message");
+            loggerB.Info("B message");
+            loggerC.Info("C message");
+
+            yield return null;
+            yield return new WaitForSeconds(0.05f);
+
+            // Act - Change levels for multiple categories
+            _overlay.SetCategoryMinimumLevel("SystemA", LogLevel.Trace);
+            _overlay.SetCategoryMinimumLevel("SystemB", LogLevel.Error);
+            _overlay.SetCategoryMinimumLevel("SystemC", LogLevel.Critical);
+
+            // Assert - All categories should have correct levels
+            Assert.AreEqual(LogLevel.Trace, registry.GetMinimumLevel("SystemA"));
+            Assert.AreEqual(LogLevel.Error, registry.GetMinimumLevel("SystemB"));
+            Assert.AreEqual(LogLevel.Critical, registry.GetMinimumLevel("SystemC"));
+        }
+
+        #endregion
+
         /// <summary>
         /// Minimal test sink for overlay testing.
         /// </summary>

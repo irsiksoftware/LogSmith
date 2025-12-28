@@ -8,13 +8,16 @@ namespace IrsikSoftware.LogSmith.Core
     /// <summary>
     /// In-game debug overlay displaying real-time log messages.
     /// Subscribes to ILogRouter and displays filtered logs with search and throttling.
+    /// Provides runtime category management controls for changing log levels and enabling/disabling categories.
     /// </summary>
     public class DebugOverlayController : MonoBehaviour
     {
         private const int MAX_LOG_BUFFER_SIZE = 500;
         private const float UPDATE_THROTTLE_SECONDS = 1f / 30f; // 30 Hz
+        private const float CATEGORY_PANEL_WIDTH = 300f;
 
         private ILogRouter _logRouter;
+        private ICategoryRegistry _categoryRegistry;
         private IDisposable _subscription;
         private CircularBuffer<LogMessage> _logBuffer;
         private List<LogMessage> _filteredLogs;
@@ -22,11 +25,13 @@ namespace IrsikSoftware.LogSmith.Core
         // UI State
         private bool _isVisible = true;
         private Vector2 _scrollPosition;
+        private Vector2 _categoryScrollPosition;
         private string _searchText = "";
         private LogLevel _minDisplayLevel = LogLevel.Trace;
         private string _selectedCategory = "All";
         private HashSet<string> _availableCategories;
         private bool _autoScroll = true;
+        private bool _isCategoryManagementPanelVisible;
 
         // Throttling
         private float _lastUpdateTime;
@@ -34,8 +39,15 @@ namespace IrsikSoftware.LogSmith.Core
 
         // UI Layout
         private Rect _windowRect = new Rect(10, 10, 800, 400);
+        private Rect _categoryPanelRect = new Rect(820, 10, CATEGORY_PANEL_WIDTH, 400);
         private GUIStyle _logStyle;
         private GUIStyle _headerStyle;
+        private GUIStyle _categoryHeaderStyle;
+
+        /// <summary>
+        /// Gets whether the category management panel is currently visible.
+        /// </summary>
+        public bool IsCategoryManagementPanelVisible => _isCategoryManagementPanelVisible;
 
         public void Initialize(ILogRouter logRouter)
         {
@@ -56,6 +68,85 @@ namespace IrsikSoftware.LogSmith.Core
             _subscription = _logRouter.Subscribe(OnLogMessage);
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        /// <summary>
+        /// Initializes the category registry for runtime category management.
+        /// </summary>
+        /// <param name="categoryRegistry">The category registry to use for managing categories.</param>
+        public void InitializeCategoryRegistry(ICategoryRegistry categoryRegistry)
+        {
+            _categoryRegistry = categoryRegistry ?? throw new ArgumentNullException(nameof(categoryRegistry));
+        }
+
+        /// <summary>
+        /// Sets the minimum log level for a category at the registry level.
+        /// </summary>
+        /// <param name="category">The category name.</param>
+        /// <param name="level">The minimum log level.</param>
+        public void SetCategoryMinimumLevel(string category, LogLevel level)
+        {
+            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (_categoryRegistry == null) return;
+
+            _categoryRegistry.SetMinimumLevel(category, level);
+        }
+
+        /// <summary>
+        /// Enables or disables a category at the registry level.
+        /// </summary>
+        /// <param name="category">The category name.</param>
+        /// <param name="enabled">Whether the category is enabled.</param>
+        public void SetCategoryEnabled(string category, bool enabled)
+        {
+            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (_categoryRegistry == null) return;
+
+            // Auto-register category if not exists
+            if (!_categoryRegistry.HasCategory(category))
+            {
+                _categoryRegistry.RegisterCategory(category, LogLevel.Info);
+            }
+
+            _categoryRegistry.SetEnabled(category, enabled);
+        }
+
+        /// <summary>
+        /// Gets the metadata for a category.
+        /// </summary>
+        /// <param name="category">The category name.</param>
+        /// <returns>The category metadata.</returns>
+        public CategoryMetadata GetCategoryMetadata(string category)
+        {
+            if (_categoryRegistry == null)
+            {
+                return new CategoryMetadata
+                {
+                    Name = category,
+                    MinimumLevel = LogLevel.Info,
+                    Enabled = true,
+                    Color = Color.white
+                };
+            }
+
+            return _categoryRegistry.GetMetadata(category);
+        }
+
+        /// <summary>
+        /// Gets all categories currently being managed (visible in overlay).
+        /// </summary>
+        /// <returns>A read-only list of category names.</returns>
+        public IReadOnlyList<string> GetManagedCategories()
+        {
+            return _availableCategories?.ToList() ?? new List<string>();
+        }
+
+        /// <summary>
+        /// Toggles the visibility of the category management panel.
+        /// </summary>
+        public void ToggleCategoryManagementPanel()
+        {
+            _isCategoryManagementPanelVisible = !_isCategoryManagementPanelVisible;
         }
 
         private void OnDestroy()
@@ -128,6 +219,12 @@ namespace IrsikSoftware.LogSmith.Core
             InitializeStyles();
 
             _windowRect = GUILayout.Window(0, _windowRect, DrawOverlayWindow, "LogSmith Debug Overlay");
+
+            // Draw category management panel if visible
+            if (_isCategoryManagementPanelVisible && _categoryRegistry != null)
+            {
+                _categoryPanelRect = GUILayout.Window(1, _categoryPanelRect, DrawCategoryManagementPanel, "Category Management");
+            }
         }
 
         private void InitializeStyles()
@@ -147,6 +244,13 @@ namespace IrsikSoftware.LogSmith.Core
                     fontSize = 12,
                     fontStyle = FontStyle.Bold,
                     normal = { textColor = Color.white }
+                };
+
+                _categoryHeaderStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 11,
+                    fontStyle = FontStyle.Bold,
+                    normal = { textColor = new Color(0.8f, 0.8f, 1f) }
                 };
             }
         }
@@ -207,6 +311,16 @@ namespace IrsikSoftware.LogSmith.Core
             {
                 _logBuffer.Clear();
                 _needsUpdate = true;
+            }
+
+            // Category management toggle button (only show if registry is available)
+            if (_categoryRegistry != null)
+            {
+                string buttonText = _isCategoryManagementPanelVisible ? "Hide Categories" : "Manage Categories";
+                if (GUILayout.Button(buttonText, GUILayout.Width(120)))
+                {
+                    ToggleCategoryManagementPanel();
+                }
             }
 
             GUILayout.EndHorizontal();
@@ -276,6 +390,81 @@ namespace IrsikSoftware.LogSmith.Core
                 LogLevel.Critical => "#FF0000",
                 _ => "#FFFFFF"
             };
+        }
+
+        private void DrawCategoryManagementPanel(int windowId)
+        {
+            GUILayout.BeginVertical();
+
+            GUILayout.Label("Runtime Category Settings", _categoryHeaderStyle);
+            GUILayout.Space(5);
+
+            _categoryScrollPosition = GUILayout.BeginScrollView(_categoryScrollPosition, GUILayout.ExpandHeight(true));
+
+            // Get all categories (from overlay's seen categories)
+            var categories = _availableCategories?.OrderBy(c => c).ToList() ?? new List<string>();
+
+            if (categories.Count == 0)
+            {
+                GUILayout.Label("No categories detected yet.", _logStyle);
+            }
+            else
+            {
+                foreach (var category in categories)
+                {
+                    DrawCategoryControls(category);
+                    GUILayout.Space(2);
+                }
+            }
+
+            GUILayout.EndScrollView();
+
+            GUILayout.EndVertical();
+
+            GUI.DragWindow(new Rect(0, 0, _categoryPanelRect.width, 20));
+        }
+
+        private void DrawCategoryControls(string category)
+        {
+            var metadata = _categoryRegistry.GetMetadata(category);
+
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            // Category name row with enabled toggle
+            GUILayout.BeginHorizontal();
+
+            bool newEnabled = GUILayout.Toggle(metadata.Enabled, "", GUILayout.Width(20));
+            if (newEnabled != metadata.Enabled)
+            {
+                SetCategoryEnabled(category, newEnabled);
+            }
+
+            GUILayout.Label(category, _headerStyle);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            // Minimum level selector
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Min Level:", GUILayout.Width(60));
+
+            var levelNames = Enum.GetNames(typeof(LogLevel));
+            int currentLevelIndex = (int)metadata.MinimumLevel;
+
+            int newLevelIndex = GUILayout.SelectionGrid(
+                currentLevelIndex,
+                levelNames,
+                levelNames.Length,
+                GUILayout.Height(18)
+            );
+
+            if (newLevelIndex != currentLevelIndex)
+            {
+                SetCategoryMinimumLevel(category, (LogLevel)newLevelIndex);
+            }
+
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
         }
     }
 }
