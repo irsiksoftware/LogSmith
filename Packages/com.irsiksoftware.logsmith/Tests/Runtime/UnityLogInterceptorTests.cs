@@ -169,10 +169,8 @@ namespace IrsikSoftware.LogSmith.Tests
             _interceptor = new UnityLogInterceptor(_router);
             _interceptor.Enable();
 
-            // Expect the Debug.Log to pass through Unity's console as well
-            UnityEngine.TestTools.LogAssert.Expect(LogType.Log, "[AI] - Test AI message");
-
             // Act - Simulate what would come from Application.logMessageReceived
+            // Note: HandleLog receives messages that already appeared in console, it just routes them to LogSmith
             _interceptor.HandleLog("[AI] - Test AI message", string.Empty, LogType.Log);
 
             // Assert

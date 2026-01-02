@@ -12,7 +12,7 @@ namespace IrsikSoftware.LogSmith.Core
     {
         private const string LogSmithCategoryPrefix = "LogSmith";
         private static readonly Regex CategoryPattern = new Regex(
-            @"^\[([^\]]+)\]\s*-\s*(.*)$",
+            @"^\[(.+)\]\s*-\s*(.*)$",
             RegexOptions.Compiled | RegexOptions.Singleline
         );
 

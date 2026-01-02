@@ -180,7 +180,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             settings.enableFileSink = true;
             settings.logFilePath = Path.Combine(_testDirectory, "rotating.log");
             settings.enableLogRotation = true;
-            settings.maxFileSizeMB = 0; // Set to 0 to trigger rotation immediately (< 1KB threshold)
+            settings.maxFileSizeMB = 1; // Set to 1MB so the 1MB+ message triggers rotation
             settings.retentionCount = 5;
 
             var router = new LogRouter();
@@ -246,14 +246,14 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             var filesBeforeRotation = Directory.GetFiles(directory, $"{baseFileName}_*{extension}");
             Assert.AreEqual(5, filesBeforeRotation.Length, "Should have 5 archived files before rotation");
 
-            // Create a main log file large enough to trigger rotation
-            File.WriteAllText(logPath, new string('A', 1024)); // 1KB file
+            // Create a main log file large enough to trigger rotation (> 1MB)
+            File.WriteAllText(logPath, new string('A', 1024 * 1024 + 1)); // 1MB + 1 byte
 
             // Act - Create FileSink with retention count of 2 and trigger rotation
-            var fileSink = new FileSink(logPath, null, enableRotation: true, maxFileSizeMB: 0, retentionCount: 2);
+            var fileSink = new FileSink(logPath, null, enableRotation: true, maxFileSizeMB: 1, retentionCount: 2);
             try
             {
-                // Write a message to trigger rotation (maxFileSizeMB=0 means any size triggers rotation)
+                // Write a message to trigger rotation (file already > maxFileSizeMB)
                 fileSink.Write(new LogMessage
                 {
                     Level = LogLevel.Info,
