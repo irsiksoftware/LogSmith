@@ -103,7 +103,7 @@ jobs:
             -PassThru `
             -NoNewWindow
 
-          Write-Host "Unity exit code: $process.ExitCode"
+          Write-Host "Unity exit code: $($process.ExitCode)"
 
           if (-Not (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml")) {
             Write-Host "::error::EditMode-results.xml was not created!"
@@ -132,7 +132,7 @@ jobs:
             -PassThru `
             -NoNewWindow
 
-          Write-Host "Unity exit code: $process.ExitCode"
+          Write-Host "Unity exit code: $($process.ExitCode)"
 
           if (-Not (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml")) {
             Write-Host "::error::PlayMode-results.xml was not created!"
