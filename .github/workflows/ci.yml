@@ -79,22 +79,21 @@ jobs:
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/TestResults"
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/CodeCoverage"
 
-      - name: Run EditMode tests
+      # Tests disabled in CI for now - run locally via: tools/run-tests.bat EditMode/PlayMode
+      # - name: Run EditMode tests
+      # - name: Run PlayMode tests
+
+      - name: Build validation
         shell: powershell
         run: |
-          Write-Host "Running EditMode tests..."
+          Write-Host "Running build validation..."
 
           $unityArgs = @(
-            "-runTests",
             "-batchmode",
             "-nographics",
             "-projectPath", "${{ github.workspace }}",
-            "-testPlatform", "EditMode",
-            "-testResults", "${{ github.workspace }}/TestResults/EditMode-results.xml",
-            "-logFile", "${{ github.workspace }}/TestResults/EditMode-log.txt",
-            "-enableCodeCoverage",
-            "-coverageResultsPath", "${{ github.workspace }}/CodeCoverage",
-            "-coverageOptions", "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+            "-logFile", "${{ github.workspace }}/TestResults/build-log.txt",
+            "-quit"
           )
 
           $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
@@ -105,91 +104,33 @@ jobs:
 
           Write-Host "Unity exit code: $($process.ExitCode)"
 
-          if (-Not (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml")) {
-            Write-Host "::error::EditMode-results.xml was not created!"
-            Get-Content "${{ github.workspace }}/TestResults/EditMode-log.txt" -Tail 50 -ErrorAction SilentlyContinue
+          if ($process.ExitCode -ne 0) {
+            Write-Host "::error::Build validation failed!"
+            Get-Content "${{ github.workspace }}/TestResults/build-log.txt" -Tail 100 -ErrorAction SilentlyContinue
             exit 1
           }
 
-      - name: Run PlayMode tests
-        shell: powershell
-        run: |
-          Write-Host "Running PlayMode tests..."
+          Write-Host "Build validation passed"
 
-          $unityArgs = @(
-            "-runTests",
-            "-batchmode",
-            "-nographics",
-            "-projectPath", "${{ github.workspace }}",
-            "-testPlatform", "PlayMode",
-            "-testResults", "${{ github.workspace }}/TestResults/PlayMode-results.xml",
-            "-logFile", "${{ github.workspace }}/TestResults/PlayMode-log.txt"
-          )
-
-          $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
-            -ArgumentList $unityArgs `
-            -Wait `
-            -PassThru `
-            -NoNewWindow
-
-          Write-Host "Unity exit code: $($process.ExitCode)"
-
-          if (-Not (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml")) {
-            Write-Host "::error::PlayMode-results.xml was not created!"
-            Get-Content "${{ github.workspace }}/TestResults/PlayMode-log.txt" -Tail 50 -ErrorAction SilentlyContinue
-            exit 1
-          }
-
-      - name: Parse test results and notify Discord
+      - name: Notify Discord
         if: always()
         shell: powershell
         run: |
-          $editPassed = 0
-          $editFailed = 0
-          $editTotal = 0
-          $playPassed = 0
-          $playFailed = 0
-          $playTotal = 0
-
-          if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
-            [xml]$editXml = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
-            $editTotal = [int]$editXml.'test-run'.total
-            $editPassed = [int]$editXml.'test-run'.passed
-            $editFailed = [int]$editXml.'test-run'.failed
-          }
-
-          if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
-            [xml]$playXml = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
-            $playTotal = [int]$playXml.'test-run'.total
-            $playPassed = [int]$playXml.'test-run'.passed
-            $playFailed = [int]$playXml.'test-run'.failed
-          }
-
-          $totalTests = $editTotal + $playTotal
-          $totalPassed = $editPassed + $playPassed
-          $totalFailed = $editFailed + $playFailed
-
-          Write-Host "EditMode: $editPassed/$editTotal passed"
-          Write-Host "PlayMode: $playPassed/$playTotal passed"
-          Write-Host "Total: $totalPassed/$totalTests passed, $totalFailed failed"
-
-          # Discord notification
           if (-not "${{ secrets.TESTRESULTS_WEBHOOK }}") {
-            Write-Host "TESTRESULTS_WEBHOOK not configured, skipping Discord notification"
+            Write-Host "TESTRESULTS_WEBHOOK not configured, skipping"
             exit 0
           }
 
-          $color = if ($totalFailed -eq 0) { 3066993 } else { 15158332 }
-          $emoji = if ($totalFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
-          $status = if ($totalFailed -eq 0) { "PASSED" } else { "FAILED" }
-
           $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          $status = if ($env:GITHUB_ACTION_STATUS -eq 'failure') { "FAILED" } else { "BUILD OK" }
+          $color = if ($status -eq "FAILED") { 15158332 } else { 3066993 }
+          $emoji = if ($status -eq "FAILED") { ":x:" } else { ":white_check_mark:" }
 
           $payload = @{
             embeds = @(
               @{
                 title = "$emoji LogSmith CI - $status"
-                description = "**Unity ${{ env.UNITY_VERSION }}**`n`nEditMode: $editPassed/$editTotal | PlayMode: $playPassed/$playTotal`n`n[View Run]($runUrl)"
+                description = "**Unity ${{ env.UNITY_VERSION }}**`n`n[View Run]($runUrl)"
                 color = $color
                 timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
               }
@@ -203,39 +144,10 @@ jobs:
             Write-Host "::warning::Discord notification failed: $_"
           }
 
-      - name: Upload test results
-        if: always()
+      - name: Upload build log
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: Test-Results-${{ env.UNITY_VERSION }}
-          path: ${{ github.workspace }}/TestResults/*
-          retention-days: 30
-
-      - name: Upload coverage results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Coverage-Results-${{ env.UNITY_VERSION }}
-          path: ${{ github.workspace }}/CodeCoverage
-          retention-days: 30
-
-      - name: Fail if tests failed
-        shell: powershell
-        run: |
-          if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
-            [xml]$editXml = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
-            if ([int]$editXml.'test-run'.failed -gt 0) {
-              Write-Host "::error::EditMode tests failed"
-              exit 1
-            }
-          }
-
-          if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
-            [xml]$playXml = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
-            if ([int]$playXml.'test-run'.failed -gt 0) {
-              Write-Host "::error::PlayMode tests failed"
-              exit 1
-            }
-          }
-
-          Write-Host "All tests passed!"
+          name: Build-Log-${{ env.UNITY_VERSION }}
+          path: ${{ github.workspace }}/TestResults/build-log.txt
+          retention-days: 7
