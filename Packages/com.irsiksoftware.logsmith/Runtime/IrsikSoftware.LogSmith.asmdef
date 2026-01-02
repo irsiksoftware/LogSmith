@@ -2,7 +2,6 @@
     "name": "IrsikSoftware.LogSmith",
     "rootNamespace": "IrsikSoftware.LogSmith",
     "references": [
-        "Unity.Burst",
         "VContainer"
     ],
     "includePlatforms": [],

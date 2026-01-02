@@ -20,10 +20,7 @@
     "url": "https://github.com/DakotaIrsik/LogSmith.git"
   },
   "license": "MIT",
-  "dependencies": {
-    "com.unity.burst": "1.8.0",
-    "com.unity.logging": "1.0.0"
-  },
+  "dependencies": {},
   "samples": [
     {
       "displayName": "Basic Usage",

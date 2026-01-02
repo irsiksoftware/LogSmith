@@ -1,27 +1,22 @@
-name: CI Matrix - Unity Tests
+name: CI - Unity Tests
 
 on:
   push:
-    branches: [ main, feature/gh-3-ci-matrix-unity-versions ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 permissions:
   contents: write
 
+env:
+  UNITY_VERSION: 6000.3.2f1
+
 jobs:
   test:
-    name: Test ${{ matrix.unityVersion }} on Windows
+    name: Test Unity ${{ env.UNITY_VERSION }}
     runs-on: [self-hosted, unity-pool]
-    timeout-minutes: 5
-
-    strategy:
-      fail-fast: false
-      matrix:
-        unityVersion:
-          - 2022.3.50f1  # 2022.3 LTS
-          - 2023.2.20f1  # 2023 LTS
-          - 6000.0.26f1  # 6000.2 LTS (Unity 6)
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -32,11 +27,7 @@ jobs:
         run: |
           $LICENSE_DIR = "$env:LOCALAPPDATA\Unity\licenses"
           New-Item -ItemType Directory -Force -Path $LICENSE_DIR | Out-Null
-
           $LICENSE_FILE = "$LICENSE_DIR\UnityEntitlementLicense.xml"
-
-          # Add random delay to prevent parallel runner collision (0-3 seconds)
-          Start-Sleep -Milliseconds (Get-Random -Minimum 0 -Maximum 3000)
 
           # Retry logic for file write (handles parallel runner race conditions)
           $maxRetries = 5
@@ -51,7 +42,7 @@ jobs:
             } catch {
               $retryCount++
               if ($retryCount -lt $maxRetries) {
-                Write-Host "License file locked, retrying in 1 second... (Attempt $retryCount/$maxRetries)"
+                Write-Host "License file locked, retrying... (Attempt $retryCount/$maxRetries)"
                 Start-Sleep -Seconds 1
               } else {
                 throw "Failed to write license file after $maxRetries attempts: $_"
@@ -63,16 +54,16 @@ jobs:
         uses: actions/cache@v4
         with:
           path: Library
-          key: Library-${{ matrix.unityVersion }}-${{ hashFiles('Packages/packages-lock.json', 'Packages/manifest.json', 'ProjectSettings/ProjectVersion.txt') }}
+          key: Library-${{ env.UNITY_VERSION }}-${{ hashFiles('Packages/packages-lock.json', 'Packages/manifest.json') }}
           restore-keys: |
-            Library-${{ matrix.unityVersion }}-
+            Library-${{ env.UNITY_VERSION }}-
             Library-
 
       - name: Find Unity Editor Path
         id: unity-path
         shell: powershell
         run: |
-          $UNITY_PATH = "C:/Program Files/Unity/Hub/Editor/${{ matrix.unityVersion }}/Editor/Unity.exe"
+          $UNITY_PATH = "C:/Program Files/Unity/Hub/Editor/${{ env.UNITY_VERSION }}/Editor/Unity.exe"
 
           if (-Not (Test-Path $UNITY_PATH)) {
             Write-Host "::error::Unity executable not found at $UNITY_PATH"
@@ -89,537 +80,117 @@ jobs:
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/CodeCoverage"
 
       - name: Run EditMode tests
-        id: editmode-tests
         shell: powershell
         run: |
           Write-Host "Running EditMode tests..."
-          $exitCode = 0
 
-          try {
-            $unityArgs = @(
-              "-runTests",
-              "-batchmode",
-              "-nographics",
-              "-projectPath", "${{ github.workspace }}",
-              "-testPlatform", "EditMode",
-              "-testResults", "${{ github.workspace }}/TestResults/EditMode-results.xml",
-              "-logFile", "${{ github.workspace }}/TestResults/EditMode-log.txt",
-              "-enableCodeCoverage",
-              "-coverageResultsPath", "${{ github.workspace }}/CodeCoverage",
-              "-coverageOptions", "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
-            )
+          $unityArgs = @(
+            "-runTests",
+            "-batchmode",
+            "-nographics",
+            "-projectPath", "${{ github.workspace }}",
+            "-testPlatform", "EditMode",
+            "-testResults", "${{ github.workspace }}/TestResults/EditMode-results.xml",
+            "-logFile", "${{ github.workspace }}/TestResults/EditMode-log.txt",
+            "-enableCodeCoverage",
+            "-coverageResultsPath", "${{ github.workspace }}/CodeCoverage",
+            "-coverageOptions", "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+IrsikSoftware.LogSmith"
+          )
 
-            $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
-              -ArgumentList $unityArgs `
-              -Wait `
-              -PassThru `
-              -NoNewWindow
+          $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
+            -ArgumentList $unityArgs `
+            -Wait `
+            -PassThru `
+            -NoNewWindow
 
-            $exitCode = $process.ExitCode
-          } catch {
-            Write-Host "##[error]Unity test runner crashed: $_"
-            exit 1
-          }
+          Write-Host "Unity exit code: $process.ExitCode"
 
-          Write-Host "Unity exit code: $exitCode"
-          Write-Host "Checking test results directory..."
-          Get-ChildItem "${{ github.workspace }}/TestResults" -ErrorAction SilentlyContinue | Format-Table Name, Length
-
-          # Check if XML results were actually created
           if (-Not (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml")) {
-            Write-Host "##[error]EditMode-results.xml was not created! Unity may have crashed."
-            Get-Content "${{ github.workspace }}/TestResults/EditMode-log.txt" -Tail 20
+            Write-Host "::error::EditMode-results.xml was not created!"
+            Get-Content "${{ github.workspace }}/TestResults/EditMode-log.txt" -Tail 50 -ErrorAction SilentlyContinue
             exit 1
           }
-
-          Write-Host "EditMode tests completed successfully"
-          echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
-          echo "coverage_path=${{ github.workspace }}/CodeCoverage" >> $env:GITHUB_OUTPUT
 
       - name: Run PlayMode tests
-        id: playmode-tests
         shell: powershell
         run: |
           Write-Host "Running PlayMode tests..."
-          $exitCode = 0
 
-          try {
-            $unityArgs = @(
-              "-runTests",
-              "-batchmode",
-              "-nographics",
-              "-projectPath", "${{ github.workspace }}",
-              "-testPlatform", "PlayMode",
-              "-testResults", "${{ github.workspace }}/TestResults/PlayMode-results.xml",
-              "-logFile", "${{ github.workspace }}/TestResults/PlayMode-log.txt"
-            )
+          $unityArgs = @(
+            "-runTests",
+            "-batchmode",
+            "-nographics",
+            "-projectPath", "${{ github.workspace }}",
+            "-testPlatform", "PlayMode",
+            "-testResults", "${{ github.workspace }}/TestResults/PlayMode-results.xml",
+            "-logFile", "${{ github.workspace }}/TestResults/PlayMode-log.txt"
+          )
 
-            $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
-              -ArgumentList $unityArgs `
-              -Wait `
-              -PassThru `
-              -NoNewWindow
+          $process = Start-Process -FilePath "${{ steps.unity-path.outputs.unity_path }}" `
+            -ArgumentList $unityArgs `
+            -Wait `
+            -PassThru `
+            -NoNewWindow
 
-            $exitCode = $process.ExitCode
-          } catch {
-            Write-Host "##[error]Unity test runner crashed: $_"
-            exit 1
-          }
+          Write-Host "Unity exit code: $process.ExitCode"
 
-          Write-Host "Unity exit code: $exitCode"
-          Write-Host "Checking test results directory..."
-          Get-ChildItem "${{ github.workspace }}/TestResults" -ErrorAction SilentlyContinue | Format-Table Name, Length
-
-          # Check if XML results were actually created
           if (-Not (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml")) {
-            Write-Host "##[error]PlayMode-results.xml was not created! Unity may have crashed."
-            Get-Content "${{ github.workspace }}/TestResults/PlayMode-log.txt" -Tail 20
+            Write-Host "::error::PlayMode-results.xml was not created!"
+            Get-Content "${{ github.workspace }}/TestResults/PlayMode-log.txt" -Tail 50 -ErrorAction SilentlyContinue
             exit 1
           }
 
-          Write-Host "PlayMode tests completed successfully"
-          echo "results_path=${{ github.workspace }}/TestResults" >> $env:GITHUB_OUTPUT
-
-      - name: Generate test summary
+      - name: Parse test results and notify Discord
         if: always()
         shell: powershell
         run: |
-          Write-Host "Generating test result summary..."
+          $editPassed = 0
+          $editFailed = 0
+          $editTotal = 0
+          $playPassed = 0
+          $playFailed = 0
+          $playTotal = 0
 
-          $summary = @"
-          ## Test Results - ${{ matrix.unityVersion }}
-
-          ### EditMode Tests
-          "@
-
-          if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
-            [xml]$editResults = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
-            $testSuite = $editResults.'test-run'
-            $summary += @"
-          - **Total:** $($testSuite.total)
-          - **Passed:** $($testSuite.passed)
-          - **Failed:** $($testSuite.failed)
-          - **Skipped:** $($testSuite.skipped)
-          - **Duration:** $($testSuite.duration)s
-
-          "@
-          } else {
-            $summary += "XML results not found`n`n"
-          }
-
-          $summary += @"
-          ### PlayMode Tests
-          "@
-
-          if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
-            [xml]$playResults = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
-            $testSuite = $playResults.'test-run'
-            $summary += @"
-          - **Total:** $($testSuite.total)
-          - **Passed:** $($testSuite.passed)
-          - **Failed:** $($testSuite.failed)
-          - **Skipped:** $($testSuite.skipped)
-          - **Duration:** $($testSuite.duration)s
-
-          "@
-          } else {
-            $summary += "XML results not found`n`n"
-          }
-
-          $summary | Out-File -FilePath "${{ github.workspace }}/TestResults/test-summary-${{ matrix.unityVersion }}.md" -Encoding UTF8
-          Write-Host $summary
-
-      - name: Generate HTML test report
-        if: always()
-        shell: powershell
-        run: |
-          Write-Host "Generating HTML test report..."
-
-          $shortSha = "${{ github.sha }}".Substring(0, 7)
-          $unityVersion = "${{ matrix.unityVersion }}"
-          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          $runNumber = "${{ github.run_number }}"
-          $branch = "${{ github.ref_name }}"
-
-          $html = '<!DOCTYPE html>' + "`n"
-          $html += '<html>' + "`n"
-          $html += '<head>' + "`n"
-          $html += '  <meta charset="UTF-8">' + "`n"
-          $html += "  <title>LogSmith Test Results - $unityVersion</title>" + "`n"
-          $html += '  <style>' + "`n"
-          $html += '    body { font-family: -apple-system, BlinkMacSystemFont, ''Segoe UI'', Arial, sans-serif; margin: 20px; background: #f5f5f5; }' + "`n"
-          $html += '    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }' + "`n"
-          $html += '    h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }' + "`n"
-          $html += '    .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }' + "`n"
-          $html += '    .tab { padding: 10px 20px; cursor: pointer; background: #f0f0f0; border: none; border-radius: 4px 4px 0 0; font-size: 16px; }' + "`n"
-          $html += '    .tab.active { background: #4CAF50; color: white; }' + "`n"
-          $html += '    .tab-content { display: none; padding: 20px 0; }' + "`n"
-          $html += '    .tab-content.active { display: block; }' + "`n"
-          $html += '    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }' + "`n"
-          $html += '    .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }' + "`n"
-          $html += '    .stat-card.passed { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }' + "`n"
-          $html += '    .stat-card.failed { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }' + "`n"
-          $html += '    .stat-card.skipped { background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%); }' + "`n"
-          $html += '    .stat-card h3 { margin: 0; font-size: 14px; opacity: 0.9; }' + "`n"
-          $html += '    .stat-card .value { font-size: 32px; font-weight: bold; margin: 10px 0; }' + "`n"
-          $html += '    table { width: 100%; border-collapse: collapse; margin: 20px 0; }' + "`n"
-          $html += '    th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }' + "`n"
-          $html += '    td { padding: 10px 12px; border-bottom: 1px solid #eee; }' + "`n"
-          $html += '    tr:hover { background: #f9f9f9; }' + "`n"
-          $html += '    .pass { color: #4CAF50; font-weight: bold; }' + "`n"
-          $html += '    .fail { color: #f44336; font-weight: bold; }' + "`n"
-          $html += '    .skip { color: #ff9800; font-weight: bold; }' + "`n"
-          $html += '    .duration { color: #666; font-size: 0.9em; }' + "`n"
-          $html += '  </style>' + "`n"
-          $html += '  <script>' + "`n"
-          $html += '    function showTab(tabName) {' + "`n"
-          $html += '      document.querySelectorAll(''.tab-content'').forEach(el => el.classList.remove(''active''));' + "`n"
-          $html += '      document.querySelectorAll(''.tab'').forEach(el => el.classList.remove(''active''));' + "`n"
-          $html += '      document.getElementById(tabName).classList.add(''active'');' + "`n"
-          $html += '      event.target.classList.add(''active'');' + "`n"
-          $html += '    }' + "`n"
-          $html += '  </script>' + "`n"
-          $html += '</head>' + "`n"
-          $html += '<body>' + "`n"
-          $html += '  <div class="container">' + "`n"
-          $html += "    <h1>LogSmith Test Results - Unity $unityVersion</h1>" + "`n"
-          $html += "    <p><strong>Run:</strong> <a href='$runUrl'>#$runNumber</a> | <strong>Commit:</strong> $shortSha | <strong>Branch:</strong> $branch</p>" + "`n"
-
-          # EditMode Tests
           if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
             [xml]$editXml = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
-            $editSuite = $editXml.'test-run'
-
-            $html += '    <div class="tabs">' + "`n"
-            $html += '      <button class="tab active" onclick="showTab(''editmode'')">EditMode Tests</button>' + "`n"
-            $html += '      <button class="tab" onclick="showTab(''playmode'')">PlayMode Tests</button>' + "`n"
-            $html += '    </div>' + "`n"
-            $html += '    <div id="editmode" class="tab-content active">' + "`n"
-            $html += '      <div class="summary">' + "`n"
-            $html += "        <div class='stat-card'><h3>Total Tests</h3><div class='value'>$($editSuite.total)</div></div>" + "`n"
-            $html += "        <div class='stat-card passed'><h3>Passed</h3><div class='value'>$($editSuite.passed)</div></div>" + "`n"
-            $html += "        <div class='stat-card failed'><h3>Failed</h3><div class='value'>$($editSuite.failed)</div></div>" + "`n"
-            $html += "        <div class='stat-card skipped'><h3>Skipped</h3><div class='value'>$($editSuite.skipped)</div></div>" + "`n"
-            $html += "        <div class='stat-card'><h3>Duration</h3><div class='value'>$([math]::Round([double]$editSuite.duration, 2))s</div></div>" + "`n"
-            $html += '      </div>' + "`n"
-            $html += '      <table>' + "`n"
-            $html += '        <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>' + "`n"
-            $html += '        <tbody>' + "`n"
-
-            foreach ($testCase in $editXml.SelectNodes("//test-case")) {
-              $result = $testCase.result
-              $resultClass = if ($result -eq "Passed") { "pass" } elseif ($result -eq "Failed") { "fail" } else { "skip" }
-              $duration = [math]::Round([double]$testCase.duration, 3)
-              $html += "          <tr><td>$($testCase.fullname)</td><td class='$resultClass'>$result</td><td class='duration'>${duration}s</td></tr>" + "`n"
-            }
-
-            $html += '        </tbody>' + "`n"
-            $html += '      </table>' + "`n"
-            $html += '    </div>' + "`n"
+            $editTotal = [int]$editXml.'test-run'.total
+            $editPassed = [int]$editXml.'test-run'.passed
+            $editFailed = [int]$editXml.'test-run'.failed
           }
 
-          # PlayMode Tests
           if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
             [xml]$playXml = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
-            $playSuite = $playXml.'test-run'
-
-            $html += '    <div id="playmode" class="tab-content">' + "`n"
-            $html += '      <div class="summary">' + "`n"
-            $html += "        <div class='stat-card'><h3>Total Tests</h3><div class='value'>$($playSuite.total)</div></div>" + "`n"
-            $html += "        <div class='stat-card passed'><h3>Passed</h3><div class='value'>$($playSuite.passed)</div></div>" + "`n"
-            $html += "        <div class='stat-card failed'><h3>Failed</h3><div class='value'>$($playSuite.failed)</div></div>" + "`n"
-            $html += "        <div class='stat-card skipped'><h3>Skipped</h3><div class='value'>$($playSuite.skipped)</div></div>" + "`n"
-            $html += "        <div class='stat-card'><h3>Duration</h3><div class='value'>$([math]::Round([double]$playSuite.duration, 2))s</div></div>" + "`n"
-            $html += '      </div>' + "`n"
-            $html += '      <table>' + "`n"
-            $html += '        <thead><tr><th>Test Case</th><th>Result</th><th>Duration</th></tr></thead>' + "`n"
-            $html += '        <tbody>' + "`n"
-
-            foreach ($testCase in $playXml.SelectNodes("//test-case")) {
-              $result = $testCase.result
-              $resultClass = if ($result -eq "Passed") { "pass" } elseif ($result -eq "Failed") { "fail" } else { "skip" }
-              $duration = [math]::Round([double]$testCase.duration, 3)
-              $html += "          <tr><td>$($testCase.fullname)</td><td class='$resultClass'>$result</td><td class='duration'>${duration}s</td></tr>" + "`n"
-            }
-
-            $html += '        </tbody>' + "`n"
-            $html += '      </table>' + "`n"
-            $html += '    </div>' + "`n"
+            $playTotal = [int]$playXml.'test-run'.total
+            $playPassed = [int]$playXml.'test-run'.passed
+            $playFailed = [int]$playXml.'test-run'.failed
           }
 
-          $html += '  </div>' + "`n"
-          $html += '</body>' + "`n"
-          $html += '</html>' + "`n"
+          $totalTests = $editTotal + $playTotal
+          $totalPassed = $editPassed + $playPassed
+          $totalFailed = $editFailed + $playFailed
 
-          $html | Out-File -FilePath "${{ github.workspace }}/TestResults/test-report-${{ matrix.unityVersion }}.html" -Encoding UTF8
-          Write-Host "HTML report generated"
+          Write-Host "EditMode: $editPassed/$editTotal passed"
+          Write-Host "PlayMode: $playPassed/$playTotal passed"
+          Write-Host "Total: $totalPassed/$totalTests passed, $totalFailed failed"
 
-      - name: Upload HTML test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Test-Report-HTML-${{ matrix.unityVersion }}-Windows
-          path: ${{ github.workspace }}/TestResults/test-report-*.html
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Upload EditMode test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Test-Results-EditMode-${{ matrix.unityVersion }}-Windows
-          path: ${{ github.workspace }}/TestResults/EditMode-*
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Upload PlayMode test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Test-Results-PlayMode-${{ matrix.unityVersion }}-Windows
-          path: ${{ github.workspace }}/TestResults/PlayMode-*
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Upload test summary
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Test-Summary-${{ matrix.unityVersion }}-Windows
-          path: ${{ github.workspace }}/TestResults/test-summary-*.md
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Upload coverage results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Coverage-Results-${{ matrix.unityVersion }}-Windows
-          path: ${{ github.workspace }}/CodeCoverage
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Clean up test artifacts
-        if: always()
-        shell: powershell
-        run: |
-          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/TestResults"
-          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "${{ github.workspace }}/CodeCoverage"
-
-  consolidate-and-notify:
-    name: Consolidate Results & Notify
-    runs-on: [self-hosted, unity-pool]
-    timeout-minutes: 5
-    needs: test
-    if: always()
-
-    steps:
-      - name: Download all test artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Consolidate test results and generate master HTML report
-        shell: powershell
-        run: |
-          Write-Host "Consolidating test results from all Unity versions..."
-
-          $versions = @("2022.3.50f1", "2023.2.20f1", "6000.0.26f1")
-          $allResults = @()
-
-          foreach ($version in $versions) {
-            $result = @{
-              Version = $version
-              EditMode = @{ Total = 0; Passed = 0; Failed = 0; Skipped = 0; Duration = 0 }
-              PlayMode = @{ Total = 0; Passed = 0; Failed = 0; Skipped = 0; Duration = 0 }
-              Status = "not_run"
-            }
-
-            # Check EditMode results
-            $editXmlPath = "artifacts/Test-Results-EditMode-$version-Windows/EditMode-results.xml"
-            if (Test-Path $editXmlPath) {
-              [xml]$editXml = Get-Content $editXmlPath
-              $editSuite = $editXml.'test-run'
-              $result.EditMode.Total = [int]$editSuite.total
-              $result.EditMode.Passed = [int]$editSuite.passed
-              $result.EditMode.Failed = [int]$editSuite.failed
-              $result.EditMode.Skipped = [int]$editSuite.skipped
-              $result.EditMode.Duration = [double]$editSuite.duration
-              $result.Status = "completed"
-            }
-
-            # Check PlayMode results
-            $playXmlPath = "artifacts/Test-Results-PlayMode-$version-Windows/PlayMode-results.xml"
-            if (Test-Path $playXmlPath) {
-              [xml]$playXml = Get-Content $playXmlPath
-              $playSuite = $playXml.'test-run'
-              $result.PlayMode.Total = [int]$playSuite.total
-              $result.PlayMode.Passed = [int]$playSuite.passed
-              $result.PlayMode.Failed = [int]$playSuite.failed
-              $result.PlayMode.Skipped = [int]$playSuite.skipped
-              $result.PlayMode.Duration = [double]$playSuite.duration
-            }
-
-            $allResults += $result
-          }
-
-          # Generate consolidated HTML report with test grid
-          Write-Host "Generating consolidated HTML report with test grid..."
-          New-Item -ItemType Directory -Force -Path "consolidated" | Out-Null
-
-          pwsh -File "${{ github.workspace }}/.github/scripts/generate-consolidated-report.ps1" `
-            -ArtifactsPath "artifacts" `
-            -HtmlPath "consolidated/test-report-all-versions.html" `
-            -Branch "${{ github.ref_name }}" `
-            -RunNumber "${{ github.run_number }}" `
-            -RunId "${{ github.run_id }}" `
-            -CommitSha "${{ github.sha }}"
-
-          # Calculate overall statistics for Discord notification
-          $overallTotal = 0
-          $overallPassed = 0
-          $overallFailed = 0
-          $overallSkipped = 0
-
-          foreach ($result in $allResults) {
-            $overallTotal += $result.EditMode.Total + $result.PlayMode.Total
-            $overallPassed += $result.EditMode.Passed + $result.PlayMode.Passed
-            $overallFailed += $result.EditMode.Failed + $result.PlayMode.Failed
-            $overallSkipped += $result.EditMode.Skipped + $result.PlayMode.Skipped
-          }
-
-          # Store results for Discord notification
-          "$overallTotal" | Out-File -FilePath "consolidated/overall-total.txt"
-          "$overallPassed" | Out-File -FilePath "consolidated/overall-passed.txt"
-          "$overallFailed" | Out-File -FilePath "consolidated/overall-failed.txt"
-          "$overallSkipped" | Out-File -FilePath "consolidated/overall-skipped.txt"
-
-      - name: Upload consolidated HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Test-Report-${{ github.run_number }}-${{ github.run_id }}
-          path: consolidated/test-report-all-versions.html
-          retention-days: 30
-
-      - name: Prepare GitHub Pages deployment
-        if: always()
-        shell: powershell
-        run: |
-          # Create directory structure for GitHub Pages
-          New-Item -ItemType Directory -Force -Path "gh-pages/testresults/reports" | Out-Null
-
-          # Copy report to latest.html
-          Copy-Item "consolidated/test-report-all-versions.html" "gh-pages/testresults/latest.html"
-
-          # Copy report to versioned file
-          Copy-Item "consolidated/test-report-all-versions.html" "gh-pages/testresults/reports/run-${{ github.run_number }}.html"
-
-          # Add .nojekyll to disable Jekyll processing
-          New-Item -ItemType File -Path "gh-pages/.nojekyll" | Out-Null
-
-          # Create CNAME file for custom domain
-          "logsmith-unity.irsik.software" | Out-File -FilePath "gh-pages/CNAME" -Encoding ascii -NoNewline
-
-          Write-Host "GitHub Pages directory prepared"
-
-      - name: Deploy to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./gh-pages
-          keep_files: true
-          destination_dir: .
-
-      - name: Send Discord notification
-        if: always()
-        shell: powershell
-        run: |
+          # Discord notification
           if (-not "${{ secrets.TESTRESULTS_WEBHOOK }}") {
             Write-Host "TESTRESULTS_WEBHOOK not configured, skipping Discord notification"
             exit 0
           }
 
-          # Read consolidated results
-          $overallTotal = [int](Get-Content "consolidated/overall-total.txt")
-          $overallPassed = [int](Get-Content "consolidated/overall-passed.txt")
-          $overallFailed = [int](Get-Content "consolidated/overall-failed.txt")
-          $overallSkipped = [int](Get-Content "consolidated/overall-skipped.txt")
+          $color = if ($totalFailed -eq 0) { 3066993 } else { 15158332 }
+          $emoji = if ($totalFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
+          $status = if ($totalFailed -eq 0) { "PASSED" } else { "FAILED" }
 
-          $status = if ($overallFailed -eq 0) { "success" } else { "failure" }
-          $color = if ($overallFailed -eq 0) { 3066993 } else { 15158332 }
-          $emoji = if ($overallFailed -eq 0) { ":white_check_mark:" } else { ":x:" }
-
-          $reportUrl = "https://logsmith-unity.irsik.software/testresults/reports/run-${{ github.run_number }}.html"
           $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          $nl = [Environment]::NewLine
-
-          # Build version summary
-          $versions = @("2022.3.50f1", "2023.2.20f1", "6000.0.26f1")
-          $versionSummary = ""
-          foreach ($version in $versions) {
-            $editXmlPath = "artifacts/Test-Results-EditMode-$version-Windows/EditMode-results.xml"
-            $playXmlPath = "artifacts/Test-Results-PlayMode-$version-Windows/PlayMode-results.xml"
-
-            $versionPassed = 0
-            $versionTotal = 0
-            $versionFailed = 0
-            $versionSkipped = 0
-            $editExists = Test-Path $editXmlPath
-            $playExists = Test-Path $playXmlPath
-
-            if ($editExists) {
-              [xml]$editXml = Get-Content $editXmlPath
-              $versionPassed += [int]$editXml.'test-run'.passed
-              $versionTotal += [int]$editXml.'test-run'.total
-              $versionFailed += [int]$editXml.'test-run'.failed
-              $versionSkipped += [int]$editXml.'test-run'.skipped
-            }
-            if ($playExists) {
-              [xml]$playXml = Get-Content $playXmlPath
-              $versionPassed += [int]$playXml.'test-run'.passed
-              $versionTotal += [int]$playXml.'test-run'.total
-              $versionFailed += [int]$playXml.'test-run'.failed
-              $versionSkipped += [int]$playXml.'test-run'.skipped
-            }
-
-            # Determine status and message
-            if (-not $editExists) {
-              $versionStatus = "[CRASH]"
-              $versionMessage = "EditMode crashed - no results"
-            } elseif ($versionTotal -eq 0) {
-              $versionStatus = "[CRASH]"
-              $versionMessage = "No tests found"
-            } elseif ($versionFailed -gt 0) {
-              $versionStatus = "[FAIL]"
-              $versionMessage = "$versionPassed/$versionTotal passed, $versionFailed failed"
-            } else {
-              $versionStatus = "[PASS]"
-              if ($versionSkipped -gt 0) {
-                $versionMessage = "$versionPassed/$versionTotal passed, $versionSkipped skipped"
-              } else {
-                $versionMessage = "$versionPassed/$versionTotal passed"
-              }
-            }
-
-            $versionSummary += "$versionStatus Unity $version`: $versionMessage$nl"
-          }
-
-          $description = "**Total:** $overallTotal | **Passed:** $overallPassed | **Failed:** $overallFailed | **Skipped:** $overallSkipped$nl$nl$versionSummary$nl[View Test Results]($reportUrl)"
 
           $payload = @{
             embeds = @(
               @{
-                title = "$emoji LogSmith Tests - All Unity Versions"
-                description = $description
+                title = "$emoji LogSmith CI - $status"
+                description = "**Unity ${{ env.UNITY_VERSION }}**`n`nEditMode: $editPassed/$editTotal | PlayMode: $playPassed/$playTotal`n`n[View Run]($runUrl)"
                 color = $color
-                fields = @(
-                  @{ name = "Unity 2022.3 LTS"; value = "See report for details"; inline = $true }
-                  @{ name = "Unity 2023.2 LTS"; value = "See report for details"; inline = $true }
-                  @{ name = "Unity 6 LTS"; value = "See report for details"; inline = $true }
-                  @{ name = "Run"; value = "[#${{ github.run_number }}]($runUrl)"; inline = $false }
-                )
                 timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
               }
             )
@@ -627,19 +198,44 @@ jobs:
 
           try {
             Invoke-RestMethod -Uri "${{ secrets.TESTRESULTS_WEBHOOK }}" -Method Post -Body $payload -ContentType "application/json"
-            Write-Host "Discord notification sent successfully"
+            Write-Host "Discord notification sent"
           } catch {
-            Write-Host "::warning::Failed to send Discord notification: $_"
+            Write-Host "::warning::Discord notification failed: $_"
           }
 
-  coverage-summary:
-    name: Coverage Gate
-    runs-on: [self-hosted, Windows]
-    timeout-minutes: 5
-    needs: test
-    if: always()
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test-Results-${{ env.UNITY_VERSION }}
+          path: ${{ github.workspace }}/TestResults/*
+          retention-days: 30
 
-    steps:
-      - name: Check if Windows tests passed
+      - name: Upload coverage results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Coverage-Results-${{ env.UNITY_VERSION }}
+          path: ${{ github.workspace }}/CodeCoverage
+          retention-days: 30
+
+      - name: Fail if tests failed
+        shell: powershell
         run: |
-          echo "::notice::Windows tests are the primary gate. Linux/macOS tests are optional until runners are configured."
+          if (Test-Path "${{ github.workspace }}/TestResults/EditMode-results.xml") {
+            [xml]$editXml = Get-Content "${{ github.workspace }}/TestResults/EditMode-results.xml"
+            if ([int]$editXml.'test-run'.failed -gt 0) {
+              Write-Host "::error::EditMode tests failed"
+              exit 1
+            }
+          }
+
+          if (Test-Path "${{ github.workspace }}/TestResults/PlayMode-results.xml") {
+            [xml]$playXml = Get-Content "${{ github.workspace }}/TestResults/PlayMode-results.xml"
+            if ([int]$playXml.'test-run'.failed -gt 0) {
+              Write-Host "::error::PlayMode tests failed"
+              exit 1
+            }
+          }
+
+          Write-Host "All tests passed!"
