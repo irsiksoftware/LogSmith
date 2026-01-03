@@ -1,10 +1,10 @@
 # LogSmith
 
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![License](https://img.shields.io/badge/license-IrsikSoftware-orange)
 [![Unity](https://img.shields.io/badge/Unity-2022.3%2B-black)](https://unity.com)
 
-> Enterprise-grade logging for every Unity developer. Free, open source, built for the AI age.
+> Enterprise-grade logging for every Unity developer. Free to use, built for the AI age.
 
 ## What You Can Do
 
@@ -14,6 +14,14 @@
 - **Ship everywhere** - IL2CPP, WebGL, consoles, mobile. If Unity runs there, LogSmith works there.
 - **Control at runtime** - Add, remove, and reconfigure categories on the fly. No recompile needed.
 - **Integrate with your stack** - Works standalone or with VContainer dependency injection.
+
+## Installation
+
+Add to your Unity project via Package Manager:
+
+1. Open **Window > Package Manager**
+2. Click **+** > **Add package from git URL**
+3. Enter: `https://github.com/IrsikSoftware/LogSmith.git?path=Packages/com.irsiksoftware.logsmith`
 
 ## The Magic Moment
 
@@ -44,4 +52,8 @@ The free version is fully-featured. LogSmith Pro adds integrations for teams wit
 
 ## License
 
-LogSmith is open source under the [MIT License](Packages/com.irsiksoftware.logsmith/LICENSE).
+LogSmith is free to use in any project, including commercial projects. See [LICENSE](LICENSE) for full terms.
+
+**Attribution Required:** Projects using LogSmith must credit "IrsikSoftware.LogSmith" in credits or documentation.
+
+**No Modifications:** The source code may not be modified or used to create derivative works.

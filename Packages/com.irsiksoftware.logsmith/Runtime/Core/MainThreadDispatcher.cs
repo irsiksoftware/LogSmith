@@ -54,7 +54,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="action">The action to execute on the main thread.</param>
         public void Enqueue(Action action)
         {
-            if (action == null) return;
+            if (action == null)
+                return;
 
             // Check queue size to prevent unbounded growth
             if (_executionQueue.Count >= MaxQueueSize)
@@ -87,7 +88,7 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="maxActions">Maximum number of actions to process. If -1, processes all.</param>
         public void ProcessQueue(int maxActions = -1)
         {
-            int processedCount = 0;
+            var processedCount = 0;
 
             while ((maxActions == -1 || processedCount < maxActions) && _executionQueue.TryDequeue(out var action))
             {

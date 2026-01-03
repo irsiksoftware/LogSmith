@@ -31,7 +31,6 @@ namespace IrsikSoftware.LogSmith.Core
         private string _selectedCategory = "All";
         private HashSet<string> _availableCategories;
         private bool _autoScroll = true;
-        private bool _isCategoryManagementPanelVisible;
 
         // Throttling
         private float _lastUpdateTime;
@@ -47,7 +46,7 @@ namespace IrsikSoftware.LogSmith.Core
         /// <summary>
         /// Gets whether the category management panel is currently visible.
         /// </summary>
-        public bool IsCategoryManagementPanelVisible => _isCategoryManagementPanelVisible;
+        public bool IsCategoryManagementPanelVisible { get; private set; }
 
         public void Initialize(ILogRouter logRouter)
         {
@@ -86,8 +85,10 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="level">The minimum log level.</param>
         public void SetCategoryMinimumLevel(string category, LogLevel level)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
-            if (_categoryRegistry == null) return;
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
+            if (_categoryRegistry == null)
+                return;
 
             _categoryRegistry.SetMinimumLevel(category, level);
         }
@@ -99,8 +100,10 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="enabled">Whether the category is enabled.</param>
         public void SetCategoryEnabled(string category, bool enabled)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
-            if (_categoryRegistry == null) return;
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
+            if (_categoryRegistry == null)
+                return;
 
             // Auto-register category if not exists
             if (!_categoryRegistry.HasCategory(category))
@@ -146,7 +149,7 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void ToggleCategoryManagementPanel()
         {
-            _isCategoryManagementPanelVisible = !_isCategoryManagementPanelVisible;
+            IsCategoryManagementPanelVisible = !IsCategoryManagementPanelVisible;
         }
 
         private void OnDestroy()
@@ -221,7 +224,7 @@ namespace IrsikSoftware.LogSmith.Core
             _windowRect = GUILayout.Window(0, _windowRect, DrawOverlayWindow, "LogSmith Debug Overlay");
 
             // Draw category management panel if visible
-            if (_isCategoryManagementPanelVisible && _categoryRegistry != null)
+            if (IsCategoryManagementPanelVisible && _categoryRegistry != null)
             {
                 _categoryPanelRect = GUILayout.Window(1, _categoryPanelRect, DrawCategoryManagementPanel, "Category Management");
             }
@@ -278,7 +281,7 @@ namespace IrsikSoftware.LogSmith.Core
 
             // Search
             GUILayout.Label("Search:", GUILayout.Width(60));
-            string newSearch = GUILayout.TextField(_searchText, GUILayout.Width(150));
+            var newSearch = GUILayout.TextField(_searchText, GUILayout.Width(150));
             if (newSearch != _searchText)
             {
                 _searchText = newSearch;
@@ -316,7 +319,7 @@ namespace IrsikSoftware.LogSmith.Core
             // Category management toggle button (only show if registry is available)
             if (_categoryRegistry != null)
             {
-                string buttonText = _isCategoryManagementPanelVisible ? "Hide Categories" : "Manage Categories";
+                var buttonText = IsCategoryManagementPanelVisible ? "Hide Categories" : "Manage Categories";
                 if (GUILayout.Button(buttonText, GUILayout.Width(120)))
                 {
                     ToggleCategoryManagementPanel();
@@ -332,10 +335,11 @@ namespace IrsikSoftware.LogSmith.Core
             var categories = new List<string> { "All" };
             categories.AddRange(_availableCategories.OrderBy(c => c));
 
-            int currentCategoryIndex = categories.IndexOf(_selectedCategory);
-            if (currentCategoryIndex < 0) currentCategoryIndex = 0;
+            var currentCategoryIndex = categories.IndexOf(_selectedCategory);
+            if (currentCategoryIndex < 0)
+                currentCategoryIndex = 0;
 
-            int newCategoryIndex = GUILayout.SelectionGrid(
+            var newCategoryIndex = GUILayout.SelectionGrid(
                 currentCategoryIndex,
                 categories.ToArray(),
                 Mathf.Min(categories.Count, 8)
@@ -371,9 +375,9 @@ namespace IrsikSoftware.LogSmith.Core
 
         private void DrawLogEntry(LogMessage log)
         {
-            string colorCode = GetColorCode(log.Level);
-            string timeStamp = log.Timestamp.ToString("HH:mm:ss.fff");
-            string formattedLog = $"<color={colorCode}>[{timeStamp}] [{log.Level}] [{log.Category}]</color> {log.Message}";
+            var colorCode = GetColorCode(log.Level);
+            var timeStamp = log.Timestamp.ToString("HH:mm:ss.fff");
+            var formattedLog = $"<color={colorCode}>[{timeStamp}] [{log.Level}] [{log.Category}]</color> {log.Message}";
 
             GUILayout.Label(formattedLog, _logStyle);
         }
@@ -433,7 +437,7 @@ namespace IrsikSoftware.LogSmith.Core
             // Category name row with enabled toggle
             GUILayout.BeginHorizontal();
 
-            bool newEnabled = GUILayout.Toggle(metadata.Enabled, "", GUILayout.Width(20));
+            var newEnabled = GUILayout.Toggle(metadata.Enabled, "", GUILayout.Width(20));
             if (newEnabled != metadata.Enabled)
             {
                 SetCategoryEnabled(category, newEnabled);
@@ -448,9 +452,9 @@ namespace IrsikSoftware.LogSmith.Core
             GUILayout.Label("Min Level:", GUILayout.Width(60));
 
             var levelNames = Enum.GetNames(typeof(LogLevel));
-            int currentLevelIndex = (int)metadata.MinimumLevel;
+            var currentLevelIndex = (int)metadata.MinimumLevel;
 
-            int newLevelIndex = GUILayout.SelectionGrid(
+            var newLevelIndex = GUILayout.SelectionGrid(
                 currentLevelIndex,
                 levelNames,
                 levelNames.Length,

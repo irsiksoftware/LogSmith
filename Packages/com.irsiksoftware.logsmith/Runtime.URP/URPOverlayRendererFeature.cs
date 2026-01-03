@@ -1,9 +1,9 @@
 #if LOGSMITH_URP_PRESENT
+using System.Collections.Generic;
+using IrsikSoftware.LogSmith.Core;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using IrsikSoftware.LogSmith.Core;
-using System.Collections.Generic;
 
 namespace IrsikSoftware.LogSmith.URP
 {
@@ -104,7 +104,7 @@ namespace IrsikSoftware.LogSmith.URP
             CommandBuffer cmd = new CommandBuffer { name = "LogSmith URP Visual Debug" };
 
             // Remove expired shapes
-            float currentTime = Time.realtimeSinceStartup;
+            var currentTime = Time.realtimeSinceStartup;
             _shapes.RemoveAll(s => s.IsExpired(currentTime));
 
             // Render all shapes
@@ -159,9 +159,11 @@ namespace IrsikSoftware.LogSmith.URP
         {
             cmd.BeginSample("Draw URP Debug Line");
 
-            var mesh = new Mesh();
-            mesh.vertices = new[] { shape.Start, shape.End };
-            mesh.colors = new[] { shape.Color, shape.Color };
+            var mesh = new Mesh
+            {
+                vertices = new[] { shape.Start, shape.End },
+                colors = new[] { shape.Color, shape.Color }
+            };
             mesh.SetIndices(new[] { 0, 1 }, MeshTopology.Lines, 0);
 
             cmd.DrawMesh(mesh, Matrix4x4.identity, _shapeMaterial, 0, 0);
@@ -174,8 +176,8 @@ namespace IrsikSoftware.LogSmith.URP
             cmd.BeginSample("Draw URP Debug Quad");
 
             Vector3 center = shape.Start;
-            float halfWidth = shape.Size.x * 0.5f;
-            float halfHeight = shape.Size.y * 0.5f;
+            var halfWidth = shape.Size.x * 0.5f;
+            var halfHeight = shape.Size.y * 0.5f;
 
             Camera camera = renderingData.cameraData.camera;
             Vector3 right = camera.transform.right;
@@ -186,10 +188,12 @@ namespace IrsikSoftware.LogSmith.URP
             Vector3 v2 = center + right * halfWidth + up * halfHeight;
             Vector3 v3 = center - right * halfWidth + up * halfHeight;
 
-            var mesh = new Mesh();
-            mesh.vertices = new[] { v0, v1, v2, v3 };
-            mesh.colors = new[] { shape.Color, shape.Color, shape.Color, shape.Color };
-            mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+            var mesh = new Mesh
+            {
+                vertices = new[] { v0, v1, v2, v3 },
+                colors = new[] { shape.Color, shape.Color, shape.Color, shape.Color },
+                triangles = new[] { 0, 1, 2, 0, 2, 3 }
+            };
 
             cmd.DrawMesh(mesh, Matrix4x4.identity, _shapeMaterial, 0, 0);
 

@@ -1,10 +1,10 @@
-using UnityEditor;
-using UnityEngine;
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using UnityEditor;
+using UnityEngine;
 
 namespace IrsikSoftware.LogSmith.Editor
 {
@@ -30,7 +30,7 @@ namespace IrsikSoftware.LogSmith.Editor
                 return;
             }
 
-            int scriptsAdded = 0;
+            var scriptsAdded = 0;
             var missingSamples = new HashSet<string>();
             var failedScripts = new List<string>();
 
@@ -77,7 +77,7 @@ namespace IrsikSoftware.LogSmith.Editor
                     { "7. VContainerLogging", "IrsikSoftware.LogSmith.Samples.VContainerLoggingExample" }
                 };
 
-                bool anyFailed = false;
+                var anyFailed = false;
                 foreach (var kvp in scripts)
                 {
                     Transform child = demoParent.Find(kvp.Key);
@@ -184,13 +184,15 @@ namespace IrsikSoftware.LogSmith.Editor
             if (childName != target.name)
             {
                 Transform child = target.transform.Find(childName);
-                if (child == null) return false;
+                if (child == null)
+                    return false;
                 go = child.gameObject;
             }
 
             // Try to find the script type
             Type scriptType = FindTypeByName(scriptTypeName);
-            if (scriptType == null) return false;
+            if (scriptType == null)
+                return false;
 
             // Check if component already exists
             if (go.GetComponent(scriptType) != null)
@@ -289,7 +291,7 @@ namespace IrsikSoftware.LogSmith.Editor
                 return;
             }
 
-            int removed = 0;
+            var removed = 0;
 
             // Find and remove all sample scripts
             var scripts = demoParent.GetComponentsInChildren<MonoBehaviour>();

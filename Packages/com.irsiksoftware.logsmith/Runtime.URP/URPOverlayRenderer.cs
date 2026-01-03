@@ -1,6 +1,6 @@
 #if LOGSMITH_URP_PRESENT
-using UnityEngine;
 using IrsikSoftware.LogSmith.Core;
+using UnityEngine;
 
 namespace IrsikSoftware.LogSmith.URP
 {
@@ -11,13 +11,8 @@ namespace IrsikSoftware.LogSmith.URP
     public class URPOverlayRenderer : IVisualDebugRenderer
     {
         private URPOverlayRenderPass _renderPass;
-        private bool _isEnabled;
 
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set => _isEnabled = value;
-        }
+        public bool IsEnabled { get; set; }
 
         public void Initialize(Camera camera)
         {
@@ -34,7 +29,7 @@ namespace IrsikSoftware.LogSmith.URP
 
         public void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0f)
         {
-            if (!_isEnabled || _renderPass == null)
+            if (!IsEnabled || _renderPass == null)
                 return;
 
             var shape = new DebugShape
@@ -51,7 +46,7 @@ namespace IrsikSoftware.LogSmith.URP
 
         public void DrawQuad(Vector3 center, Vector2 size, Color color, float duration = 0f)
         {
-            if (!_isEnabled || _renderPass == null)
+            if (!IsEnabled || _renderPass == null)
                 return;
 
             var shape = new DebugShape

@@ -32,7 +32,7 @@ namespace IrsikSoftware.LogSmith.Core
         private void Log(LogLevel level, string message)
         {
             // Get frame count safely - Time.frameCount can only be called from main thread
-            int frameCount = -1;
+            var frameCount = -1;
             try
             {
                 frameCount = UnityEngine.Time.frameCount;

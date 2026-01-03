@@ -119,7 +119,7 @@ LogSmith uses `com.unity.logging` as backend. If Unity deprecates this:
 
 ## Release Process
 
-1. Tag version: `git tag v1.2.3`
+1. Tag version: `git tag 1.2.3`
 2. Generate release notes from CHANGELOG
 3. Publish to GitHub Releases
 4. Update Asset Store package
@@ -138,6 +138,6 @@ Example (hypothetical):
 
 ## Contact
 
-- **Issues**: [GitHub Issues](https://github.com/DakotaIrsik/LogSmith/issues)
+- **Issues**: [GitHub Issues](https://github.com/IrsikSoftware/LogSmith/issues)
 - **Discussions**: GitHub Discussions
 - **Email**: Support contact in Asset Store listing

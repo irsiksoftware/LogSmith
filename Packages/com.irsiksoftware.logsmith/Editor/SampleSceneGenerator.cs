@@ -79,8 +79,8 @@ namespace IrsikSoftware.LogSmith.Editor
             noteObject.transform.position = Vector3.zero;
 
             // Save scene
-            string scenePath = $"Packages/com.irsiksoftware.logsmith/Samples~/{pipelineName}/{sceneName}.unity";
-            string dirPath = System.IO.Path.GetDirectoryName(scenePath);
+            var scenePath = $"Packages/com.irsiksoftware.logsmith/Samples~/{pipelineName}/{sceneName}.unity";
+            var dirPath = System.IO.Path.GetDirectoryName(scenePath);
 
             if (!System.IO.Directory.Exists(dirPath))
             {

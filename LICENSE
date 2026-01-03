@@ -33,18 +33,3 @@ TERMS AND CONDITIONS
 
 5. TERMINATION
    This license terminates automatically if you violate any of these terms.
-
----
-
-## Additional Information
-
-**LogSmith Free** (this package) is free to use under this license.
-
-**LogSmith Pro** is a separate package available on the Unity Asset Store
-and is covered by the Unity Asset Store EULA.
-
-**What's in Free vs Pro:**
-- Free: Console/File sinks, debug overlay, VContainer DI, runtime categories, templates
-- Pro: HTTP, Sentry, Seq, and Elasticsearch sink integrations
-
-For more information, visit: https://github.com/IrsikSoftware/LogSmith

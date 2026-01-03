@@ -31,8 +31,10 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void SetCategoryTemplate(string category, string template)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
-            if (string.IsNullOrEmpty(template)) throw new ArgumentNullException(nameof(template));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(template))
+                throw new ArgumentNullException(nameof(template));
 
             lock (_lock)
             {
@@ -42,7 +44,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public string GetCategoryTemplate(string category)
         {
-            if (string.IsNullOrEmpty(category)) return _defaultTemplate;
+            if (string.IsNullOrEmpty(category))
+                return _defaultTemplate;
 
             lock (_lock)
             {
@@ -55,7 +58,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void SetDefaultTemplate(string template)
         {
-            if (string.IsNullOrEmpty(template)) throw new ArgumentNullException(nameof(template));
+            if (string.IsNullOrEmpty(template))
+                throw new ArgumentNullException(nameof(template));
 
             lock (_lock)
             {
@@ -88,7 +92,7 @@ namespace IrsikSoftware.LogSmith.Core
                 // Handle timestamp with custom format
                 if (token.StartsWith("timestamp:", StringComparison.OrdinalIgnoreCase))
                 {
-                    var format = token.Substring(10);
+                    var format = token[10..];
                     return message.Timestamp.ToString(format);
                 }
 
@@ -146,10 +150,11 @@ namespace IrsikSoftware.LogSmith.Core
                 return string.Empty;
 
             var sb = new StringBuilder();
-            bool first = true;
+            var first = true;
             foreach (var kvp in context)
             {
-                if (!first) sb.Append(", ");
+                if (!first)
+                    sb.Append(", ");
                 sb.Append($"{kvp.Key}={kvp.Value}");
                 first = false;
             }
@@ -211,10 +216,11 @@ namespace IrsikSoftware.LogSmith.Core
             if (message.Context != null && message.Context.Count > 0)
             {
                 sb.Append(",\"context\":{");
-                bool first = true;
+                var first = true;
                 foreach (var kvp in message.Context)
                 {
-                    if (!first) sb.Append(",");
+                    if (!first)
+                        sb.Append(",");
                     sb.Append($"\"{EscapeJson(kvp.Key)}\":\"{EscapeJson(kvp.Value?.ToString() ?? string.Empty)}\"");
                     first = false;
                 }
@@ -227,7 +233,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         private string EscapeJson(string value)
         {
-            if (string.IsNullOrEmpty(value)) return value;
+            if (string.IsNullOrEmpty(value))
+                return value;
 
             return value
                 .Replace("\\", "\\\\")

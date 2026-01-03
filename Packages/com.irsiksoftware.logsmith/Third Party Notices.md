@@ -94,7 +94,7 @@ LogSmith does not include encryption technology beyond standard TLS/HTTPS connec
 ## Contact
 
 For questions regarding third-party licenses or attributions:
-- **GitHub Issues**: https://github.com/DakotaIrsik/LogSmith/issues
+- **GitHub Issues**: https://github.com/IrsikSoftware/LogSmith/issues
 - **Email**: support@irsiksoftware.com
 
 ---

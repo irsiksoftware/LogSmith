@@ -16,7 +16,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void RegisterCategory(string category, LogLevel minimumLevel)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -32,7 +33,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void RegisterCategory(string category, CategoryMetadata metadata)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -43,7 +45,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void UnregisterCategory(string category)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -53,8 +56,10 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void RenameCategory(string oldName, string newName)
         {
-            if (string.IsNullOrEmpty(oldName)) throw new ArgumentNullException(nameof(oldName));
-            if (string.IsNullOrEmpty(newName)) throw new ArgumentNullException(nameof(newName));
+            if (string.IsNullOrEmpty(oldName))
+                throw new ArgumentNullException(nameof(oldName));
+            if (string.IsNullOrEmpty(newName))
+                throw new ArgumentNullException(nameof(newName));
 
             lock (_lock)
             {
@@ -69,7 +74,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void SetMinimumLevel(string category, LogLevel level)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -88,7 +94,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public LogLevel GetMinimumLevel(string category)
         {
-            if (string.IsNullOrEmpty(category)) return _defaultMinimumLevel;
+            if (string.IsNullOrEmpty(category))
+                return _defaultMinimumLevel;
 
             lock (_lock)
             {
@@ -98,7 +105,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void SetEnabled(string category, bool enabled)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -112,7 +120,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public bool IsEnabled(string category)
         {
-            if (string.IsNullOrEmpty(category)) return true; // Default categories are enabled
+            if (string.IsNullOrEmpty(category))
+                return true; // Default categories are enabled
 
             lock (_lock)
             {
@@ -122,7 +131,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void SetColor(string category, Color color)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -136,7 +146,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public Color GetColor(string category)
         {
-            if (string.IsNullOrEmpty(category)) return _defaultColor;
+            if (string.IsNullOrEmpty(category))
+                return _defaultColor;
 
             lock (_lock)
             {
@@ -184,7 +195,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public bool HasCategory(string category)
         {
-            if (string.IsNullOrEmpty(category)) return false;
+            if (string.IsNullOrEmpty(category))
+                return false;
 
             lock (_lock)
             {

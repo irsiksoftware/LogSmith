@@ -1,9 +1,9 @@
 {
   "name": "com.irsiksoftware.logsmith",
   "displayName": "LogSmith",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "unity": "2022.3",
-  "description": "FREE & open source production-grade Unity logging. Console/File sinks, debug overlay, VContainer DI, runtime categories, message templates. 100% test coverage. MIT License.",
+  "description": "FREE production-grade Unity logging. Console/File sinks, debug overlay, VContainer DI, runtime categories, message templates. 100% test coverage.",
   "keywords": [
     "logging",
     "unity",
@@ -13,13 +13,13 @@
   ],
   "author": {
     "name": "Irsik Software",
-    "url": "https://github.com/DakotaIrsik"
+    "url": "https://github.com/IrsikSoftware"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DakotaIrsik/LogSmith.git"
+    "url": "https://github.com/IrsikSoftware/LogSmith.git"
   },
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "dependencies": {},
   "samples": [
     {

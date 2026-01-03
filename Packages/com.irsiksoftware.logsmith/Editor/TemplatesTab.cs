@@ -1,6 +1,6 @@
+using IrsikSoftware.LogSmith.Core;
 using UnityEditor;
 using UnityEngine;
-using IrsikSoftware.LogSmith.Core;
 
 namespace IrsikSoftware.LogSmith.Editor
 {
@@ -87,8 +87,8 @@ namespace IrsikSoftware.LogSmith.Editor
             var defaultTemplateProp = serializedSettings.FindProperty("defaultTextTemplate");
 
             EditorGUILayout.LabelField("Template:", EditorStyles.miniBoldLabel);
-            string oldTemplate = defaultTemplateProp.stringValue;
-            string newTemplate = EditorGUILayout.TextArea(oldTemplate, GUILayout.Height(60));
+            var oldTemplate = defaultTemplateProp.stringValue;
+            var newTemplate = EditorGUILayout.TextArea(oldTemplate, GUILayout.Height(60));
 
             if (newTemplate != oldTemplate)
             {
@@ -156,19 +156,19 @@ namespace IrsikSoftware.LogSmith.Editor
             EditorGUILayout.LabelField("Add Override for Category:", EditorStyles.miniBoldLabel);
 
             // Build category dropdown
-            string[] categoryNames = new string[categoriesProperty.arraySize];
-            for (int i = 0; i < categoriesProperty.arraySize; i++)
+            var categoryNames = new string[categoriesProperty.arraySize];
+            for (var i = 0; i < categoriesProperty.arraySize; i++)
             {
                 categoryNames[i] = categoriesProperty.GetArrayElementAtIndex(i)
                     .FindPropertyRelative("categoryName").stringValue;
             }
 
             EditorGUILayout.BeginHorizontal();
-            int selectedIndex = EditorGUILayout.Popup("Category:", 0, categoryNames, GUILayout.Width(300));
+            var selectedIndex = EditorGUILayout.Popup("Category:", 0, categoryNames, GUILayout.Width(300));
 
             if (GUILayout.Button("Add Override", GUILayout.Width(120)))
             {
-                string categoryName = categoryNames[selectedIndex];
+                var categoryName = categoryNames[selectedIndex];
                 AddTemplateOverride(serializedSettings, settings, templateOverridesProp, categoryName);
             }
             EditorGUILayout.EndHorizontal();
@@ -184,9 +184,9 @@ namespace IrsikSoftware.LogSmith.Editor
 
             EditorGUILayout.LabelField($"Active Overrides ({templateOverridesProp.arraySize}):", EditorStyles.miniBoldLabel);
 
-            int indexToRemove = -1;
+            var indexToRemove = -1;
 
-            for (int i = 0; i < templateOverridesProp.arraySize; i++)
+            for (var i = 0; i < templateOverridesProp.arraySize; i++)
             {
                 var overrideProp = templateOverridesProp.GetArrayElementAtIndex(i);
                 var categoryNameProp = overrideProp.FindPropertyRelative("categoryName");
@@ -243,7 +243,7 @@ namespace IrsikSoftware.LogSmith.Editor
                 var tempEngine = new MessageTemplateEngine();
                 tempEngine.SetDefaultTemplate(template);
 
-                string preview = tempEngine.Format(_previewMessage, format);
+                var preview = tempEngine.Format(_previewMessage, format);
 
                 GUIStyle previewStyle = new GUIStyle(EditorStyles.textArea)
                 {
@@ -263,7 +263,7 @@ namespace IrsikSoftware.LogSmith.Editor
             SerializedProperty templateOverridesProp, string categoryName)
         {
             // Check for duplicate
-            for (int i = 0; i < templateOverridesProp.arraySize; i++)
+            for (var i = 0; i < templateOverridesProp.arraySize; i++)
             {
                 var existingName = templateOverridesProp.GetArrayElementAtIndex(i)
                     .FindPropertyRelative("categoryName").stringValue;
@@ -277,7 +277,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             Undo.RecordObject(settings, "Add Template Override");
 
-            int newIndex = templateOverridesProp.arraySize;
+            var newIndex = templateOverridesProp.arraySize;
             templateOverridesProp.InsertArrayElementAtIndex(newIndex);
 
             var newOverride = templateOverridesProp.GetArrayElementAtIndex(newIndex);
@@ -291,12 +291,15 @@ namespace IrsikSoftware.LogSmith.Editor
         private bool ValidateTemplate(string template)
         {
             // Basic validation: check for properly closed braces
-            int openCount = 0;
-            foreach (char c in template)
+            var openCount = 0;
+            foreach (var c in template)
             {
-                if (c == '{') openCount++;
-                else if (c == '}') openCount--;
-                if (openCount < 0) return false;
+                if (c == '{')
+                    openCount++;
+                else if (c == '}')
+                    openCount--;
+                if (openCount < 0)
+                    return false;
             }
             return openCount == 0;
         }

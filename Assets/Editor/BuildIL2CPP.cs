@@ -9,10 +9,7 @@ using UnityEngine;
 public static class BuildIL2CPP
 {
     [MenuItem("LogSmith/Build/Validate IL2CPP")]
-    public static void BuildValidation()
-    {
-        BuildIL2CPPCommandLine();
-    }
+    public static void BuildValidation() => BuildIL2CPPCommandLine();
 
     public static void BuildIL2CPPCommandLine()
     {
@@ -20,7 +17,6 @@ public static class BuildIL2CPP
 
         // Save current settings
         var originalBackend = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup);
-        var originalTarget = EditorUserBuildSettings.activeBuildTarget;
 
         try
         {

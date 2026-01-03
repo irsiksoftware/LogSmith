@@ -1,8 +1,8 @@
 # LogSmith - Asset Store Metadata
 
 > **Note:** This document covers **both** LogSmith packages:
-> - **LogSmith (Free)** - Core package, also open source on GitHub
-> - **LogSmith Pro ($14.99)** - Includes optional sinks for external services
+> - **LogSmith (Free)** - Core package, also available on GitHub
+> - **LogSmith Pro** - Includes optional sinks for external services (coming soon)
 
 ## Package Information
 
@@ -11,31 +11,31 @@
 #### Basic Details
 - **Package Name**: LogSmith
 - **Publisher**: Irsik Software
-- **Version**: 1.0.0
+- **Version**: 0.1.0 (Early Release)
 - **Price**: FREE
 - **Category**: Programming > Utilities
 - **Subcategory**: Logging & Diagnostics
-- **Source**: Also available on GitHub (Open Source, MIT License)
+- **Source**: Also available on GitHub (IrsikSoftware License - free with attribution)
 
-### LogSmith Pro ($14.99)
+### LogSmith Pro (Coming Soon)
 
 #### Basic Details
 - **Package Name**: LogSmith Pro - Optional Sinks
 - **Publisher**: Irsik Software
-- **Version**: 1.0.0
-- **Price**: $14.99
+- **Version**: TBD
+- **Price**: TBD
 - **Category**: Programming > Utilities
 - **Subcategory**: Logging & Diagnostics
-- **Dependencies**: Requires LogSmith (Free) - automatically included
+- **Dependencies**: Requires LogSmith (Free)
 
 ### LogSmith (Free) - Titles & Descriptions
 
-**Title**: LogSmith - Professional Unity Logging (Free & Open Source)
+**Title**: LogSmith - Professional Unity Logging (Free)
 
 **Subtitle**: Production-grade logging with native Unity backend, VContainer DI, runtime categories, debug overlay, and extensible architecture
 
 **Short Description (160 chars)**
-FREE professional Unity logging built on com.unity.logging. VContainer DI, runtime categories, custom templates, debug overlay, 100% test coverage. MIT license.
+FREE professional Unity logging built on com.unity.logging. VContainer DI, runtime categories, custom templates, debug overlay, 100% test coverage.
 
 ### LogSmith Pro - Titles & Descriptions
 
@@ -48,13 +48,13 @@ Add Sentry, Seq, Elasticsearch, and HTTP sinks to LogSmith. Production-ready int
 
 ### LogSmith (Free) - Full Description
 
-LogSmith is a FREE, open-source Unity logging solution designed for professional game development. Built from scratch to leverage Unity's native logging system (`com.unity.logging`), LogSmith provides advanced features while maintaining exceptional performance and compatibility.
+LogSmith is a FREE Unity logging solution designed for professional game development. Built from scratch to leverage Unity's native logging system (`com.unity.logging`), LogSmith provides advanced features while maintaining exceptional performance and compatibility.
 
-**100% Free & Open Source**
-- MIT License - use in any project, commercial or personal
+**100% Free**
+- IrsikSoftware License - free for any project, commercial or personal
 - Full source code available on GitHub
 - No limitations, no watermarks, no "lite" restrictions
-- Community-driven development
+- Attribution required in credits/documentation
 
 ### LogSmith Pro - Full Description
 
@@ -258,7 +258,7 @@ il2cpp, burst, urp, hdrp, built-in, multi-platform
 
 1. **README.md** - Quickstart guide, architecture overview, development priorities
 2. **CHANGELOG.md** - Version history and release notes
-3. **LICENSE** - MIT License
+3. **LICENSE** - IrsikSoftware License (free with attribution)
 4. **Documentation~/UserGuide.md** - Comprehensive user guide
 5. **Documentation~/APIReference.md** - Complete API documentation
 6. **Documentation~/MigrationGuide.md** - Migration from other logging solutions
@@ -305,8 +305,8 @@ All samples are located in `Samples~/` and can be imported via Package Manager:
 LogSmith follows Semantic Versioning (SemVer 2.0.0):
 
 - **MAJOR** (X.0.0): Breaking API changes
-- **MINOR** (1.X.0): New features, backward compatible
-- **PATCH** (1.0.X): Bug fixes, backward compatible
+- **MINOR** (0.X.0): New features, backward compatible
+- **PATCH** (0.0.X): Bug fixes, backward compatible
 
 **Update Frequency:**
 - Patch releases: As needed for critical bugs
@@ -334,7 +334,7 @@ LogSmith follows Semantic Versioning (SemVer 2.0.0):
 
 | LogSmith Version | Unity 2022.3 LTS | Unity 2023 LTS | Unity 6000.2 LTS | IL2CPP | Built-in RP | URP | HDRP |
 |------------------|------------------|----------------|------------------|---------|-------------|-----|------|
-| 1.0.x            | ✅               | ✅             | ✅               | ✅      | ✅          | ✅  | ✅   |
+| 0.1.x            | ✅               | ✅             | ✅               | ✅      | ✅          | ✅  | ✅   |
 
 **Platform Support:**
 - ✅ Windows, macOS, Linux
@@ -345,7 +345,7 @@ LogSmith follows Semantic Versioning (SemVer 2.0.0):
 ## Legal & Compliance
 
 ### License
-MIT License - Permissive open-source license allowing commercial use, modification, and distribution.
+IrsikSoftware License - Free to use in any project (commercial or personal) with required attribution. No modifications or derivative works permitted. See LICENSE file for full terms.
 
 ### Third-Party Dependencies
 All dependencies are official Unity packages or properly licensed:
@@ -385,54 +385,36 @@ All dependencies are official Unity packages or properly licensed:
 
 ## Release Checklist
 
-### LogSmith (Free) Checklist
-- [ ] All acceptance criteria met for issue #4
-- [ ] .unitypackage exports without missing references
+### LogSmith 0.1.0 (Free) Checklist
 - [ ] All tests pass on supported Unity versions
 - [ ] Documentation reviewed and complete
 - [ ] Sample scenes tested on all render pipelines
 - [ ] Screenshots captured at 1920x1080
-- [ ] Video recorded and edited (30-60s)
 - [ ] Package icon created (512x512)
-- [ ] Metadata reviewed and proofread for Free tier
-- [ ] Semantic version number assigned (1.0.0)
+- [ ] Metadata reviewed and proofread
+- [ ] Semantic version number assigned (0.1.0)
 - [ ] CHANGELOG.md updated with release notes
-- [ ] MIT License file included in package
-- [ ] README.md clarifies open source status
-- [ ] PRICING.md included explaining freemium model
-- [ ] Unity Asset Store submission form completed (Free tier)
-- [ ] GitHub repository is public and up-to-date
-- [ ] Backup of submission materials archived
+- [ ] LICENSE file included in package
+- [ ] README.md includes attribution requirements
+- [ ] GitHub repository is public
+- [ ] Git tag created (0.1.0)
 
-### LogSmith Pro Checklist
+### LogSmith Pro Checklist (Future)
 - [ ] All Pro sinks tested (HTTP, Sentry, Seq, Elasticsearch)
-- [ ] Pro package .unitypackage exports without missing references
+- [ ] Pro package exports without missing references
 - [ ] Dependency on LogSmith (Free) correctly configured
 - [ ] Pro-specific documentation reviewed
 - [ ] Pro sink samples tested on all platforms
-- [ ] Pro package icon created (512x512) with "Pro" branding
-- [ ] Metadata reviewed and proofread for Pro tier
-- [ ] Semantic version number assigned (1.0.0)
-- [ ] Asset Store EULA license file included
-- [ ] Pro package description emphasizes it requires Free tier
-- [ ] Unity Asset Store submission form completed (Pro tier, $14.99)
-- [ ] Backup of Pro submission materials archived
-
-### Cross-Package Validation
-- [ ] Free package works standalone without Pro
-- [ ] Pro package correctly requires and integrates with Free
-- [ ] No circular dependencies between packages
-- [ ] Both packages use consistent version numbering
-- [ ] PRICING.md clearly explains what's in each tier
-- [ ] Asset Store listings clearly distinguish Free vs Pro
+- [ ] Pro package icon created with "Pro" branding
+- [ ] Pricing finalized
 
 ## Contact Information
 
 **Publisher**: Irsik Software
-**Website**: https://github.com/DakotaIrsik/LogSmith
-**Support Email**: support@irsiksoftware.com (to be configured)
-**GitHub**: https://github.com/DakotaIrsik/LogSmith
+**Website**: https://github.com/IrsikSoftware/LogSmith
+**Support Email**: support@irsiksoftware.com
+**GitHub**: https://github.com/IrsikSoftware/LogSmith
 
 ---
 
-*This metadata document is part of LogSmith's Asset Store preparation (Issue #4)*
+*This metadata document is part of LogSmith's release preparation*

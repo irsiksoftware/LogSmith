@@ -191,5 +191,5 @@ No test results file generated
 
 ## References
 
-- GitHub Issue: [#40 RP.8 CI Matrix — RP Validation](https://github.com/DakotaIrsik/LogSmith/issues/40)
-- Epic: [Render Pipeline Support](https://github.com/DakotaIrsik/LogSmith/milestone/8)
+- GitHub Issue: [#40 RP.8 CI Matrix — RP Validation](https://github.com/IrsikSoftware/LogSmith/issues/40)
+- Epic: [Render Pipeline Support](https://github.com/IrsikSoftware/LogSmith/milestone/8)

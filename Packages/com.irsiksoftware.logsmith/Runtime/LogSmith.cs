@@ -52,7 +52,8 @@ namespace IrsikSoftware.LogSmith
         /// </summary>
         public static void Initialize()
         {
-            if (_initialized) return;
+            if (_initialized)
+                return;
 
             InitializeStatic();
             _initialized = true;

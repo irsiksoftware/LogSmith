@@ -1,6 +1,6 @@
+using IrsikSoftware.LogSmith.Core;
 using UnityEditor;
 using UnityEngine;
-using IrsikSoftware.LogSmith.Core;
 
 namespace IrsikSoftware.LogSmith.Editor
 {

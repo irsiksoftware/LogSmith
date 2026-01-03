@@ -1,6 +1,6 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Linq;
 
 namespace IrsikSoftware.LogSmith.Editor
 {
@@ -84,7 +84,7 @@ namespace IrsikSoftware.LogSmith.Editor
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 
             // Tab selector with lifecycle management
-            int newTab = GUILayout.Toolbar(_selectedTab, _tabNames, EditorStyles.toolbarButton);
+            var newTab = GUILayout.Toolbar(_selectedTab, _tabNames, EditorStyles.toolbarButton);
             if (newTab != _selectedTab)
             {
                 _tabs[_selectedTab].OnTabDisabled();
@@ -129,10 +129,10 @@ namespace IrsikSoftware.LogSmith.Editor
         private LoggingSettings FindOrCreateSettings()
         {
             // Try to find existing settings
-            string[] guids = AssetDatabase.FindAssets("t:LoggingSettings");
+            var guids = AssetDatabase.FindAssets("t:LoggingSettings");
             if (guids.Length > 0)
             {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                var path = AssetDatabase.GUIDToAssetPath(guids[0]);
                 return AssetDatabase.LoadAssetAtPath<LoggingSettings>(path);
             }
 
@@ -143,7 +143,7 @@ namespace IrsikSoftware.LogSmith.Editor
         {
             _settings = LoggingSettings.CreateDefault();
 
-            string path = EditorUtility.SaveFilePanelInProject(
+            var path = EditorUtility.SaveFilePanelInProject(
                 "Create LoggingSettings",
                 "LoggingSettings",
                 "asset",

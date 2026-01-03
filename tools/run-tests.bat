@@ -12,7 +12,7 @@ REM   run-tests.bat EditMode ClassName    - Run specific test class
 REM ============================================================================
 
 set "SCRIPT_DIR=%~dp0"
-set "PROJECT_DIR=%SCRIPT_DIR:~0,-1%"
+set "PROJECT_DIR=%SCRIPT_DIR%.."
 set "RESULTS_DIR=%PROJECT_DIR%\TestResults"
 
 REM Default to EditMode if not specified

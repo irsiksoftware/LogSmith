@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2025-10-01
+## [0.1.0] - 2025-01-03
 
 ### Added - Core Features
 - **Native Unity Logging Backend**: Production-grade logging built on `com.unity.logging`
@@ -50,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added - Asset Store Readiness
 - **Asset Store Metadata**: Complete package description and marketing materials
 - **Third-Party Notices**: Full dependency attribution and licensing
-- **MIT License**: Permissive open-source license
+- **IrsikSoftware License**: Free to use with attribution requirement
 - **.unitypackage Export**: Traditional Unity package format support
 - **UPM Package**: Modern Package Manager distribution
 
@@ -66,14 +66,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Thread-Safe**: Lock-free routing with main-thread dispatch when needed
 - **Lazy Evaluation**: Deferred string formatting for filtered messages
 
-## [0.1.0] - 2025-09-29
-
-### Added
-- Initial package setup
-- Package manifest with Unity 2022.3 LTS minimum requirement
-- Unity Logging dependency specification
-- Basic package structure and metadata
-
-[Unreleased]: https://github.com/DakotaIrsik/LogSmith/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/DakotaIrsik/LogSmith/releases/tag/v1.0.0
-[0.1.0]: https://github.com/DakotaIrsik/LogSmith/releases/tag/v0.1.0
+[Unreleased]: https://github.com/IrsikSoftware/LogSmith/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/IrsikSoftware/LogSmith/releases/tag/0.1.0

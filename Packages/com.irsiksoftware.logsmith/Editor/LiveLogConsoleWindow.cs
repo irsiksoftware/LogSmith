@@ -1,8 +1,8 @@
-using UnityEditor;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace IrsikSoftware.LogSmith.Editor
 {
@@ -78,7 +78,8 @@ namespace IrsikSoftware.LogSmith.Editor
         {
             UnsubscribeFromLogs();
 
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying)
+                return;
 
             try
             {
@@ -175,7 +176,7 @@ namespace IrsikSoftware.LogSmith.Editor
             GUILayout.Space(5);
 
             // Pause/Resume button
-            string pauseLabel = _isPaused ? "Resume" : "Pause";
+            var pauseLabel = _isPaused ? "Resume" : "Pause";
             if (GUILayout.Button(pauseLabel, EditorStyles.toolbarButton, GUILayout.Width(60)))
             {
                 TogglePause();
@@ -196,8 +197,8 @@ namespace IrsikSoftware.LogSmith.Editor
             GUILayout.FlexibleSpace();
 
             // Connection status
-            bool isConnected = Application.isPlaying && _logSubscription != null;
-            string statusText = isConnected ? "Connected" : "Disconnected";
+            var isConnected = Application.isPlaying && _logSubscription != null;
+            var statusText = isConnected ? "Connected" : "Disconnected";
             Color statusColor = isConnected ? Color.green : Color.gray;
 
             GUI.color = statusColor;
@@ -213,7 +214,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             // Search field
             GUILayout.Label("Search:", GUILayout.Width(50));
-            string newSearch = EditorGUILayout.TextField(_searchText, EditorStyles.toolbarTextField, GUILayout.Width(200));
+            var newSearch = EditorGUILayout.TextField(_searchText, EditorStyles.toolbarTextField, GUILayout.Width(200));
             if (newSearch != _searchText)
             {
                 _searchText = newSearch;
@@ -224,7 +225,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             // Category filter
             GUILayout.Label("Category:", GUILayout.Width(60));
-            string newCategory = EditorGUILayout.TextField(_categoryFilter, EditorStyles.toolbarTextField, GUILayout.Width(150));
+            var newCategory = EditorGUILayout.TextField(_categoryFilter, EditorStyles.toolbarTextField, GUILayout.Width(150));
             if (newCategory != _categoryFilter)
             {
                 _categoryFilter = newCategory;
@@ -235,12 +236,12 @@ namespace IrsikSoftware.LogSmith.Editor
 
             // Log level toggles
             GUILayout.Label("Levels:", GUILayout.Width(50));
-            bool filterChanged = false;
+            var filterChanged = false;
 
             foreach (LogLevel level in Enum.GetValues(typeof(LogLevel)))
             {
-                bool wasEnabled = _levelToggles[level];
-                bool isEnabled = GUILayout.Toggle(wasEnabled, level.ToString(), EditorStyles.toolbarButton, GUILayout.Width(60));
+                var wasEnabled = _levelToggles[level];
+                var isEnabled = GUILayout.Toggle(wasEnabled, level.ToString(), EditorStyles.toolbarButton, GUILayout.Width(60));
 
                 if (wasEnabled != isEnabled)
                 {
@@ -265,16 +266,16 @@ namespace IrsikSoftware.LogSmith.Editor
 
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 var entry = entries[i];
-                bool isSelected = i == _selectedIndex;
+                var isSelected = i == _selectedIndex;
                 var style = isSelected ? _selectedLogEntryStyle : _logEntryStyle;
 
                 EditorGUILayout.BeginHorizontal(style);
 
                 // Build display text
-                string displayText = BuildLogDisplayText(entry);
+                var displayText = BuildLogDisplayText(entry);
 
                 // Handle selection
                 if (GUILayout.Button(displayText, style, GUILayout.ExpandWidth(true)))
@@ -320,7 +321,7 @@ namespace IrsikSoftware.LogSmith.Editor
             }
 
             // Level with color
-            string levelColor = GetLogLevelColor(entry.Level);
+            var levelColor = GetLogLevelColor(entry.Level);
             parts.Add($"<color={levelColor}>[{entry.Level}]</color>");
 
             if (_showCategories)
@@ -342,13 +343,20 @@ namespace IrsikSoftware.LogSmith.Editor
         {
             switch (level)
             {
-                case LogLevel.Trace: return "#888888";
-                case LogLevel.Debug: return "#00ff00";
-                case LogLevel.Info: return "#00ccff";
-                case LogLevel.Warn: return "#ffff00";
-                case LogLevel.Error: return "#ff6600";
-                case LogLevel.Critical: return "#ff0000";
-                default: return "#ffffff";
+                case LogLevel.Trace:
+                    return "#888888";
+                case LogLevel.Debug:
+                    return "#00ff00";
+                case LogLevel.Info:
+                    return "#00ccff";
+                case LogLevel.Warn:
+                    return "#ffff00";
+                case LogLevel.Error:
+                    return "#ff6600";
+                case LogLevel.Critical:
+                    return "#ff0000";
+                default:
+                    return "#ffffff";
             }
         }
 
@@ -430,7 +438,7 @@ namespace IrsikSoftware.LogSmith.Editor
         private Texture2D MakeTexture(int width, int height, Color color)
         {
             Color[] pixels = new Color[width * height];
-            for (int i = 0; i < pixels.Length; i++)
+            for (var i = 0; i < pixels.Length; i++)
                 pixels[i] = color;
 
             Texture2D texture = new Texture2D(width, height);

@@ -49,7 +49,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public IDisposable Subscribe(Action<LogConfig> onConfigChanged)
         {
-            if (onConfigChanged == null) throw new ArgumentNullException(nameof(onConfigChanged));
+            if (onConfigChanged == null)
+                throw new ArgumentNullException(nameof(onConfigChanged));
 
             lock (_lock)
             {
@@ -62,7 +63,9 @@ namespace IrsikSoftware.LogSmith.Core
                 }
                 catch (Exception ex)
                 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     UnityEngine.Debug.LogError($"[LogSmith] Config subscriber failed: {ex.Message}");
+#endif
                 }
             }
 
@@ -74,7 +77,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void UpdateConfig(LogConfig config)
         {
-            if (config == null) throw new ArgumentNullException(nameof(config));
+            if (config == null)
+                throw new ArgumentNullException(nameof(config));
 
             lock (_lock)
             {
@@ -97,7 +101,8 @@ namespace IrsikSoftware.LogSmith.Core
 
             public void Dispose()
             {
-                if (_disposed) return;
+                if (_disposed)
+                    return;
                 _disposed = true;
 
                 lock (_provider._lock)

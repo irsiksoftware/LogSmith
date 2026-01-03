@@ -23,7 +23,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void RegisterSink(ILogSink sink)
         {
-            if (sink == null) throw new ArgumentNullException(nameof(sink));
+            if (sink == null)
+                throw new ArgumentNullException(nameof(sink));
 
             lock (_lock)
             {
@@ -36,7 +37,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void UnregisterSink(ILogSink sink)
         {
-            if (sink == null) throw new ArgumentNullException(nameof(sink));
+            if (sink == null)
+                throw new ArgumentNullException(nameof(sink));
 
             lock (_lock)
             {
@@ -64,7 +66,9 @@ namespace IrsikSoftware.LogSmith.Core
                     catch (Exception ex)
                     {
                         // Prevent sink failures from breaking other sinks
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                         UnityEngine.Debug.LogError($"[LogSmith] Sink '{sink.Name}' failed: {ex.Message}");
+#endif
                     }
                 }
 
@@ -85,7 +89,9 @@ namespace IrsikSoftware.LogSmith.Core
                             }
                             catch (Exception ex)
                             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                                 UnityEngine.Debug.LogError($"[LogSmith] Subscriber failed: {ex.Message}");
+#endif
                             }
                         }
                     });
@@ -109,7 +115,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void SetCategoryFilter(string category, LogLevel minimumLevel)
         {
-            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException(nameof(category));
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException(nameof(category));
 
             lock (_lock)
             {
@@ -122,7 +129,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void ClearCategoryFilter(string category)
         {
-            if (string.IsNullOrEmpty(category)) return;
+            if (string.IsNullOrEmpty(category))
+                return;
 
             lock (_lock)
             {
@@ -157,7 +165,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public IDisposable Subscribe(Action<LogMessage> handler)
         {
-            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
 
             lock (_lock)
             {
@@ -181,7 +190,8 @@ namespace IrsikSoftware.LogSmith.Core
 
             public void Dispose()
             {
-                if (_disposed) return;
+                if (_disposed)
+                    return;
                 _disposed = true;
 
                 lock (_router._lock)

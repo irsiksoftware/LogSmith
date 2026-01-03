@@ -41,7 +41,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             // Detect active pipeline
             var detectedPipeline = DetectActivePipeline();
-            string pipelineName = GetPipelineDisplayName(detectedPipeline);
+            var pipelineName = GetPipelineDisplayName(detectedPipeline);
 
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField($"Detected Pipeline: {pipelineName}", EditorStyles.boldLabel);
@@ -92,7 +92,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
         private void DrawURPStatus(bool visualDebugEnabled)
         {
-            bool isURPPackageInstalled = IsURPPackageInstalled();
+            var isURPPackageInstalled = IsURPPackageInstalled();
 
             if (!isURPPackageInstalled)
             {
@@ -131,7 +131,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
         private void DrawHDRPStatus(bool visualDebugEnabled)
         {
-            bool isHDRPPackageInstalled = IsHDRPPackageInstalled();
+            var isHDRPPackageInstalled = IsHDRPPackageInstalled();
 
             if (!isHDRPPackageInstalled)
             {
@@ -197,7 +197,7 @@ namespace IrsikSoftware.LogSmith.Editor
                 return PipelineType.BuiltIn;
             }
 
-            string pipelineName = currentPipeline.GetType().Name;
+            var pipelineName = currentPipeline.GetType().Name;
 
             if (pipelineName.Contains("Universal") || pipelineName.Contains("URP"))
             {

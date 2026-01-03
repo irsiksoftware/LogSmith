@@ -102,7 +102,7 @@ LogSmith.Resolve<ILogRouter>().RegisterSink(new MySink());
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/DakotaIrsik/LogSmith/issues)
+- **Issues**: [GitHub Issues](https://github.com/IrsikSoftware/LogSmith/issues)
 - **Documentation**: This site
 - **Samples**: `Packages/com.irsiksoftware.logsmith/Samples~/`
 

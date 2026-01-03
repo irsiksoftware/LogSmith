@@ -9,19 +9,17 @@ namespace IrsikSoftware.LogSmith.Core
     /// </summary>
     public class RenderPipelineAdapterService
     {
-        private IVisualDebugRenderer _activeRenderer;
         private object _activeAdapter;
-        private RenderPipelineDetector.PipelineType _detectedPipeline;
 
         /// <summary>
         /// Gets the currently active visual debug renderer, or null if none is active.
         /// </summary>
-        public IVisualDebugRenderer ActiveRenderer => _activeRenderer;
+        public IVisualDebugRenderer ActiveRenderer { get; private set; }
 
         /// <summary>
         /// Gets the type of pipeline that was detected.
         /// </summary>
-        public RenderPipelineDetector.PipelineType DetectedPipeline => _detectedPipeline;
+        public RenderPipelineDetector.PipelineType DetectedPipeline { get; private set; }
 
         /// <summary>
         /// Initializes the service by detecting the active pipeline and activating the appropriate adapter.
@@ -30,10 +28,10 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="enabled">Whether visual debug rendering should be enabled.</param>
         public void Initialize(Camera camera, bool enabled = false)
         {
-            _detectedPipeline = RenderPipelineDetector.DetectPipeline();
-            string pipelineName = RenderPipelineDetector.GetPipelineName(_detectedPipeline);
+            DetectedPipeline = RenderPipelineDetector.DetectPipeline();
+            var pipelineName = RenderPipelineDetector.GetPipelineName(DetectedPipeline);
 
-            switch (_detectedPipeline)
+            switch (DetectedPipeline)
             {
                 case RenderPipelineDetector.PipelineType.BuiltIn:
                     TryActivateAdapter("IrsikSoftware.LogSmith.BuiltIn.BuiltInRenderPipelineAdapter, IrsikSoftware.LogSmith.BuiltIn", camera, enabled, pipelineName);
@@ -73,7 +71,7 @@ namespace IrsikSoftware.LogSmith.Core
                 availableProp = adapterType.GetProperty("IsActive", BindingFlags.Public | BindingFlags.Static);
             }
 
-            bool isAvailable = true;
+            var isAvailable = true;
             if (availableProp != null && availableProp.PropertyType == typeof(bool))
             {
                 isAvailable = (bool)availableProp.GetValue(null);
@@ -102,7 +100,7 @@ namespace IrsikSoftware.LogSmith.Core
                 PropertyInfo rendererProp = adapterType.GetProperty("VisualDebugRenderer");
                 if (rendererProp != null)
                 {
-                    _activeRenderer = rendererProp.GetValue(_activeAdapter) as IVisualDebugRenderer;
+                    ActiveRenderer = rendererProp.GetValue(_activeAdapter) as IVisualDebugRenderer;
                 }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -142,7 +140,7 @@ namespace IrsikSoftware.LogSmith.Core
                 }
 
                 _activeAdapter = null;
-                _activeRenderer = null;
+                ActiveRenderer = null;
             }
         }
 
@@ -151,7 +149,7 @@ namespace IrsikSoftware.LogSmith.Core
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[RenderPipelineAdapterService] No adapter available for {pipelineName}, using No-Op fallback");
 #endif
-            _activeRenderer = null;
+            ActiveRenderer = null;
             _activeAdapter = null;
         }
     }

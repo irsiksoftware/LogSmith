@@ -45,7 +45,8 @@ namespace IrsikSoftware.LogSmith.Core
         public FileSink(string filePath, IMessageTemplateEngine templateEngine = null,
             bool enableRotation = true, int maxFileSizeMB = 10, int retentionCount = 5)
         {
-            if (string.IsNullOrEmpty(filePath)) throw new ArgumentNullException(nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException(nameof(filePath));
 
             _filePath = filePath;
             _templateEngine = templateEngine ?? new MessageTemplateEngine();
@@ -58,7 +59,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void Write(LogMessage message)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             lock (_lock)
             {
@@ -97,7 +99,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void Flush()
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             lock (_lock)
             {
@@ -114,7 +117,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void Dispose()
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             lock (_lock)
             {

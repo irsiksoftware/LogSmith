@@ -37,7 +37,7 @@ namespace IrsikSoftware.LogSmith.Core
                 return PipelineType.BuiltIn;
             }
 
-            string pipelineName = currentPipeline.GetType().Name;
+            var pipelineName = currentPipeline.GetType().Name;
 
             if (pipelineName.Contains("Universal") || pipelineName.Contains("URP"))
             {

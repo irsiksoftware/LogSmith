@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using IrsikSoftware.LogSmith.Core;
 using UnityEngine;
 using UnityEngine.Rendering;
-using IrsikSoftware.LogSmith.Core;
 
 namespace IrsikSoftware.LogSmith.BuiltIn
 {
@@ -23,7 +23,8 @@ namespace IrsikSoftware.LogSmith.BuiltIn
             get => _isEnabled;
             set
             {
-                if (_isEnabled == value) return;
+                if (_isEnabled == value)
+                    return;
                 _isEnabled = value;
 
                 if (_isEnabled && _targetCamera != null)
@@ -151,7 +152,8 @@ namespace IrsikSoftware.LogSmith.BuiltIn
 
         private void AttachToCamera()
         {
-            if (_targetCamera == null || _commandBuffer == null) return;
+            if (_targetCamera == null || _commandBuffer == null)
+                return;
 
             // Remove existing to avoid duplicates
             DetachFromCamera();
@@ -162,19 +164,21 @@ namespace IrsikSoftware.LogSmith.BuiltIn
 
         private void DetachFromCamera()
         {
-            if (_targetCamera == null || _commandBuffer == null) return;
+            if (_targetCamera == null || _commandBuffer == null)
+                return;
 
             _targetCamera.RemoveCommandBuffer(CameraEvent.AfterEverything, _commandBuffer);
         }
 
         private void RebuildCommandBuffer()
         {
-            if (_commandBuffer == null) return;
+            if (_commandBuffer == null)
+                return;
 
             _commandBuffer.Clear();
 
             // Remove expired shapes
-            float currentTime = Time.realtimeSinceStartup;
+            var currentTime = Time.realtimeSinceStartup;
             _shapes.RemoveAll(s => s.IsExpired(currentTime));
 
             // Render all shapes
@@ -194,14 +198,17 @@ namespace IrsikSoftware.LogSmith.BuiltIn
 
         private void RenderLine(DebugShape shape)
         {
-            if (_lineMaterial == null) return;
+            if (_lineMaterial == null)
+                return;
 
             // Use GL.LINES to draw a simple line
             _commandBuffer.BeginSample("Draw Debug Line");
 
-            var mesh = new Mesh();
-            mesh.vertices = new[] { shape.Start, shape.End };
-            mesh.colors = new[] { shape.Color, shape.Color };
+            var mesh = new Mesh
+            {
+                vertices = new[] { shape.Start, shape.End },
+                colors = new[] { shape.Color, shape.Color }
+            };
             mesh.SetIndices(new[] { 0, 1 }, MeshTopology.Lines, 0);
 
             _commandBuffer.DrawMesh(mesh, Matrix4x4.identity, _lineMaterial, 0, 0);
@@ -211,14 +218,15 @@ namespace IrsikSoftware.LogSmith.BuiltIn
 
         private void RenderQuad(DebugShape shape)
         {
-            if (_quadMaterial == null) return;
+            if (_quadMaterial == null)
+                return;
 
             _commandBuffer.BeginSample("Draw Debug Quad");
 
             // Create a quad mesh centered at shape.Start
             Vector3 center = shape.Start;
-            float halfWidth = shape.Size.x * 0.5f;
-            float halfHeight = shape.Size.y * 0.5f;
+            var halfWidth = shape.Size.x * 0.5f;
+            var halfHeight = shape.Size.y * 0.5f;
 
             // Build quad facing camera
             Vector3 right = _targetCamera != null ? _targetCamera.transform.right : Vector3.right;
@@ -229,10 +237,12 @@ namespace IrsikSoftware.LogSmith.BuiltIn
             Vector3 v2 = center + right * halfWidth + up * halfHeight;
             Vector3 v3 = center - right * halfWidth + up * halfHeight;
 
-            var mesh = new Mesh();
-            mesh.vertices = new[] { v0, v1, v2, v3 };
-            mesh.colors = new[] { shape.Color, shape.Color, shape.Color, shape.Color };
-            mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+            var mesh = new Mesh
+            {
+                vertices = new[] { v0, v1, v2, v3 },
+                colors = new[] { shape.Color, shape.Color, shape.Color, shape.Color },
+                triangles = new[] { 0, 1, 2, 0, 2, 3 }
+            };
 
             _commandBuffer.DrawMesh(mesh, Matrix4x4.identity, _quadMaterial, 0, 0);
 

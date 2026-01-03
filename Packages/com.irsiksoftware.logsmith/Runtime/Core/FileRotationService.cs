@@ -107,7 +107,7 @@ namespace IrsikSoftware.LogSmith.Core
                 var archivedFilePath = Path.Combine(directory, archivedFileName);
 
                 // If archived file already exists (unlikely with milliseconds, but handle it)
-                int counter = 1;
+                var counter = 1;
                 while (File.Exists(archivedFilePath))
                 {
                     archivedFileName = $"{fileName}_{timestamp}_{counter}{extension}";
@@ -158,7 +158,7 @@ namespace IrsikSoftware.LogSmith.Core
                     .ToList();
 
                 // Delete files beyond retention count
-                for (int i = _retentionCount; i < archivedFiles.Count; i++)
+                for (var i = _retentionCount; i < archivedFiles.Count; i++)
                 {
                     try
                     {

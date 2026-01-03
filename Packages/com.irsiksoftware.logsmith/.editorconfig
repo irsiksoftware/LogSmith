@@ -1,0 +1,8 @@
+# LogSmith package - disable ISU analyzers to prevent self-referential warnings
+# LogSmith uses its own logging internally via LogSmith.Logger
+
+root = false
+
+[*.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none

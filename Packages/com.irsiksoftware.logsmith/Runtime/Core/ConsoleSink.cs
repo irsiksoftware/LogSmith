@@ -43,14 +43,15 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void Write(LogMessage message)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             lock (_lock)
             {
                 try
                 {
                     // Format message using template engine according to current format
-                    string formattedMessage = _templateEngine.Format(message, _currentFormat);
+                    var formattedMessage = _templateEngine.Format(message, _currentFormat);
                     NativeUnityLoggerAdapter.Write(message.Level, message.Category, formattedMessage);
                 }
                 catch (Exception ex)
@@ -67,7 +68,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public void Dispose()
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             lock (_lock)
             {

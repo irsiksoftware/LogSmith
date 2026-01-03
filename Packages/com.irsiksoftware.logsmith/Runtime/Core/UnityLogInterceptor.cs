@@ -34,8 +34,10 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void Enable()
         {
-            if (_disposed) return;
-            if (_isEnabled) return;
+            if (_disposed)
+                return;
+            if (_isEnabled)
+                return;
 
             Application.logMessageReceived += OnLogMessageReceived;
             _isEnabled = true;
@@ -46,7 +48,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void Disable()
         {
-            if (!_isEnabled) return;
+            if (!_isEnabled)
+                return;
 
             Application.logMessageReceived -= OnLogMessageReceived;
             _isEnabled = false;
@@ -60,12 +63,14 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="type">The Unity log type.</param>
         public void HandleLog(string condition, string stackTrace, LogType type)
         {
-            if (!_isEnabled) return;
+            if (!_isEnabled)
+                return;
 
             var parseResult = ParseCategoryFromMessage(condition);
 
             // Only route messages with valid category syntax
-            if (!parseResult.HasCategory) return;
+            if (!parseResult.HasCategory)
+                return;
 
             // Avoid feedback loop - ignore LogSmith's own internal messages
             if (string.Equals(parseResult.Category, LogSmithCategoryPrefix, StringComparison.OrdinalIgnoreCase))
@@ -155,7 +160,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void Dispose()
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
             _disposed = true;
 
             Disable();

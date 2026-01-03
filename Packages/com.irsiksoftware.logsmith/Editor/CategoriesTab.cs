@@ -70,7 +70,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             _categoryToRemove = -1;
 
-            for (int i = 0; i < categoriesProperty.arraySize; i++)
+            for (var i = 0; i < categoriesProperty.arraySize; i++)
             {
                 var categoryProp = categoriesProperty.GetArrayElementAtIndex(i);
                 DrawCategoryItem(i, categoryProp, serializedSettings);
@@ -100,8 +100,8 @@ namespace IrsikSoftware.LogSmith.Editor
 
             // Category name (editable)
             EditorGUILayout.LabelField("Name:", GUILayout.Width(50));
-            string oldName = nameProp.stringValue;
-            string newName = EditorGUILayout.TextField(oldName, GUILayout.MinWidth(150));
+            var oldName = nameProp.stringValue;
+            var newName = EditorGUILayout.TextField(oldName, GUILayout.MinWidth(150));
 
             if (newName != oldName && !string.IsNullOrWhiteSpace(newName))
             {
@@ -153,7 +153,7 @@ namespace IrsikSoftware.LogSmith.Editor
         {
             // Check for duplicates
             var categoriesProperty = serializedSettings.FindProperty("categories");
-            for (int i = 0; i < categoriesProperty.arraySize; i++)
+            for (var i = 0; i < categoriesProperty.arraySize; i++)
             {
                 var existingName = categoriesProperty.GetArrayElementAtIndex(i)
                     .FindPropertyRelative("categoryName").stringValue;
@@ -167,7 +167,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             Undo.RecordObject(settings, "Add Category");
 
-            int newIndex = categoriesProperty.arraySize;
+            var newIndex = categoriesProperty.arraySize;
             categoriesProperty.InsertArrayElementAtIndex(newIndex);
 
             var newCategory = categoriesProperty.GetArrayElementAtIndex(newIndex);

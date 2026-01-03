@@ -14,9 +14,6 @@ namespace IrsikSoftware.LogSmith.Core
         private readonly ILogRouter _router;
         private readonly IMessageTemplateEngine _templateEngine;
         private readonly IPlatformCapabilities _platformCapabilities;
-
-        private ConsoleSink _consoleSink;
-        private FileSink _fileSink;
         private DebugOverlayController _debugOverlay;
         private UnityLogInterceptor _logInterceptor;
         private bool _disposed;
@@ -25,12 +22,12 @@ namespace IrsikSoftware.LogSmith.Core
         /// <summary>
         /// Gets the console sink instance if enabled.
         /// </summary>
-        public ConsoleSink ConsoleSink => _consoleSink;
+        public ConsoleSink ConsoleSink { get; private set; }
 
         /// <summary>
         /// Gets the file sink instance if enabled.
         /// </summary>
-        public FileSink FileSink => _fileSink;
+        public FileSink FileSink { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of UnityLoggingBootstrap with the specified settings.
@@ -58,8 +55,8 @@ namespace IrsikSoftware.LogSmith.Core
             // Configure and register console sink
             if (_settings.enableConsoleSink)
             {
-                _consoleSink = new ConsoleSink(_templateEngine);
-                _router.RegisterSink(_consoleSink);
+                ConsoleSink = new ConsoleSink(_templateEngine);
+                _router.RegisterSink(ConsoleSink);
             }
 
             // Configure and register file sink with rotation support
@@ -76,20 +73,21 @@ namespace IrsikSoftware.LogSmith.Core
                 else
                 {
                     var fullLogPath = GetFullLogPath(_settings.logFilePath);
-                    _fileSink = new FileSink(
+                    FileSink = new FileSink(
                         fullLogPath,
                         _templateEngine,
                         _settings.enableLogRotation,
                         _settings.maxFileSizeMB,
                         _settings.retentionCount
-                    );
+                    )
+                    {
+                        // Set initial format mode
+                        CurrentFormat = _settings.defaultFormatMode == MessageFormatMode.Text
+                            ? MessageFormat.Text
+                            : MessageFormat.Json
+                    };
 
-                    // Set initial format mode
-                    _fileSink.CurrentFormat = _settings.defaultFormatMode == MessageFormatMode.Text
-                        ? MessageFormat.Text
-                        : MessageFormat.Json;
-
-                    _router.RegisterSink(_fileSink);
+                    _router.RegisterSink(FileSink);
                 }
             }
 
@@ -116,7 +114,7 @@ namespace IrsikSoftware.LogSmith.Core
             }
 
             var fileStatus = _settings.enableFileSink
-                ? (_fileSink != null ? "Enabled" : $"Disabled (unsupported on {_platformCapabilities.PlatformName})")
+                ? (FileSink != null ? "Enabled" : $"Disabled (unsupported on {_platformCapabilities.PlatformName})")
                 : "Disabled";
             var overlayStatus = _settings.enableDebugOverlay ? "Enabled (F1 to toggle)" : "Disabled";
             var interceptorStatus = _settings.enableLogInterception ? "Enabled" : "Disabled";
@@ -150,9 +148,9 @@ namespace IrsikSoftware.LogSmith.Core
             ApplyCategoryMinLevelOverrides();
 
             // Update file sink format if enabled
-            if (_fileSink != null)
+            if (FileSink != null)
             {
-                _fileSink.CurrentFormat = _settings.defaultFormatMode == MessageFormatMode.Text
+                FileSink.CurrentFormat = _settings.defaultFormatMode == MessageFormatMode.Text
                     ? MessageFormat.Text
                     : MessageFormat.Json;
             }
@@ -168,7 +166,7 @@ namespace IrsikSoftware.LogSmith.Core
         /// <param name="format">The desired message format (Text or JSON).</param>
         public void SwitchFormat(MessageFormat format)
         {
-            if (_fileSink == null)
+            if (FileSink == null)
             {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning("[LogSmith] Cannot switch format: File sink is not enabled");
@@ -176,7 +174,7 @@ namespace IrsikSoftware.LogSmith.Core
                 return;
             }
 
-            _fileSink.CurrentFormat = format;
+            FileSink.CurrentFormat = format;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[LogSmith] File sink format switched to: {format}");
 #endif
@@ -235,8 +233,8 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void Flush()
         {
-            _consoleSink?.Flush();
-            _fileSink?.Flush();
+            ConsoleSink?.Flush();
+            FileSink?.Flush();
         }
 
         /// <summary>
@@ -244,23 +242,24 @@ namespace IrsikSoftware.LogSmith.Core
         /// </summary>
         public void Dispose()
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
             _disposed = true;
 
             Flush();
 
             // Unregister and dispose sinks
-            if (_consoleSink != null)
+            if (ConsoleSink != null)
             {
-                _router.UnregisterSink(_consoleSink);
-                _consoleSink = null;
+                _router.UnregisterSink(ConsoleSink);
+                ConsoleSink = null;
             }
 
-            if (_fileSink != null)
+            if (FileSink != null)
             {
-                _router.UnregisterSink(_fileSink);
-                _fileSink.Dispose();
-                _fileSink = null;
+                _router.UnregisterSink(FileSink);
+                FileSink.Dispose();
+                FileSink = null;
             }
 
             if (_debugOverlay != null)

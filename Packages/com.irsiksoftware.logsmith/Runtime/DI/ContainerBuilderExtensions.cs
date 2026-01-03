@@ -1,5 +1,5 @@
-using VContainer;
 using IrsikSoftware.LogSmith.Core;
+using VContainer;
 
 namespace IrsikSoftware.LogSmith.DI
 {

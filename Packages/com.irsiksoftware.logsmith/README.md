@@ -19,7 +19,7 @@ LogSmith is a clean-room Unity logging solution built from scratch, leveraging U
 
 1. Open the Package Manager in Unity
 2. Click the `+` button and select "Add package from git URL"
-3. Enter: `https://github.com/DakotaIrsik/LogSmith.git?path=/Packages/com.irsiksoftware.logsmith`
+3. Enter: `https://github.com/IrsikSoftware/LogSmith.git?path=Packages/com.irsiksoftware.logsmith`
 
 ### Via manifest.json
 
@@ -28,7 +28,7 @@ Add this line to your `Packages/manifest.json` dependencies:
 ```json
 {
   "dependencies": {
-    "com.irsiksoftware.logsmith": "https://github.com/DakotaIrsik/LogSmith.git?path=/Packages/com.irsiksoftware.logsmith"
+    "com.irsiksoftware.logsmith": "https://github.com/IrsikSoftware/LogSmith.git?path=Packages/com.irsiksoftware.logsmith"
   }
 }
 ```
@@ -125,4 +125,4 @@ See [Documentation~](Documentation~/index.md) for comprehensive guides covering:
 
 ## License
 
-MIT License - See LICENSE file for details.
+IrsikSoftware License - Free to use with attribution. See LICENSE file for details.

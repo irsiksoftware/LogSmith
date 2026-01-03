@@ -21,7 +21,8 @@ namespace IrsikSoftware.LogSmith.Core
 
         public CircularBuffer(int capacity)
         {
-            if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity));
+            if (capacity <= 0)
+                throw new ArgumentOutOfRangeException(nameof(capacity));
             _capacity = capacity;
             _buffer = new T[capacity];
         }
@@ -30,7 +31,7 @@ namespace IrsikSoftware.LogSmith.Core
         {
             lock (_lock)
             {
-                int index = (_start + _count) % _capacity;
+                var index = (_start + _count) % _capacity;
                 _buffer[index] = item;
 
                 if (_count < _capacity)
@@ -49,9 +50,9 @@ namespace IrsikSoftware.LogSmith.Core
             lock (_lock)
             {
                 var result = new List<T>(_count);
-                for (int i = 0; i < _count; i++)
+                for (var i = 0; i < _count; i++)
                 {
-                    int index = (_start + i) % _capacity;
+                    var index = (_start + i) % _capacity;
                     result.Add(_buffer[index]);
                 }
                 return result;
