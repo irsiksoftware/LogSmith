@@ -7,7 +7,7 @@ namespace IrsikSoftware.LogSmith
     /// Entry point and composition root for LogSmith.
     /// Provides static access to the logging system.
     /// </summary>
-    public static class LogSmith
+    public static class Log
     {
         private static ILogRouter _router;
         private static ILog _defaultLogger;

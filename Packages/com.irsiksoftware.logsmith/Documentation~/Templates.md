@@ -39,7 +39,7 @@ Output:
 
 ### Via Code
 ```csharp
-var engine = LogSmith.Resolve<IMessageTemplateEngine>();
+var engine = Log.Resolve<IMessageTemplateEngine>();
 engine.SetCategoryTemplate("Network", "[{timestamp:HH:mm:ss}] [{level}] {message}");
 ```
 

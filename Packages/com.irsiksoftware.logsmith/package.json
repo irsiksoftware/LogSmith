@@ -1,7 +1,7 @@
 {
   "name": "com.irsiksoftware.logsmith",
   "displayName": "LogSmith",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "unity": "2022.3",
   "description": "FREE production-grade Unity logging. Console/File sinks, debug overlay, VContainer DI, runtime categories, message templates. 100% test coverage.",
   "keywords": [

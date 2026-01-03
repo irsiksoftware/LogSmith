@@ -22,10 +22,10 @@ namespace IrsikSoftware.LogSmith.Samples
         void Start()
         {
             // Create loggers for different game systems
-            _networkLogger = LogSmith.CreateLogger("Network");
-            _physicsLogger = LogSmith.CreateLogger("Physics");
-            _aiLogger = LogSmith.CreateLogger("AI");
-            _audioLogger = LogSmith.CreateLogger("Audio");
+            _networkLogger = Log.CreateLogger("Network");
+            _physicsLogger = Log.CreateLogger("Physics");
+            _aiLogger = Log.CreateLogger("AI");
+            _audioLogger = Log.CreateLogger("Audio");
 
             _networkLogger.Info("Network system online");
             _physicsLogger.Info("Physics system initialized");

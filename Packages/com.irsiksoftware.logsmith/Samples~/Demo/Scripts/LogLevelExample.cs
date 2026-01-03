@@ -16,7 +16,7 @@ namespace IrsikSoftware.LogSmith.Samples
 
         void Start()
         {
-            _logger = LogSmith.CreateLogger(categoryName);
+            _logger = Log.CreateLogger(categoryName);
             _logger.Info("LogLevelExample initialized - use context menu to test different log levels");
         }
 

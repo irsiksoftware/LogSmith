@@ -14,7 +14,7 @@ This sample demonstrates the simplest way to use LogSmith without dependency inj
 ### Getting a Logger
 
 ```csharp
-var log = LogSmith.GetLogger("CategoryName");
+var log = Log.GetLogger("CategoryName");
 ```
 
 ### Logging at Different Levels

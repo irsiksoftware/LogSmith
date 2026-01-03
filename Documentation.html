@@ -290,7 +290,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Get a logger for this category
-        var log = LogSmith.GetLogger("Gameplay");
+        var log = Log.GetLogger("Gameplay");
 
         // Log at different levels
         log.Info("Game starting");
@@ -516,7 +516,7 @@ public class CustomSink : ILogSink
 }
 
 // Register your sink
-LogSmith.Router.RegisterSink(new CustomSink());</code></pre>
+Log.Router.RegisterSink(new CustomSink());</code></pre>
             </section>
 
             <!-- API Reference -->
@@ -537,19 +537,19 @@ LogSmith.Router.RegisterSink(new CustomSink());</code></pre>
 
                 <h3>Static API</h3>
                 <pre><code>// Get default logger
-var logger = LogSmith.Logger;
+var logger = Log.Logger;
 
 // Create category-specific logger
-var gameplayLog = LogSmith.GetLogger("Gameplay");
+var gameplayLog = Log.GetLogger("Gameplay");
 
 // Access router for advanced configuration
-var router = LogSmith.Router;
+var router = Log.Router;
 
 // Reload settings at runtime
-LogSmith.ReloadSettings();
+Log.ReloadSettings();
 
 // Switch output format
-LogSmith.SwitchFormat(MessageFormat.JSON);</code></pre>
+Log.SwitchFormat(MessageFormat.JSON);</code></pre>
 
                 <h3>LogRouter</h3>
                 <pre><code>// Register custom sinks

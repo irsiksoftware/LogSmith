@@ -117,7 +117,7 @@ LogSmith works with Unity's **default stripping configuration**:
 Unity's static analysis correctly identifies all LogSmith types as "used":
 
 1. **VContainer registration**: Types explicitly referenced in `builder.Register<T>()`
-2. **Static API**: `LogSmith.Logger` creates concrete instances
+2. **Static API**: `Log.Logger` creates concrete instances
 3. **Interface usage**: All implementations are directly instantiated
 4. **No hidden dependencies**: No reflection-based discovery means no "invisible" type references
 

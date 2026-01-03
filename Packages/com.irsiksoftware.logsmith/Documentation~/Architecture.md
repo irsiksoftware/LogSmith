@@ -8,9 +8,9 @@ LogSmith is built with a clean layered architecture designed for maintainability
 **Location**: `Runtime/LogSmith.cs`
 
 The main entry point providing static and DI-friendly access:
-- `LogSmith.GetLogger(category)` - Static logger retrieval
-- `LogSmith.Resolve<T>()` - Service resolution (VContainer-aware)
-- `LogSmith.CreateLogger()` - Factory method for custom loggers
+- `Log.GetLogger(category)` - Static logger retrieval
+- `Log.Resolve<T>()` - Service resolution (VContainer-aware)
+- `Log.CreateLogger()` - Factory method for custom loggers
 
 ### 2. Logger (ILog)
 **Location**: `Runtime/Core/Logger.cs`

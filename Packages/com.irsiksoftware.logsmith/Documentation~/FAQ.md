@@ -31,7 +31,7 @@ A: Yes, via categories or global minimum level. Set to `LogLevel.Warn` to disabl
 A: In a `LoggingSettings` ScriptableObject (default: `Assets/Resources/LoggingSettings.asset`).
 
 **Q: Can I have different settings per scene?**
-A: Yes. Load different `LoggingSettings` assets and call `LogSmith.ReloadSettings(newSettings)`.
+A: Yes. Load different `LoggingSettings` assets and call `Log.ReloadSettings(newSettings)`.
 
 **Q: How do I configure log file path?**
 A: Window → LogSmith → Settings → Sinks tab. Relative paths use `Application.persistentDataPath`.

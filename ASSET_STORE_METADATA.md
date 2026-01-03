@@ -221,7 +221,7 @@ il2cpp, burst, urp, hdrp, built-in, multi-platform
 1. **Opening (0-5s)**: LogSmith logo/title with tagline "Professional Unity Logging"
 
 2. **Quick Start (5-15s)**:
-   - Show simple code snippet: `LogSmith.GetLogger("Game").Info("Starting");`
+   - Show simple code snippet: `Log.GetLogger("Game").Info("Starting");`
    - Demonstrate immediate console output
 
 3. **Key Features (15-40s)**:

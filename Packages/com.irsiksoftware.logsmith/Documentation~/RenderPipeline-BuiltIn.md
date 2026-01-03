@@ -68,7 +68,7 @@ public bool enableVisualDebug = true;
 Or via code:
 
 ```csharp
-var settings = LogSmith.Resolve<LoggingSettings>();
+var settings = Log.Resolve<LoggingSettings>();
 settings.enableVisualDebug = true;
 ```
 

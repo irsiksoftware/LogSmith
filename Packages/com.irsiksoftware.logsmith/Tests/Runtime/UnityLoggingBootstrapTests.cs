@@ -494,7 +494,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             // Note: This test verifies the API exists and doesn't throw
 
             // Act & Assert
-            Assert.DoesNotThrow(() => LogSmith.ReloadSettings());
+            Assert.DoesNotThrow(() => Log.ReloadSettings());
         }
 
         [Test]
@@ -504,8 +504,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
             // Note: This test verifies the API exists and doesn't throw
 
             // Act & Assert
-            Assert.DoesNotThrow(() => LogSmith.SwitchFormat(MessageFormat.Json));
-            Assert.DoesNotThrow(() => LogSmith.SwitchFormat(MessageFormat.Text));
+            Assert.DoesNotThrow(() => Log.SwitchFormat(MessageFormat.Json));
+            Assert.DoesNotThrow(() => Log.SwitchFormat(MessageFormat.Text));
         }
 
         [Test]

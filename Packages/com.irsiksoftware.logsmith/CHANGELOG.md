@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-01-03
+
+### Changed
+- **BREAKING**: Renamed static entry point class from `LogSmith` to `Log` for cleaner API
+  - Before: `LogSmith.GetLogger("Category")`
+  - After: `Log.GetLogger("Category")`
+  - This avoids namespace collision (`LogSmith.LogSmith.GetLogger()`)
+  - Follows Serilog convention
+
+### Migration
+```csharp
+// Old (0.1.x)
+using IrsikSoftware.LogSmith;
+var logger = LogSmith.GetLogger("Game");
+
+// New (0.2.0+)
+using IrsikSoftware.LogSmith;
+var logger = Log.GetLogger("Game");
+```
 ## [0.1.0] - 2025-01-03
 
 ### Added - Core Features
@@ -66,5 +85,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Thread-Safe**: Lock-free routing with main-thread dispatch when needed
 - **Lazy Evaluation**: Deferred string formatting for filtered messages
 
-[Unreleased]: https://github.com/IrsikSoftware/LogSmith/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/IrsikSoftware/LogSmith/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/IrsikSoftware/LogSmith/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/IrsikSoftware/LogSmith/releases/tag/0.1.0

@@ -90,7 +90,7 @@ protected override void Configure(IContainerBuilder builder)
 
 #### Without DI
 ```csharp
-var router = LogSmith.Resolve<ILogRouter>();
+var router = Log.Resolve<ILogRouter>();
 var httpSink = new HttpSink("https://logs.example.com/api");
 router.RegisterSink(httpSink);
 ```

@@ -46,7 +46,7 @@ Add this line to your `Packages/manifest.json` dependencies:
   "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0"
   ```
 - Then import the "VContainer Integration" sample from LogSmith's Samples tab for usage examples
-- LogSmith works perfectly without VContainer using the static API (`LogSmith.GetLogger()`)
+- LogSmith works perfectly without VContainer using the static API (`Log.GetLogger()`)
 
 ## Quick Start
 
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Get a logger for this category
-        var log = LogSmith.GetLogger("Gameplay");
+        var log = Log.GetLogger("Gameplay");
 
         // Log at different levels
         log.Info("Game starting");

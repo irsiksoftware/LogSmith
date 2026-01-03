@@ -36,7 +36,7 @@ namespace IrsikSoftware.LogSmith.Samples.HDRP
             // Initialize LogSmith if not already initialized
             if (!LogSmith.IsInitialized)
             {
-                LogSmith.Initialize();
+                Log.Initialize();
             }
 
             // Initialize render pipeline adapter

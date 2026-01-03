@@ -59,7 +59,7 @@ namespace IrsikSoftware.LogSmith.Samples
         void Start()
         {
             // Create a category-specific logger
-            _categoryLogger = LogSmith.CreateLogger(categoryName);
+            _categoryLogger = Log.CreateLogger(categoryName);
 
             if (logOnStart)
             {

@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        _log = LogSmith.GetLogger("Gameplay");
+        _log = Log.GetLogger("Gameplay");
     }
 
     private void Start()
@@ -95,11 +95,11 @@ public class GameManager : MonoBehaviour
 
 ```csharp
 // Access router directly
-var router = LogSmith.Resolve<ILogRouter>();
+var router = Log.Resolve<ILogRouter>();
 router.SetGlobalMinimumLevel(LogLevel.Debug);
 
 // Access category registry
-var registry = LogSmith.Resolve<ICategoryRegistry>();
+var registry = Log.Resolve<ICategoryRegistry>();
 registry.RegisterCategory("MyCategory", LogLevel.Info, Color.green);
 ```
 
@@ -122,7 +122,7 @@ public class StaticService : MonoBehaviour
 {
     private void Start()
     {
-        var log = LogSmith.GetLogger("Static");
+        var log = Log.GetLogger("Static");
         log.Info("Static service started");
     }
 }

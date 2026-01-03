@@ -39,14 +39,14 @@ public class MyCustomSink : ILogSink
 ```csharp
 // At application startup or in your bootstrap code:
 var mySink = new MyCustomSink();
-LogSmith.Router.RegisterSink(mySink);
+Log.Router.RegisterSink(mySink);
 ```
 
 ### 3. Enable/Disable at Runtime
 
 ```csharp
 // Unregister when no longer needed
-LogSmith.Router.UnregisterSink(mySink);
+Log.Router.UnregisterSink(mySink);
 ```
 
 ## Sink Ordering
@@ -55,9 +55,9 @@ Sinks are called in the order they are registered. To control execution order:
 
 ```csharp
 // Register in desired order
-LogSmith.Router.RegisterSink(firstSink);
-LogSmith.Router.RegisterSink(secondSink);
-LogSmith.Router.RegisterSink(thirdSink);
+Log.Router.RegisterSink(firstSink);
+Log.Router.RegisterSink(secondSink);
+Log.Router.RegisterSink(thirdSink);
 ```
 
 ## Examples
@@ -170,6 +170,6 @@ public void CustomSink_Write_ProcessesMessage()
 Third-party sinks can be added **without modifying LogSmith core assemblies**. Simply:
 1. Create your sink class in your own assembly
 2. Implement `ILogSink`
-3. Register it with `LogSmith.Router.RegisterSink()`
+3. Register it with `Log.Router.RegisterSink()`
 
 This demonstrates LogSmith's extensibility commitment.

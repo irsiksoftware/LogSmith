@@ -16,8 +16,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         public void LogSmith_Initializes_Successfully()
         {
             // Act
-            LogSmith.Initialize();
-            var logger = LogSmith.Logger;
+            Log.Initialize();
+            var logger = Log.Logger;
 
             // Assert
             Assert.IsNotNull(logger);
@@ -27,8 +27,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         public void Logger_CanLog_AllLevels()
         {
             // Arrange
-            LogSmith.Initialize();
-            var logger = LogSmith.Logger;
+            Log.Initialize();
+            var logger = Log.Logger;
 
             // Act & Assert (should not throw)
             Assert.DoesNotThrow(() => logger.Trace("Trace message"));
@@ -49,8 +49,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         public void Logger_CanCreateCategoryLogger()
         {
             // Arrange
-            LogSmith.Initialize();
-            var logger = LogSmith.CreateLogger("TestCategory");
+            Log.Initialize();
+            var logger = Log.CreateLogger("TestCategory");
 
             // Assert
             Assert.IsNotNull(logger);
@@ -60,8 +60,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         public void Logger_WithCategory_CreatesNewLogger()
         {
             // Arrange
-            LogSmith.Initialize();
-            var logger = LogSmith.Logger;
+            Log.Initialize();
+            var logger = Log.Logger;
 
             // Act
             var categoryLogger = logger.WithCategory("CustomCategory");
@@ -75,8 +75,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         public void Router_CanRegisterAndUnregisterSinks()
         {
             // Arrange
-            LogSmith.Initialize();
-            var router = LogSmith.Router;
+            Log.Initialize();
+            var router = Log.Router;
             var testSink = new TestSink();
 
             // Act
@@ -88,8 +88,8 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
         public void Router_CanSubscribeToLogEvents()
         {
             // Arrange
-            LogSmith.Initialize();
-            var router = LogSmith.Router;
+            Log.Initialize();
+            var router = Log.Router;
             var messageReceived = false;
             LogMessage receivedMessage = default;
 
@@ -100,7 +100,7 @@ namespace IrsikSoftware.LogSmith.Tests.Runtime
                 receivedMessage = msg;
             }))
             {
-                LogSmith.Logger.Info("Test subscription");
+                Log.Logger.Info("Test subscription");
                 MainThreadDispatcher.Instance.ProcessQueue(); // Process queued subscriber notifications
             }
 

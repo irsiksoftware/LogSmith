@@ -60,7 +60,7 @@ Example: `1.2.3` = Major 1, Minor 2, Patch 3
 ### Stable APIs (1.x)
 Won't change in minor/patch releases:
 - `ILog` interface
-- `LogSmith.GetLogger()`
+- `Log.GetLogger()`
 - `ILogSink` interface
 - `LogLevel` enum
 - Core routing and filtering

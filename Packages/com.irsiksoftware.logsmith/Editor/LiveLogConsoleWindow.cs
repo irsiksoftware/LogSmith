@@ -83,7 +83,7 @@ namespace IrsikSoftware.LogSmith.Editor
 
             try
             {
-                var router = LogSmith.GetRouter();
+                var router = Log.GetRouter();
                 if (router != null)
                 {
                     _logSubscription = router.Subscribe(OnLogReceived);

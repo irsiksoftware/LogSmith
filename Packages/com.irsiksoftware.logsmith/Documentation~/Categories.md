@@ -12,14 +12,14 @@ Categories organize logs by logical component or system.
 
 ### Via Code
 ```csharp
-var registry = LogSmith.Resolve<ICategoryRegistry>();
+var registry = Log.Resolve<ICategoryRegistry>();
 registry.RegisterCategory("AI", LogLevel.Debug, Color.cyan, enabled: true);
 ```
 
 ## Using Categories
 
 ```csharp
-var log = LogSmith.GetLogger("AI");
+var log = Log.GetLogger("AI");
 log.Debug("Pathfinding started");
 log.Info("Target acquired");
 ```

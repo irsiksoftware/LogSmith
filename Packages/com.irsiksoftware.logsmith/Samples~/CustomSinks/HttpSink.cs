@@ -14,7 +14,7 @@ namespace IrsikSoftware.LogSmith.Samples
     /// 2. Customize the endpoint URL and formatting logic
     /// 3. Register with LogRouter:
     ///    var httpSink = new HttpSink("https://your-endpoint.com/logs");
-    ///    LogSmith.Router.RegisterSink(httpSink);
+    ///    Log.Router.RegisterSink(httpSink);
     /// </summary>
     public class HttpSink : ILogSink
     {

@@ -61,7 +61,7 @@ namespace IrsikSoftware.LogSmith.Samples
         void OnEnable()
         {
             if (logOnEnable)
-                LogSmith.Logger.Info("BasicLoggingExample enabled");
+                Log.Logger.Info("BasicLoggingExample enabled");
         }
 
         void Start()
@@ -71,22 +71,22 @@ namespace IrsikSoftware.LogSmith.Samples
             string msg = string.IsNullOrEmpty(customMessage) ? "BasicLoggingExample started!" : customMessage;
 
             if (logTrace)
-                LogSmith.Logger.Trace($"TRACE: {msg}");
+                Log.Logger.Trace($"TRACE: {msg}");
 
             if (logDebug)
-                LogSmith.Logger.Debug($"DEBUG: {msg}");
+                Log.Logger.Debug($"DEBUG: {msg}");
 
             if (logInfo)
-                LogSmith.Logger.Info($"INFO: {msg}");
+                Log.Logger.Info($"INFO: {msg}");
 
             if (logWarning)
-                LogSmith.Logger.Warn($"WARNING: {msg}");
+                Log.Logger.Warn($"WARNING: {msg}");
 
             if (logError)
-                LogSmith.Logger.Error($"ERROR: {msg} (don't worry, just a demo!)");
+                Log.Logger.Error($"ERROR: {msg} (don't worry, just a demo!)");
 
             if (logCritical)
-                LogSmith.Logger.Critical($"CRITICAL: {msg} (just testing!)");
+                Log.Logger.Critical($"CRITICAL: {msg} (just testing!)");
         }
 
         void Update()
@@ -98,7 +98,7 @@ namespace IrsikSoftware.LogSmith.Samples
                     ? $"Update #{_updateCount} at {Time.time:F2}s (Frame {Time.frameCount})"
                     : $"Update tick at {Time.time:F2} seconds";
 
-                LogSmith.Logger.Info(msg);
+                Log.Logger.Info(msg);
                 _lastLogTime = Time.time;
             }
         }
@@ -106,30 +106,30 @@ namespace IrsikSoftware.LogSmith.Samples
         void OnDisable()
         {
             if (logOnDisable)
-                LogSmith.Logger.Info("BasicLoggingExample disabled");
+                Log.Logger.Info("BasicLoggingExample disabled");
         }
 
         void OnDestroy()
         {
             if (logOnDestroy)
-                LogSmith.Logger.Info("BasicLoggingExample destroyed");
+                Log.Logger.Info("BasicLoggingExample destroyed");
         }
 
         [ContextMenu("Log Test Message Now")]
         private void LogTestMessage()
         {
-            LogSmith.Logger.Info($"Manual test message triggered at {Time.time:F2}s");
+            Log.Logger.Info($"Manual test message triggered at {Time.time:F2}s");
         }
 
         [ContextMenu("Log All Levels")]
         private void LogAllLevels()
         {
-            LogSmith.Logger.Trace("This is TRACE level");
-            LogSmith.Logger.Debug("This is DEBUG level");
-            LogSmith.Logger.Info("This is INFO level");
-            LogSmith.Logger.Warn("This is WARN level");
-            LogSmith.Logger.Error("This is ERROR level");
-            LogSmith.Logger.Critical("This is CRITICAL level");
+            Log.Logger.Trace("This is TRACE level");
+            Log.Logger.Debug("This is DEBUG level");
+            Log.Logger.Info("This is INFO level");
+            Log.Logger.Warn("This is WARN level");
+            Log.Logger.Error("This is ERROR level");
+            Log.Logger.Critical("This is CRITICAL level");
         }
     }
 }

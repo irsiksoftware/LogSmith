@@ -41,7 +41,7 @@ namespace IrsikSoftware.LogSmith.Samples
 
         private void UseFallbackLogger()
         {
-            var fallbackLogger = LogSmith.CreateLogger("VContainerDemo");
+            var fallbackLogger = Log.CreateLogger("VContainerDemo");
             fallbackLogger.Info("Using static API fallback (no DI)");
             fallbackLogger.Debug("This works without VContainer setup");
         }
@@ -67,7 +67,7 @@ namespace IrsikSoftware.LogSmith.Samples
             else
             {
                 Debug.Log("✗ Logger not injected - using static fallback API");
-                var fallbackLogger = LogSmith.CreateLogger("VContainerDemo");
+                var fallbackLogger = Log.CreateLogger("VContainerDemo");
                 fallbackLogger.Info("DI check: Using static API");
             }
         }

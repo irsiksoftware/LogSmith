@@ -66,7 +66,7 @@ Production-grade Unity logging package leveraging Unity's native logging system 
 
 ### Basic Usage
 ```csharp
-var log = LogSmith.GetLogger("Gameplay");
+var log = Log.GetLogger("Gameplay");
 log.Info("Player spawned");
 ```
 
@@ -97,7 +97,7 @@ public class MySink : ILogSink
 }
 
 // Register
-LogSmith.Resolve<ILogRouter>().RegisterSink(new MySink());
+Log.Resolve<ILogRouter>().RegisterSink(new MySink());
 ```
 
 ## Support

@@ -22,7 +22,7 @@ namespace IrsikSoftware.LogSmith.Samples
 
         void Start()
         {
-            _performanceLogger = LogSmith.CreateLogger("Performance");
+            _performanceLogger = Log.CreateLogger("Performance");
             _performanceLogger.Info("Performance monitoring started");
             _performanceLogger.Info($"Target FPS: {targetFps}, Low FPS threshold: {lowFpsThreshold}");
         }

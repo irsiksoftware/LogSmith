@@ -128,7 +128,7 @@ LogSmith automatically detects the active render pipeline at runtime:
 
 ```csharp
 // Automatic detection - no code changes needed
-var log = LogSmith.GetLogger("Game");
+var log = Log.GetLogger("Game");
 log.Info("LogSmith initialized with detected render pipeline");
 ```
 

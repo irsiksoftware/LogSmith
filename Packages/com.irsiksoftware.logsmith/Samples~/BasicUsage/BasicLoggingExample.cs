@@ -15,7 +15,7 @@ namespace IrsikSoftware.LogSmith.Samples
         {
             // Get a logger for this category
             // Categories are automatically created on first use
-            _log = LogSmith.GetLogger("Gameplay");
+            _log = Log.GetLogger("Gameplay");
 
             _log.Info("BasicLoggingExample initialized");
         }
@@ -36,10 +36,10 @@ namespace IrsikSoftware.LogSmith.Samples
             _log.Info("Player health: {Health}/{MaxHealth}", playerHealth, maxHealth);
 
             // Log from different categories
-            var networkLog = LogSmith.GetLogger("Network");
+            var networkLog = Log.GetLogger("Network");
             networkLog.Info("Connection established");
 
-            var aiLog = LogSmith.GetLogger("AI");
+            var aiLog = Log.GetLogger("AI");
             aiLog.Debug("Pathfinding completed in 15ms");
         }
 

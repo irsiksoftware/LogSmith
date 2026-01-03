@@ -1,5 +1,5 @@
 # LogSmith package - disable ISU analyzers to prevent self-referential warnings
-# LogSmith uses its own logging internally via LogSmith.Logger
+# LogSmith uses UnityEngine.Debug internally (not its own logging)
 
 root = false
 

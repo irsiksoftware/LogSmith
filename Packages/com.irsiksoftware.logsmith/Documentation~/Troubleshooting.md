@@ -23,13 +23,13 @@
 1. Check File Sink enabled in settings
 2. Verify platform supports file I/O (WebGL doesn't):
    ```csharp
-   var platform = LogSmith.Resolve<IPlatformCapabilities>();
+   var platform = Log.Resolve<IPlatformCapabilities>();
    Debug.Log($"Writable path: {platform.HasWritablePersistentDataPath}");
    ```
 3. Check log file path permissions
 4. Call `Flush()` before checking file:
    ```csharp
-   var router = LogSmith.Resolve<ILogRouter>();
+   var router = Log.Resolve<ILogRouter>();
    router.Flush(); // Force write to disk
    ```
 
@@ -57,7 +57,7 @@ public class GameLifetimeScope : LifetimeScope
 // ❌ Wrong
 public class MyService
 {
-    private ILog _log = LogSmith.GetLogger("MyService"); // Too early
+    private ILog _log = Log.GetLogger("MyService"); // Too early
 }
 
 // ✅ Correct
@@ -105,7 +105,7 @@ public class MyService
 static void InitLogging()
 {
     var settings = Resources.Load<LoggingSettings>("CustomSettings");
-    LogSmith.ReloadSettings(settings);
+    Log.ReloadSettings(settings);
 }
 ```
 

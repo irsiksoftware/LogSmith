@@ -80,7 +80,7 @@ namespace IrsikSoftware.LogSmith.Samples
 
         void Start()
         {
-            _playerLogger = LogSmith.CreateLogger("Player");
+            _playerLogger = Log.CreateLogger("Player");
             _currentHealth = startingHealth;
             _currentAmmo = startingAmmo;
             _score = startingScore;
